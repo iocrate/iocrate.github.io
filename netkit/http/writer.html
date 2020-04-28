@@ -128,6 +128,12 @@ function main() {
       margin-top: 20px;
       margin-bottom: 20px;
     }
+
+    img[align=center] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
   </style></head>
 <body onload="main()">
 <div class="document" id="documentId">
@@ -207,7 +213,7 @@ function main() {
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
-<a class="reference external" href="../locks.html">../locks</a>, <a class="reference external" href="exception.html">exception</a>, <a class="reference external" href="httpmethod.html">httpmethod</a>, <a class="reference external" href="version.html">version</a>, <a class="reference external" href="status.html">status</a>, <a class="reference external" href="headerfield.html">headerfield</a>, <a class="reference external" href="header.html">header</a>, <a class="reference external" href="connection.html">connection</a>
+<a class="reference external" href="../locks.html">../locks</a>, <a class="reference external" href="exception.html">exception</a>, <a class="reference external" href="status.html">status</a>, <a class="reference external" href="headerfield.html">headerfield</a>, <a class="reference external" href="header.html">header</a>, <a class="reference external" href="connection.html">connection</a>
 </dl></div>
 <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
@@ -222,8 +228,8 @@ function main() {
 <dd>
 
 An abstraction of write operations related to HTTP.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L31" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L31" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L29" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L29" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="ServerResponse"></a>
@@ -231,8 +237,8 @@ An abstraction of write operations related to HTTP.
 <dd>
 
 Represents a response from a server.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L37" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L37" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L35" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L35" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="ClientRequest"></a>
@@ -240,8 +246,8 @@ Represents a response from a server.
 <dd>
 
 Represents a request from a client.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L38" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L38" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L36" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L36" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -255,8 +261,8 @@ Represents a request from a client.
 <dd>
 
 Creates a new <tt class="docutils literal"><span class="pre">ServerResponse</span></tt>.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L46" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L46" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L44" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L44" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="newClientRequest,HttpConnection,proc)"></a>
@@ -265,8 +271,8 @@ Creates a new <tt class="docutils literal"><span class="pre">ServerResponse</spa
 <dd>
 
 Creates a new <tt class="docutils literal"><span class="pre">ClientRequest</span></tt>.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L51" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L51" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L49" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L49" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="ended,HttpWriter"></a>
@@ -274,8 +280,8 @@ Creates a new <tt class="docutils literal"><span class="pre">ClientRequest</span
 <dd>
 
 Returns <tt class="docutils literal"><span class="pre">true</span></tt> if the underlying connection has been closed or writer has been shut down.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L56" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L56" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L54" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L54" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="write,HttpWriter,pointer,Natural"></a>
@@ -286,8 +292,8 @@ Returns <tt class="docutils literal"><span class="pre">true</span></tt> if the u
 <p>Writes <tt class="docutils literal"><span class="pre">size</span></tt> bytes from <tt class="docutils literal"><span class="pre">buf</span></tt> to the writer.</p>
 <p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">ReadAbortedError</span></tt> will be raised.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L70" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L70" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L68" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L68" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="write,HttpWriter,string"></a>
@@ -298,8 +304,8 @@ Returns <tt class="docutils literal"><span class="pre">true</span></tt> if the u
 <p>Writes a string to the writer.</p>
 <p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">ReadAbortedError</span></tt> will be raised.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L81" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L81" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L79" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L79" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="write,HttpWriter,HttpCode,openArray[tuple[string,string]]"></a>
@@ -311,8 +317,8 @@ Returns <tt class="docutils literal"><span class="pre">true</span></tt> if the u
 <p>Writes a message header to the writer.</p>
 <p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">ReadAbortedError</span></tt> will be raised.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L94" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L94" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L92" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L92" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="write,HttpWriter,HttpCode,openArray[tuple[string,seq[string]]]"></a>
@@ -324,8 +330,8 @@ Returns <tt class="docutils literal"><span class="pre">true</span></tt> if the u
 <p>Writes a message header to the writer.</p>
 <p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">ReadAbortedError</span></tt> will be raised.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L109" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L109" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L107" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L107" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="writeEnd,HttpWriter"></a>
@@ -333,8 +339,8 @@ Returns <tt class="docutils literal"><span class="pre">true</span></tt> if the u
 <dd>
 
 Shuts down writer. Data is no longer allowed to be written, otherwise an <tt class="docutils literal"><span class="pre">WriteAbortedError</span></tt> will be raised.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L124" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L124" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L122" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L122" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -347,7 +353,7 @@ Shuts down writer. Data is no longer allowed to be written, otherwise an <tt cla
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 04:11:52 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:56 UTC</small>
       </div>
     </div>
   </div>

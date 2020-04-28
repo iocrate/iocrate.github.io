@@ -128,6 +128,12 @@ function main() {
       margin-top: 20px;
       margin-bottom: 20px;
     }
+
+    img[align=center] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
   </style></head>
 <body onload="main()">
 <div class="document" id="documentId">
@@ -177,11 +183,11 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc"></p>
+  <p class="module-desc">This module contains constants related to the buffer.</p>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
-<a class="reference external" href="../checks.html">../checks</a>
+<a class="reference external" href="../misc.html">../misc</a>
 </dl></div>
 <div class="section" id="10">
 <h1><a class="toc-backref" href="#10">Consts</a></h1>
@@ -190,9 +196,11 @@ function main() {
 <dt><pre><a href="constants.html#BufferSize"><span class="Identifier">BufferSize</span></a><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">8192</span></pre></dt>
 <dd>
 
-Describes the number of bytes for a buffer. You can override this value at compile time with the switch option <tt class="docutils literal"><span class="pre">--define:BufferSize</span></tt>. Note that the value must be a natural number, that is, an integer greater than or equal to zero. Otherwise, an exception will be raised.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/constants.nim#L9" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/constants.nim#L9" class="link-seesrc" target="_blank">Edit</a>
+<p>Describes the number of bytes for a buffer.</p>
+<p>You can override this value at compile time with the switch option <tt class="docutils literal"><span class="pre">--define:BufferSize=&lt;n&gt;</span></tt>. Note that  the value must be a natural number, that is, an integer greater than or equal to zero. Otherwise, an  exception will be raised.</p>
+
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/constants.nim#L11" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/constants.nim#L11" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -205,7 +213,7 @@ Describes the number of bytes for a buffer. You can override this value at compi
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 04:11:51 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:55 UTC</small>
       </div>
     </div>
   </div>

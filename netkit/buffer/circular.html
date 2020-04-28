@@ -128,6 +128,12 @@ function main() {
       margin-top: 20px;
       margin-bottom: 20px;
     }
+
+    img[align=center] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
   </style></head>
 <body onload="main()">
 <div class="document" id="documentId">
@@ -157,7 +163,17 @@ function main() {
     </select>
   </div>
   <ul class="simple simple-toc" id="toc-list">
-<li>
+<li><a class="reference" id="overview_toc" href="#overview">Overview</a></li>
+<ul class="simple"><li><a class="reference" id="overview-storage-methods_toc" href="#overview-storage-methods">Storage methods</a></li>
+<li><a class="reference" id="overview-marking_toc" href="#overview-marking">Marking</a></li>
+<li><a class="reference" id="overview-increment_toc" href="#overview-increment">Increment</a></li>
+<li><a class="reference" id="overview-thread-safety_toc" href="#overview-thread-safety">Thread safety</a></li>
+</ul><li><a class="reference" id="usage_toc" href="#usage">Usage</a></li>
+<ul class="simple"><li><a class="reference" id="usage-manual-storage_toc" href="#usage-manual-storage">Manual storage</a></li>
+<li><a class="reference" id="usage-automatic-storage_toc" href="#usage-automatic-storage">Automatic storage</a></li>
+<li><a class="reference" id="usage-marking_toc" href="#usage-marking">Marking</a></li>
+<li><a class="reference" id="usage-read-data_toc" href="#usage-read-data">Read data</a></li>
+</ul><li>
   <a class="reference reference-toplevel" href="#6" id="56">Imports</a>
   <ul class="simple simple-toc-section">
     
@@ -215,7 +231,84 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc"></p>
+  <p class="module-desc">This module implements a circular buffer <tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> and a markable circular buffer <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> that supports incremental marking.
+</p><h1><a class="toc-backref" id="overview" href="#overview">Overview</a></h1><p><tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> uses a fixed-length array as a storage container, and the two ends of the array are connected together. It does not need to have its elements shuffled around when one is consumed. This lends itself easily to buffering data streams.</p>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Circular_buffer.svg/400px-Circular_buffer.svg.png" align="center"><p>At a certain moment, its storage state is similar to:</p>
+<pre class="listing"><span class="Punctuation">[</span>   <span class="Identifier">empty</span>   <span class="Operator">|---</span><span class="Identifier">data</span><span class="Operator">---|</span>   <span class="Identifier">empty</span>  <span class="Punctuation">]</span></pre><ul class="simple"><li>see <a class="reference external" href="https://en.wikipedia.org/wiki/Circular_buffer">Circular buffer Wiki</a></li>
+<li>see <a class="reference external" href="https://zh.wikipedia.org/wiki/%E7%92%B0%E5%BD%A2%E7%B7%A9%E8%A1%9D%E5%8D%80">Circular buffer Wiki 中文</a></li>
+</ul>
+<p><tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> inherits from <tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> , and adds the function of incremental marking, allowing the data stored to be marked. Increment means that the next operation will always continue from the previous end position.  Incremental marking simplifies some tedious tasks such as scanning, analysis and so on.</p>
+<div class="r-fragment">
+<h2><a class="toc-backref" id="overview-storage-methods" href="#overview-storage-methods">Storage methods</a></h2><p>The circular buffer provides two storage methods: manual storage and automatic storage.</p>
+<p>Manual storage is a low-level operation, which can obtain better performance but is more complicated. You need to directly manipulate the storable space involved in <tt class="docutils literal"><span class="pre">next</span></tt> and <tt class="docutils literal"><span class="pre">pack</span></tt>, and use <tt class="docutils literal"><span class="pre">copyMem</span></tt>, <tt class="docutils literal"><span class="pre">read(file, pointer, size)</span></tt> or other similar methods to directly store data. This is an unsafe method, but there is no  additional copy, so you can get better performance.</p>
+<p>Automatic storage is a high-level operation, storing data with <tt class="docutils literal"><span class="pre">add</span></tt>. This is a safer and simpler method, but it has additional copy overhead.</p>
+</div><div class="r-fragment">
+<h2><a class="toc-backref" id="overview-marking" href="#overview-marking">Marking</a></h2><p><tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> allows marking data. <tt class="docutils literal"><span class="pre">marks()</span></tt> iterates the stored data one by one in the form of characters (bytes), and marks the characters (bytes) at the same time. This is especially useful for data analysis, such as searching a CRLF. When you find the desired mark, you can use <tt class="docutils literal"><span class="pre">popMarks</span></tt> to extract the marked data.</p>
+</div><div class="r-fragment">
+<h2><a class="toc-backref" id="overview-increment" href="#overview-increment">Increment</a></h2><p>In most IO scenarios, you need to read or write data repeatedly. <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> provides incremental support for this  environment, incrementally storing data and incrementally marking data, so that you don't have to worry about losing data state in a loop operation.</p>
+</div><div class="r-fragment">
+<h2><a class="toc-backref" id="overview-thread-safety" href="#overview-thread-safety">Thread safety</a></h2><p><tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> and <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> does not guarantees thread safety. When you use them in multiple threads, you should be responsible for conditional competition.</p>
+</div>
+<h1><a class="toc-backref" id="usage" href="#usage">Usage</a></h1><div class="r-fragment">
+<h2><a class="toc-backref" id="usage-manual-storage" href="#usage-manual-storage">Manual storage</a></h2><p>Manual storage can be divided into three steps:</p>
+<p>1. Gets the address and the length of a storable space：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre><p>2. Operates the storable space to store data：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">readLen</span> <span class="Operator">=</span> <span class="Identifier">socket</span><span class="Operator">.</span><span class="Identifier">read</span><span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span></pre><p>3. Tell the buffer the length of the stored data：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">packLen</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">pack</span><span class="Punctuation">(</span><span class="Identifier">n</span><span class="Punctuation">)</span></pre></div><div class="r-fragment">
+<h2><a class="toc-backref" id="usage-automatic-storage" href="#usage-automatic-storage">Automatic storage</a></h2><p>To store a character:</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="CharLit">'A'</span><span class="Punctuation">)</span></pre><p>To store a string:</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"ABC"</span>
+<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="DecNumber">3</span><span class="Punctuation">)</span></pre></div><div class="r-fragment">
+<h2><a class="toc-backref" id="usage-marking" href="#usage-marking">Marking</a></h2><p>To search a string ending with a newline character:</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
+
+<span class="Keyword">var</span> <span class="Identifier">lineString</span> <span class="Operator">=</span> <span class="StringLit">""</span>
+
+<span class="Keyword">for</span> <span class="Identifier">c</span> <span class="Keyword">in</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">marks</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">:</span>
+  <span class="Keyword">if</span> <span class="Identifier">c</span> <span class="Operator">==</span> <span class="CharLit">'\L'</span><span class="Punctuation">:</span>
+    <span class="Identifier">lineString</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">popMarks</span><span class="Punctuation">(</span><span class="DecNumber">1</span><span class="Punctuation">)</span>
+    <span class="Keyword">break</span>
+<span class="Identifier">assert</span> <span class="Identifier">lineString</span> <span class="Operator">==</span> <span class="StringLit">"foo"</span>
+
+<span class="Keyword">for</span> <span class="Identifier">c</span> <span class="Keyword">in</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">marks</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">:</span>
+  <span class="Keyword">if</span> <span class="Identifier">c</span> <span class="Operator">==</span> <span class="CharLit">'\L'</span><span class="Punctuation">:</span>
+    <span class="Identifier">lineString</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">popMarks</span><span class="Punctuation">(</span><span class="DecNumber">1</span><span class="Punctuation">)</span>
+    <span class="Keyword">break</span>
+<span class="Identifier">assert</span> <span class="Identifier">lineString</span> <span class="Operator">==</span> <span class="StringLit">"bar"</span></pre><p><tt class="docutils literal"><span class="pre">markUntil</span></tt> makes this process easier:</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
+
+<span class="Keyword">var</span> <span class="Identifier">lineString</span> <span class="Operator">=</span> <span class="StringLit">""</span>
+
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">markUntil</span><span class="Punctuation">(</span><span class="CharLit">'\L'</span><span class="Punctuation">)</span>
+<span class="Identifier">assert</span> <span class="Identifier">lineString</span> <span class="Operator">==</span> <span class="StringLit">"foo"</span>
+
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">markUntil</span><span class="Punctuation">(</span><span class="CharLit">'\L'</span><span class="Punctuation">)</span>
+<span class="Identifier">assert</span> <span class="Identifier">lineString</span> <span class="Operator">==</span> <span class="StringLit">"bar"</span></pre></div><div class="r-fragment">
+<h2><a class="toc-backref" id="usage-read-data" href="#usage-read-data">Read data</a></h2><p>Copy the stored data to a specified memory and delete the data:</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
+
+<span class="Keyword">var</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">newString</span><span class="Punctuation">(</span><span class="DecNumber">64</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">getLen</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="Identifier">dest</span><span class="Punctuation">,</span> <span class="Identifier">destLen</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">delLen</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">del</span><span class="Punctuation">(</span><span class="Identifier">getLen</span><span class="Punctuation">)</span>
+<span class="Identifier">dest</span><span class="Operator">.</span><span class="Identifier">setLen</span><span class="Punctuation">(</span><span class="Identifier">getLen</span><span class="Punctuation">)</span>
+
+<span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">==</span> <span class="DecNumber">0</span></pre><p>Copy the stored data to a string and delete the data:</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
+
+<span class="Keyword">var</span> <span class="Identifier">foo</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="DecNumber">3</span><span class="Punctuation">)</span>
+<span class="Identifier">assert</span> <span class="Identifier">foo</span> <span class="Operator">==</span> <span class="StringLit">"foo"</span></pre></div><p></p>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
@@ -233,9 +326,9 @@ function main() {
 </pre></dt>
 <dd>
 
-A data structure that uses a single, fixed-size buffer as if it were connected end-to-end. 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L15" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L15" class="link-seesrc" target="_blank">Edit</a>
+A circular buffer. 
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L202" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L202" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="MarkableCircularBuffer"></a>
@@ -244,9 +337,9 @@ A data structure that uses a single, fixed-size buffer as if it were connected e
 </pre></dt>
 <dd>
 
-A markable circular buffer object that supports incremental marks.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L22" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L22" class="link-seesrc" target="_blank">Edit</a>
+A markable circular buffer.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L209" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L209" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -258,55 +351,58 @@ A markable circular buffer object that supports incremental marks.
 <dt><pre><span class="Keyword">proc</span> <a href="#initCircularBuffer"><span class="Identifier">initCircularBuffer</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Initializes an <tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> object. 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L26" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L26" class="link-seesrc" target="_blank">Edit</a>
+Initializes an <tt class="docutils literal"><span class="pre">CircularBuffer</span></tt>. 
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L213" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L213" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="capacity,CircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#capacity%2CCircularBuffer"><span class="Identifier">capacity</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Gets the capacity of the buffer.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L30" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L30" class="link-seesrc" target="_blank">Edit</a>
+Returns the capacity of this buffer.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L217" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L217" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="len,CircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#len%2CCircularBuffer"><span class="Identifier">len</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Gets the length of the data currently stored in the buffer.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L34" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L34" class="link-seesrc" target="_blank">Edit</a>
+Returns the length of the data stored in this buffer.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L221" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L221" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="next,CircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#next%2CCircularBuffer"><span class="Identifier">next</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Identifier">pointer</span><span class="Other">,</span> <span class="Identifier">Natural</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Gets the next safe storage region. The return value indicates the pointer and length of the storage region. After that, you can use the returned pointer and length to store data manually.<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
-<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<p>Gets the next safe storage space. The return value includes the address and length of the storable space.</p>
+<p>Examples:</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
+<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">var</span> <span class="Identifier">length</span> <span class="Operator">=</span> <span class="Identifier">min</span><span class="Punctuation">(</span><span class="Identifier">regionLen</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">copyMem</span><span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">length</span><span class="Punctuation">)</span> </pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L38" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L38" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L225" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L225" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="pack,CircularBuffer,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#pack%2CCircularBuffer%2CNatural"><span class="Identifier">pack</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">size</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Tells the buffer that packing <tt class="docutils literal"><span class="pre">size</span></tt> lengths of data. Returns the actual length packed.</p>
-<p>When <tt class="docutils literal"><span class="pre">next()</span></tt> is called, Although data has been written inside the buffer, but the buffer cannot tell how much valid data has been written. <tt class="docutils literal"><span class="pre">pack ()</span></tt> tells the buffer how much valid data is actually written.</p>
+<p>Tells the buffer that <tt class="docutils literal"><span class="pre">size</span></tt> bytes from the current storage location are promoted to data. Returns the actual length promoted.</p>
+<p>When <tt class="docutils literal"><span class="pre">next()</span></tt> is called, data is written to the storage space inside the buffer, but the buffer cannot know how much data was written. <tt class="docutils literal"><span class="pre">pack ()</span></tt> tells the buffer the length of the data written.</p>
 <p>Whenever <tt class="docutils literal"><span class="pre">next()</span></tt> is called, <tt class="docutils literal"><span class="pre">pack()</span></tt> should be called immediately.</p>
+<p>Examples:</p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
-<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">var</span> <span class="Identifier">length</span> <span class="Operator">=</span> <span class="Identifier">min</span><span class="Punctuation">(</span><span class="Identifier">regionLen</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">copyMem</span><span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">length</span><span class="Punctuation">)</span>
-<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">pack</span><span class="Punctuation">(</span><span class="Identifier">length</span><span class="Punctuation">)</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L52" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L52" class="link-seesrc" target="_blank">Edit</a>
+<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">pack</span><span class="Punctuation">(</span><span class="Identifier">length</span><span class="Punctuation">)</span></pre>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L241" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L241" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="add,CircularBuffer,pointer,Natural"></a>
@@ -314,21 +410,21 @@ Gets the next safe storage region. The return value indicates the pointer and le
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Copies up to `` size`` lengths of data from `` source``. Returns the actual length copied. This is a simplified version of the `` next () `` `` pack () `` combination call. The difference is that an additional copy operation is made instead of writing directly to the buffer.</p>
-<p>When you focus on performance, consider using <tt class="docutils literal"><span class="pre">next ()</span></tt>, <tt class="docutils literal"><span class="pre">pack ()</span></tt> combination calls; when you focus on convenience of the invocation, use <tt class="docutils literal"><span class="pre">put ()</span></tt>.</p>
+<p>Copies up to `` size`` lengths of data from `` source`` and store the data in the buffer. Returns the actual length copied. This is a simplified version of the `` next () `` `` pack () `` combination call. The difference is that an additional copy operation is made instead of writing directly to the buffer.</p>
+<p>Examples:</p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
-<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">put</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L76" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L76" class="link-seesrc" target="_blank">Edit</a>
+<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span></pre>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L268" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L268" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="add,CircularBuffer,char"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#add%2CCircularBuffer%2Cchar"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">c</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Writes a character <tt class="docutils literal"><span class="pre">c</span></tt> to the buffer and returns the actual number written. Returns <tt class="docutils literal"><span class="pre">0</span></tt> if the buffer is full, or <tt class="docutils literal"><span class="pre">1</span></tt>.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L101" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L101" class="link-seesrc" target="_blank">Edit</a>
+Stores a character `` c`` in the buffer and returns the actual stored length. If the storage space is full, it will return `` 0``, otherwise `` 1``.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L292" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L292" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="get,CircularBuffer,pointer,Natural"></a>
@@ -336,18 +432,18 @@ Writes a character <tt class="docutils literal"><span class="pre">c</span></tt> 
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Gets up to <tt class="docutils literal"><span class="pre">size</span></tt> of the stored data, copy the data to the space <tt class="docutils literal"><span class="pre">dest</span></tt>. Returns the actual number copied.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L110" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L110" class="link-seesrc" target="_blank">Edit</a>
+Gets up to <tt class="docutils literal"><span class="pre">size</span></tt> of the stored data, and copy the data to the space <tt class="docutils literal"><span class="pre">dest</span></tt>. Returns the actual number copied.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L301" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L301" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="get,CircularBuffer,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#get%2CCircularBuffer%2CNatural"><span class="Identifier">get</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">size</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Gets up to <tt class="docutils literal"><span class="pre">size</span></tt> of the  stored data, returns as a string. 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L120" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L120" class="link-seesrc" target="_blank">Edit</a>
+Gets up to <tt class="docutils literal"><span class="pre">size</span></tt> of the  stored data and returns as a string. 
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L311" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L311" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="get,CircularBuffer"></a>
@@ -355,35 +451,35 @@ Gets up to <tt class="docutils literal"><span class="pre">size</span></tt> of th
 <dd>
 
 Gets all stored data and returns as a string.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L126" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L126" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L317" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L317" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="del,CircularBuffer,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#del%2CCircularBuffer%2CNatural"><span class="Identifier">del</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">size</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Deletes up to <tt class="docutils literal"><span class="pre">size</span></tt> of the stored data, and returns the actual number deleted.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L130" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L130" class="link-seesrc" target="_blank">Edit</a>
+Deletes up to <tt class="docutils literal"><span class="pre">size</span></tt> of the stored data and returns the actual number deleted.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L321" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L321" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="initMarkableCircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#initMarkableCircularBuffer"><span class="Identifier">initMarkableCircularBuffer</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Initializes an <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> object. 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L155" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L155" class="link-seesrc" target="_blank">Edit</a>
+Initializes an <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt>. 
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L346" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L346" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="del,MarkableCircularBuffer,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#del%2CMarkableCircularBuffer%2CNatural"><span class="Identifier">del</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">size</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Deletes up to <tt class="docutils literal"><span class="pre">size</span></tt> of the stored data, and returns the actual number deleted.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L159" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L159" class="link-seesrc" target="_blank">Edit</a>
+Deletes up to <tt class="docutils literal"><span class="pre">size</span></tt> of the stored data and returns the actual number deleted.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L350" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L350" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="mark,MarkableCircularBuffer,Natural"></a>
@@ -393,19 +489,19 @@ Deletes up to <tt class="docutils literal"><span class="pre">size</span></tt> of
 <p>Marks the stored data in the buffer immediately until it reaches <tt class="docutils literal"><span class="pre">size</span></tt> or reaches the end of the data. Returns the actual number marked.</p>
 <p>Note that the marking is performed incrementally, that is, when the marking operation is called next time, it will continue from the position where it last ended.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L207" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L207" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L398" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L398" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="markUntil,MarkableCircularBuffer,char"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#markUntil%2CMarkableCircularBuffer%2Cchar"><span class="Identifier">markUntil</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">c</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Marks the stored data one by one until one byte is <tt class="docutils literal"><span class="pre">c</span></tt>. False is returned if no byte is <tt class="docutils literal"><span class="pre">c</span></tt>.</p>
+<p>Marks the stored data one by one until a byte is <tt class="docutils literal"><span class="pre">c</span></tt>. <tt class="docutils literal"><span class="pre">false</span></tt> is returned if no byte is <tt class="docutils literal"><span class="pre">c</span></tt>.</p>
 <p>Note that the marking is performed incrementally, that is, when the marking operation is called next time, it will continue from the position where it last ended.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L221" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L221" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L412" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L412" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="markAll,MarkableCircularBuffer"></a>
@@ -415,26 +511,26 @@ Deletes up to <tt class="docutils literal"><span class="pre">size</span></tt> of
 <p>Marks all the stored data.</p>
 <p>Note that the marking is performed incrementally, that is, when the marking operation is called next time, it will continue from the position where it last ended.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L231" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L231" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L422" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L422" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="lenMarks,MarkableCircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#lenMarks%2CMarkableCircularBuffer"><span class="Identifier">lenMarks</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Gets the length of the stored data that has been marked.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L238" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L238" class="link-seesrc" target="_blank">Edit</a>
+Returns the length of the stored data that has been marked.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L429" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L429" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="popMarks,MarkableCircularBuffer,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#popMarks%2CMarkableCircularBuffer%2CNatural"><span class="Identifier">popMarks</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Pops all the marked data, skip backward <tt class="docutils literal"><span class="pre">n</span></tt> characters. This operation deletes all marked data.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L242" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L242" class="link-seesrc" target="_blank">Edit</a>
+Pops the marked data, skip the data from the end forward by <tt class="docutils literal"><span class="pre">n</span></tt> bytes, and return it as a string. At the same time, delete these data.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L433" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L433" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -447,15 +543,15 @@ Pops all the marked data, skip backward <tt class="docutils literal"><span class
 <dd>
 
 Iterates over the stored data. 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L148" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L148" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L339" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L339" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="marks.i,MarkableCircularBuffer"></a>
 <dt><pre><span class="Keyword">iterator</span> <a href="#marks.i%2CMarkableCircularBuffer"><span class="Identifier">marks</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">char</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Iterate over the stored data and marks it.</p>
+<p>Iterate over the stored data, and marks the data at the same time.</p>
 <p>Note that the marking is performed incrementally, that is, when the marking operation is called next time, it will continue from the position where it last ended.</p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">s</span> <span class="Operator">=</span> <span class="StringLit">"Hello World</span><span class="EscapeSequence">\R</span><span class="EscapeSequence">\L</span><span class="StringLit">"</span>
 <span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">put</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
@@ -463,8 +559,8 @@ Iterates over the stored data.
 <span class="Keyword">for</span> <span class="Identifier">c</span> <span class="Keyword">in</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">marks</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">:</span>
   <span class="Keyword">if</span> <span class="Identifier">c</span> <span class="Operator">==</span> <span class="CharLit">'\L'</span><span class="Punctuation">:</span>
     <span class="Keyword">break</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L188" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L188" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L379" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L379" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -477,7 +573,7 @@ Iterates over the stored data.
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 04:11:51 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:55 UTC</small>
       </div>
     </div>
   </div>

@@ -1,3 +1,13 @@
+Overview	circular.html#overview	 Overview	
+Storage methods	circular.html#overview-storage-methods	  Storage methods	
+Marking	circular.html#overview-marking	  Marking	
+Increment	circular.html#overview-increment	  Increment	
+Thread safety	circular.html#overview-thread-safety	  Thread safety	
+Usage	circular.html#usage	 Usage	
+Manual storage	circular.html#usage-manual-storage	  Manual storage	
+Automatic storage	circular.html#usage-automatic-storage	  Automatic storage	
+Marking	circular.html#usage-marking	  Marking	
+Read data	circular.html#usage-read-data	  Read data	
 CircularBuffer	netkit/buffer/circular.html#CircularBuffer	circular: CircularBuffer	
 MarkableCircularBuffer	netkit/buffer/circular.html#MarkableCircularBuffer	circular: MarkableCircularBuffer	
 initCircularBuffer	netkit/buffer/circular.html#initCircularBuffer	circular: initCircularBuffer(): CircularBuffer	

@@ -1,1 +1,2 @@
 offset	netkit/misc.html#offset.t,pointer,int	misc: offset(p: pointer; n: int): pointer	
+checkDefNatural	netkit/misc.html#checkDefNatural.t,static[Natural],static[string]	misc: checkDefNatural(value: static[Natural]; name: static[string]): untyped	

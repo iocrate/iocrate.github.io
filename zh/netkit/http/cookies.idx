@@ -1,0 +1,21 @@
+Overview	cookies.html#overview	 Overview	
+SameSite	netkit/http/cookies.html#SameSite	cookies: SameSite	
+Cookie	netkit/http/cookies.html#Cookie	cookies: Cookie	
+CookieJar	netkit/http/cookies.html#CookieJar	cookies: CookieJar	
+MissingValueError	netkit/http/cookies.html#MissingValueError	cookies: MissingValueError	
+initCookie	netkit/http/cookies.html#initCookie,string,string,string,Option[int],string,string	cookies: initCookie(name, value: string; expires = &quot;&quot;; maxAge: Option[int] = none(int);\n           domain = &quot;&quot;; path = &quot;&quot;; secure = false; httpOnly = false; sameSite = Lax): Cookie	
+initCookie	netkit/http/cookies.html#initCookie,string,string,,Option[int],string,string	cookies: initCookie(name, value: string; expires: DateTime | Time;\n           maxAge: Option[int] = none(int); domain = &quot;&quot;; path = &quot;&quot;; secure = false;\n           httpOnly = false; sameSite = Lax): Cookie	
+initCookie	netkit/http/cookies.html#initCookie,string	cookies: initCookie(text: string): Cookie	
+setCookie	netkit/http/cookies.html#setCookie,Cookie	cookies: setCookie(cookie: Cookie): string	
+`$`	netkit/http/cookies.html#$,Cookie	cookies: `$`(cookie: Cookie): string	
+initCookieJar	netkit/http/cookies.html#initCookieJar	cookies: initCookieJar(): CookieJar	
+len	netkit/http/cookies.html#len,CookieJar	cookies: len(cookieJar: CookieJar): int	
+`[]`	netkit/http/cookies.html#[],CookieJar,string	cookies: `[]`(cookieJar: CookieJar; name: string): string	
+getOrDefault	netkit/http/cookies.html#getOrDefault,CookieJar,string,string	cookies: getOrDefault(cookieJar: CookieJar; name: string; default = &quot;&quot;): string	
+hasKey	netkit/http/cookies.html#hasKey,CookieJar,string	cookies: hasKey(cookieJar: CookieJar; name: string): bool	
+contains	netkit/http/cookies.html#contains,CookieJar,string	cookies: contains(cookieJar: CookieJar; name: string): bool	
+`[]=`	netkit/http/cookies.html#[]=,CookieJar,string,string	cookies: `[]=`(cookieJar: var CookieJar; name: string; value: string)	
+parse	netkit/http/cookies.html#parse,CookieJar,string	cookies: parse(cookieJar: var CookieJar; text: string)	
+pairs	netkit/http/cookies.html#pairs.i,CookieJar	cookies: pairs(cookieJar: CookieJar): tuple[name, value: string]	
+keys	netkit/http/cookies.html#keys.i,CookieJar	cookies: keys(cookieJar: CookieJar): string	
+values	netkit/http/cookies.html#values.i,CookieJar	cookies: values(cookieJar: CookieJar): string	

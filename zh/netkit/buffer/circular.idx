@@ -1,8 +1,13 @@
-关于存储方法	circular.html#关于存储方法	 关于存储方法	
-关于标记	circular.html#关于标记	 关于标记	
-关于增量	circular.html#关于增量	 关于增量	
-关于线程安全	circular.html#关于线程安全	 关于线程安全	
-如何使用	circular.html#如何使用	 如何使用	
+Overview	circular.html#overview	 Overview	
+存储方法	circular.html#overview-存储方法	  存储方法	
+标记	circular.html#overview-标记	  标记	
+增量	circular.html#overview-增量	  增量	
+线程安全	circular.html#overview-线程安全	  线程安全	
+Usage	circular.html#usage	 Usage	
+手动存储	circular.html#usage-手动存储	  手动存储	
+自动存储	circular.html#usage-自动存储	  自动存储	
+标记	circular.html#usage-标记	  标记	
+读取数据	circular.html#usage-读取数据	  读取数据	
 CircularBuffer	netkit/buffer/circular.html#CircularBuffer	circular: CircularBuffer	
 MarkableCircularBuffer	netkit/buffer/circular.html#MarkableCircularBuffer	circular: MarkableCircularBuffer	
 initCircularBuffer	netkit/buffer/circular.html#initCircularBuffer	circular: initCircularBuffer(): CircularBuffer	

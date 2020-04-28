@@ -128,6 +128,12 @@ function main() {
       margin-top: 20px;
       margin-bottom: 20px;
     }
+
+    img[align=center] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
   </style></head>
 <body onload="main()">
 <div class="document" id="documentId">
@@ -157,12 +163,17 @@ function main() {
     </select>
   </div>
   <ul class="simple simple-toc" id="toc-list">
-<li><a class="reference" id="关于存储方法_toc" href="#关于存储方法">关于存储方法</a></li>
-<li><a class="reference" id="关于标记_toc" href="#关于标记">关于标记</a></li>
-<li><a class="reference" id="关于增量_toc" href="#关于增量">关于增量</a></li>
-<li><a class="reference" id="关于线程安全_toc" href="#关于线程安全">关于线程安全</a></li>
-<li><a class="reference" id="如何使用_toc" href="#如何使用">如何使用</a></li>
-<li>
+<li><a class="reference" id="overview_toc" href="#overview">Overview</a></li>
+<ul class="simple"><li><a class="reference" id="overview-存储方法_toc" href="#overview-存储方法">存储方法</a></li>
+<li><a class="reference" id="overview-标记_toc" href="#overview-标记">标记</a></li>
+<li><a class="reference" id="overview-增量_toc" href="#overview-增量">增量</a></li>
+<li><a class="reference" id="overview-线程安全_toc" href="#overview-线程安全">线程安全</a></li>
+</ul><li><a class="reference" id="usage_toc" href="#usage">Usage</a></li>
+<ul class="simple"><li><a class="reference" id="usage-手动存储_toc" href="#usage-手动存储">手动存储</a></li>
+<li><a class="reference" id="usage-自动存储_toc" href="#usage-自动存储">自动存储</a></li>
+<li><a class="reference" id="usage-标记_toc" href="#usage-标记">标记</a></li>
+<li><a class="reference" id="usage-读取数据_toc" href="#usage-读取数据">读取数据</a></li>
+</ul><li>
   <a class="reference reference-toplevel" href="#6" id="56">Imports</a>
   <ul class="simple simple-toc-section">
     
@@ -220,44 +231,84 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc"></p><p>本模块实现了一个循环缓冲区 <tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> 和一个支持增量标记的循环缓冲区 <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 。</p>
-<p><tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> 内部使用一个固定长度的数组作为存储容器， 并在存储数据的时候执行循环存储。 即， 当到达尾部时， 缓冲区查看另一 端是否仍有空闲空间， 如果有的话， 则使用这些空闲空间继续存储数据， 直到全满为止。 某一个时刻， 其存储状态类似：</p>
-<pre class="listing"><span class="Punctuation">`</span><span class="Punctuation">`</span><span class="Punctuation">[</span>   <span class="Identifier">空</span>   <span class="Operator">|---</span><span class="Identifier">data</span><span class="Operator">---|</span>   <span class="Identifier">空</span>  <span class="Punctuation">]</span><span class="Punctuation">`</span><span class="Punctuation">`</span></pre><ul class="simple"><li>参看 <a class="reference external" href="https://en.wikipedia.org/wiki/Circular_buffer">Circular buffer Wiki</a></li>
-<li>参看 <a class="reference external" href="https://zh.wikipedia.org/wiki/%E7%92%B0%E5%BD%A2%E7%B7%A9%E8%A1%9D%E5%8D%80">Circular buffer Wiki-中文</a></li>
+  <p class="module-desc">这个模块实现了循环缓冲区 <tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> 和支持增量标记的循环缓冲区 <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 。
+</p><h1><a class="toc-backref" id="overview" href="#overview">Overview</a></h1><p><tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> 内部使用一个固定长度的数组作为存储容器，数组的两端如同连接在一起。当一个数据元素被消费后， 其余数据元素不需要移动其存储位置。这使其非常适合缓存数据流。</p>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Circular_buffer.svg/400px-Circular_buffer.svg.png" align="center"><p>某一时刻，其存储状态类似：</p>
+<pre class="listing"><span class="Punctuation">[</span>   <span class="Identifier">空</span>   <span class="Operator">|---</span><span class="Identifier">data</span><span class="Operator">---|</span>   <span class="Identifier">空</span>  <span class="Punctuation">]</span></pre><ul class="simple"><li>参看 <a class="reference external" href="https://en.wikipedia.org/wiki/Circular_buffer">Circular buffer Wiki</a></li>
+<li>参看 <a class="reference external" href="https://zh.wikipedia.org/wiki/%E7%92%B0%E5%BD%A2%E7%B7%A9%E8%A1%9D%E5%8D%80">Circular buffer Wiki 中文</a></li>
 </ul>
-<p><tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 继承自 <tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> ， 增加了增量标记的功能， 您可以对存储的数据进行标记。所谓增量， 是指每 次操作之后， 下一次从上一次结束的位置继续。 增量标记简化了诸如 “扫描” 、 “分析” 等等一些繁琐的工作。</p>
+<p><tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 继承自 <tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> ，增加了增量标记的功能，允许对存储的数据进行标记。所谓增量， 是指下一次操作总是从上一次结束的位置继续。增量标记简化了诸如 “扫描” 、“分析” 等等一些繁琐的工作。</p>
+<div class="r-fragment">
+<h2><a class="toc-backref" id="overview-存储方法" href="#overview-存储方法">存储方法</a></h2><p>循环缓冲区提供两种存储方法： 手动存储和自动存储。</p>
+<p>手动存储是低阶操作，能获得更优的性能但是操作更复杂。您需要直接操作 <tt class="docutils literal"><span class="pre">next</span></tt> <tt class="docutils literal"><span class="pre">pack</span></tt> 涉及到的可存储空间的指针， 利用 <tt class="docutils literal"><span class="pre">copyMem</span></tt> 、 <tt class="docutils literal"><span class="pre">read(file, pointer, size)</span></tt> 或者其他类似的方式直接存储数据。这是一种不安全的方式， 但是由于减少了额外的复制，性能更高。</p>
+<p>自动存储是高阶操作，通过 <tt class="docutils literal"><span class="pre">add</span></tt> 存储数据。这是较为安全并且简单的存储方式，但是有额外的复制开销。</p>
+</div><div class="r-fragment">
+<h2><a class="toc-backref" id="overview-标记" href="#overview-标记">标记</a></h2><p><tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 支持标记数据。 <tt class="docutils literal"><span class="pre">marks()</span></tt> 以字符 (字节) 的形式逐个迭代已存储的数据，同时标记该字符 (字节)。 这在进行数据分析时特别有用，比如查找 CRLF。当找到期望的标记后，您可以使用 <tt class="docutils literal"><span class="pre">popMarks()</span></tt> 把已标记的数据提取出来。</p>
+</div><div class="r-fragment">
+<h2><a class="toc-backref" id="overview-增量" href="#overview-增量">增量</a></h2><p>在大部分 IO 场景里，数据并非一次性读取或者写入完成的，通常要经过多次循环操作。 <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 特意为这种反复操作的环境提供增量支持，增量存储数据并且增量标记数据，这样您不必担心在循环操作的过程中丢失数据状态。</p>
+</div><div class="r-fragment">
+<h2><a class="toc-backref" id="overview-线程安全" href="#overview-线程安全">线程安全</a></h2><p><tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> 和 <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 都不保证线程安全。当您在多线程环境使用时，您应该负责控制线程竞争。</p>
+</div>
+<h1><a class="toc-backref" id="usage" href="#usage">Usage</a></h1><div class="r-fragment">
+<h2><a class="toc-backref" id="usage-手动存储" href="#usage-手动存储">手动存储</a></h2><p>手动存储的过程分为三步：</p>
+<p>1. 获取可存储空间的地址和长度：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre><p>2. 直接操作可存储空间以存储数据：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">readLen</span> <span class="Operator">=</span> <span class="Identifier">socket</span><span class="Operator">.</span><span class="Identifier">read</span><span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span></pre><p>3. 告诉缓冲区，存储数据的长度：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">packLen</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">pack</span><span class="Punctuation">(</span><span class="Identifier">n</span><span class="Punctuation">)</span></pre></div><div class="r-fragment">
+<h2><a class="toc-backref" id="usage-自动存储" href="#usage-自动存储">自动存储</a></h2><p>存入一个字符：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="CharLit">'A'</span><span class="Punctuation">)</span></pre><p>存入一个字符串：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"ABC"</span>
+<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="DecNumber">3</span><span class="Punctuation">)</span></pre></div><div class="r-fragment">
+<h2><a class="toc-backref" id="usage-标记" href="#usage-标记">标记</a></h2><p>查找以换行符为结尾的字符串：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
 
-<h1><a class="toc-backref" id="关于存储方法" href="#关于存储方法">关于存储方法</a></h1><p>循环缓冲区提供两种存储方法： 手动存储和自动存储。</p>
-<p>手动存储是低阶操作， 专门面向低消耗设计。 您需要操作返回的可存储空间的指针和长度， 利用 <tt class="docutils literal"><span class="pre">copyMem</span></tt> 或者其他类似的操作直接存储， 这种方式是一种不安全的方式， 但是由于减少了一次复制操作， 性能更高。</p>
-<p>自动存储是高阶操作， 提供 <tt class="docutils literal"><span class="pre">put</span></tt> 调用， 是较为安全简单的存储方式， 有额外的复制开销。</p>
+<span class="Keyword">var</span> <span class="Identifier">lineString</span> <span class="Operator">=</span> <span class="StringLit">""</span>
 
-<h1><a class="toc-backref" id="关于标记" href="#关于标记">关于标记</a></h1><p><tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 支持标记数据。 <tt class="docutils literal"><span class="pre">marks()</span></tt> 以字符 (字节) 的形式逐个迭代已存储的数据， 同时标记该字符 (字节)。 这 在进行数据解析时特别有用， 比如查找特定字符 CRLF。然后， 您可以使用 <tt class="docutils literal"><span class="pre">popMarks()</span></tt> 把标记的所有数据提取出来。</p>
+<span class="Keyword">for</span> <span class="Identifier">c</span> <span class="Keyword">in</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">marks</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">:</span>
+  <span class="Keyword">if</span> <span class="Identifier">c</span> <span class="Operator">==</span> <span class="CharLit">'\L'</span><span class="Punctuation">:</span>
+    <span class="Identifier">lineString</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">popMarks</span><span class="Punctuation">(</span><span class="DecNumber">1</span><span class="Punctuation">)</span>
+    <span class="Keyword">break</span>
+<span class="Identifier">assert</span> <span class="Identifier">lineString</span> <span class="Operator">==</span> <span class="StringLit">"foo"</span>
 
-<h1><a class="toc-backref" id="关于增量" href="#关于增量">关于增量</a></h1><p>在大部分 IO 场景里， 数据不是一次性读取或者写入完成的， 通常要经过多次循环操作。 <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 特意为 这种反复操作的环境提供增量支持， 增量存储数据并且增量标记数据， 这样您不必担心在循环操作的过程中丢失数据状态。</p>
+<span class="Keyword">for</span> <span class="Identifier">c</span> <span class="Keyword">in</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">marks</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">:</span>
+  <span class="Keyword">if</span> <span class="Identifier">c</span> <span class="Operator">==</span> <span class="CharLit">'\L'</span><span class="Punctuation">:</span>
+    <span class="Identifier">lineString</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">popMarks</span><span class="Punctuation">(</span><span class="DecNumber">1</span><span class="Punctuation">)</span>
+    <span class="Keyword">break</span>
+<span class="Identifier">assert</span> <span class="Identifier">lineString</span> <span class="Operator">==</span> <span class="StringLit">"bar"</span></pre><p><tt class="docutils literal"><span class="pre">markUntil</span></tt> 让这个过程更加简单：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
 
-<h1><a class="toc-backref" id="关于线程安全" href="#关于线程安全">关于线程安全</a></h1><p><tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> 和 <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 都不保证线程安全。 当您在多线程环境使用时， 您应该负责线程竞争的控制。</p>
+<span class="Keyword">var</span> <span class="Identifier">lineString</span> <span class="Operator">=</span> <span class="StringLit">""</span>
 
-<h1><a class="toc-backref" id="如何使用" href="#如何使用">如何使用</a></h1><p>1. 手动存储：</p>
-<blockquote><p></p><p>var buffer = initMarkableCircularBuffer() var (regionPtr, regionLen) = buffer.next()</p>
-<p>var readLen = socket.read(regionPtr, regionLen) var packLen = buffer.pack(n)</p>
-<p></p></blockquote>
-<p>2. 自动存储：</p>
-<blockquote><p>var n = buffer.put('A')</p></blockquote>
-<blockquote><p>或者：</p><blockquote><p>var str = "ABC" var n = buffer.put(str.cstring, 3)</p></blockquote>
-<p></p></blockquote>
-<p>3. 标记， 并获取标记的数据：</p>
-<blockquote><p></p><dl class="docutils"><dt>for c in buffer.marks():</dt>
-<dd><dl class="docutils"><dt>if c == 'L':</dt>
-<dd>var lineString = buffer.popMarks(1) break</dd>
-</dl>
-</dd>
-</dl>
-<p></p></blockquote>
-<blockquote><p>或者：</p><blockquote><p>var res = buffer.markUntil('L')</p></blockquote>
-<p></p></blockquote>
-<p>4. 获取指定长度的数据， 删除指定长度的数据：</p>
-<blockquote><p>var getLen = buffer.get(dest, destLen) var delLen = buffer.del(getLen)</p></blockquote>
-<p></p>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">markUntil</span><span class="Punctuation">(</span><span class="CharLit">'\L'</span><span class="Punctuation">)</span>
+<span class="Identifier">assert</span> <span class="Identifier">lineString</span> <span class="Operator">==</span> <span class="StringLit">"foo"</span>
+
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">markUntil</span><span class="Punctuation">(</span><span class="CharLit">'\L'</span><span class="Punctuation">)</span>
+<span class="Identifier">assert</span> <span class="Identifier">lineString</span> <span class="Operator">==</span> <span class="StringLit">"bar"</span></pre></div><div class="r-fragment">
+<h2><a class="toc-backref" id="usage-读取数据" href="#usage-读取数据">读取数据</a></h2><p>将存储的数据复制到一块指定的内存，并删除数据：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
+
+<span class="Keyword">var</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">newString</span><span class="Punctuation">(</span><span class="DecNumber">64</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">getLen</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="Identifier">dest</span><span class="Punctuation">,</span> <span class="Identifier">destLen</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">delLen</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">del</span><span class="Punctuation">(</span><span class="Identifier">getLen</span><span class="Punctuation">)</span>
+<span class="Identifier">dest</span><span class="Operator">.</span><span class="Identifier">setLen</span><span class="Punctuation">(</span><span class="Identifier">getLen</span><span class="Punctuation">)</span>
+
+<span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">==</span> <span class="DecNumber">0</span></pre><p>将存储的数据复制到一个字符串，并删除数据：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
+
+<span class="Keyword">var</span> <span class="Identifier">foo</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="DecNumber">3</span><span class="Punctuation">)</span>
+<span class="Identifier">assert</span> <span class="Identifier">foo</span> <span class="Operator">==</span> <span class="StringLit">"foo"</span></pre></div><p></p>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
@@ -275,9 +326,9 @@ function main() {
 </pre></dt>
 <dd>
 
-一个数据结构。 它使用一个固定大小的缓冲区， 存储数据的时候两端如同是连接成环状。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L91" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L91" class="link-seesrc" target="_blank">Edit</a>
+一个循环缓冲区。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L194" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L194" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="MarkableCircularBuffer"></a>
@@ -286,9 +337,9 @@ function main() {
 </pre></dt>
 <dd>
 
-一个可标记的循环缓冲区对象， 支持增量标记存储的数据。 当扫描或者分析数据时， 特别有用。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L98" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L98" class="link-seesrc" target="_blank">Edit</a>
+一个可标记的循环缓冲区。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L201" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L201" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -300,64 +351,67 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#initCircularBuffer"><span class="Identifier">initCircularBuffer</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-初始化一个 <tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> 对象。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L102" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L102" class="link-seesrc" target="_blank">Edit</a>
+初始化一个 <tt class="docutils literal"><span class="pre">CircularBuffer</span></tt> 。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L205" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L205" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="initMarkableCircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#initMarkableCircularBuffer"><span class="Identifier">initMarkableCircularBuffer</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-初始化一个 <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 对象。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L105" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L105" class="link-seesrc" target="_blank">Edit</a>
+初始化一个 <tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L208" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L208" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="capacity,CircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#capacity%2CCircularBuffer"><span class="Identifier">capacity</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取缓冲区的容量。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L108" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L108" class="link-seesrc" target="_blank">Edit</a>
+返回缓冲区的容量。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L211" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L211" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="len,CircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#len%2CCircularBuffer"><span class="Identifier">len</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取缓冲区当前存储的数据长度。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L111" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L111" class="link-seesrc" target="_blank">Edit</a>
+返回缓冲区存储的数据长度。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L214" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L214" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="next,CircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#next%2CCircularBuffer"><span class="Identifier">next</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Identifier">pointer</span><span class="Other">,</span> <span class="Identifier">Natural</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取下一个安全的可存储区域。 返回值表示可存储区域的指针和可存储长度。 每次操作只能获得一块， 之后， 您可以利用返回的指针和长度手动存储数据。比如：<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
-<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<p>返回下一个安全的可存储区域。返回值包括可存储区域的地址和长度。</p>
+<p>例子：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
+<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">var</span> <span class="Identifier">length</span> <span class="Operator">=</span> <span class="Identifier">min</span><span class="Punctuation">(</span><span class="Identifier">regionLen</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">copyMem</span><span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">length</span><span class="Punctuation">)</span> </pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L114" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L114" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L217" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L217" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="pack,CircularBuffer,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#pack%2CCircularBuffer%2CNatural"><span class="Identifier">pack</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">size</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>告诉缓冲区， 当前存储位置向后 <tt class="docutils literal"><span class="pre">size</span></tt> 长度成为有效数据。 返回实际有效的长度。</p>
-<p>当调用 <tt class="docutils literal"><span class="pre">next()</span></tt> 时， 仅仅将缓冲区内部的存储空间写入数据， 但是缓冲区无法得知写入了多少有效数据。 <tt class="docutils literal"><span class="pre">pack()</span></tt> 告诉缓冲区实际写入的有效数据长度。</p>
-<p>每当调用 <tt class="docutils literal"><span class="pre">next()</span></tt> 时， 都应当立刻调用 <tt class="docutils literal"><span class="pre">pack()</span></tt> 。</p>
+<p>告诉缓冲区，由当前存储位置向后 <tt class="docutils literal"><span class="pre">size</span></tt> 长度的字节晋升为数据。返回实际晋升的长度。</p>
+<p>当调用 <tt class="docutils literal"><span class="pre">next()</span></tt> 时，仅仅向缓冲区内部的存储空间写入数据，但是缓冲区无法得知写入了多少数据。 <tt class="docutils literal"><span class="pre">pack()</span></tt> 告诉缓冲区写入的数据长度。</p>
+<p>每当调用 <tt class="docutils literal"><span class="pre">next()</span></tt> 时，都应当立刻调用 <tt class="docutils literal"><span class="pre">pack()</span></tt> 。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
-<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">var</span> <span class="Identifier">length</span> <span class="Operator">=</span> <span class="Identifier">min</span><span class="Punctuation">(</span><span class="Identifier">regionLen</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">copyMem</span><span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">length</span><span class="Punctuation">)</span>
-<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">pack</span><span class="Punctuation">(</span><span class="Identifier">length</span><span class="Punctuation">)</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L125" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L125" class="link-seesrc" target="_blank">Edit</a>
+<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">pack</span><span class="Punctuation">(</span><span class="Identifier">length</span><span class="Punctuation">)</span></pre>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L229" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L229" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="add,CircularBuffer,pointer,Natural"></a>
@@ -365,21 +419,21 @@ function main() {
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>从源 <tt class="docutils literal"><span class="pre">source</span></tt> 复制最多 <tt class="docutils literal"><span class="pre">size</span></tt> 长度的数据， 写入到缓冲区。 返回实际写入的长度。 这个函数是 <tt class="docutils literal"><span class="pre">next()</span></tt> <tt class="docutils literal"><span class="pre">pack()</span></tt> 组合调用的简化版本， 区别是额外进行一次复制， 而不是直接写入缓冲区。</p>
-<p>当您对性能非常看重时， 考虑使用 <tt class="docutils literal"><span class="pre">next()</span></tt> <tt class="docutils literal"><span class="pre">pack()</span></tt> 组合调用；当您对调用便捷比较看重时， 使用 <tt class="docutils literal"><span class="pre">put()</span></tt> 。</p>
+<p>从 <tt class="docutils literal"><span class="pre">source</span></tt> 复制最多 <tt class="docutils literal"><span class="pre">size</span></tt> 长度的数据，存储到缓冲区。返回实际存储的长度。这个函数是 <tt class="docutils literal"><span class="pre">next()</span></tt> <tt class="docutils literal"><span class="pre">pack()</span></tt> 组合调用的简化版本，区别是额外执行一次复制。</p>
+<p>当您非常看重性能时，使用 <tt class="docutils literal"><span class="pre">next()</span></tt> <tt class="docutils literal"><span class="pre">pack()</span></tt> 组合调用；当您比较看重使用方便时，使用 <tt class="docutils literal"><span class="pre">add()</span></tt> 。</p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
-<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">put</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L141" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L141" class="link-seesrc" target="_blank">Edit</a>
+<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span></pre>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L247" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L247" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="add,CircularBuffer,char"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#add%2CCircularBuffer%2Cchar"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">c</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-写入一个字符 <tt class="docutils literal"><span class="pre">c</span></tt> ， 返回实际写入的长度。 如果存储空间已满， 则会返回 <tt class="docutils literal"><span class="pre">0``， 否则返回 ``1</span></tt> 。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L152" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L152" class="link-seesrc" target="_blank">Edit</a>
+存储一个字符 <tt class="docutils literal"><span class="pre">c</span></tt> ，返回实际存储的长度。如果存储空间已满，则会返回 <tt class="docutils literal"><span class="pre">0</span></tt> ，否则返回 <tt class="docutils literal"><span class="pre">1</span></tt> 。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L258" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L258" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="get,CircularBuffer,pointer,Natural"></a>
@@ -387,98 +441,114 @@ function main() {
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取当前存储的数据， 最多 <tt class="docutils literal"><span class="pre">size</span></tt> 个， 将其复制到目标空间 <tt class="docutils literal"><span class="pre">dest</span></tt> 。 返回实际复制的数量。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L155" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L155" class="link-seesrc" target="_blank">Edit</a>
+获取存储的数据，最多 <tt class="docutils literal"><span class="pre">size</span></tt> 个，将数据复制到目标空间 <tt class="docutils literal"><span class="pre">dest</span></tt> 。返回实际复制的数量。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L261" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L261" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="get,CircularBuffer,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#get%2CCircularBuffer%2CNatural"><span class="Identifier">get</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">size</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取当前存储的数据， 最多 <tt class="docutils literal"><span class="pre">size</span></tt> 个， 以一个字符串返回。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L158" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L158" class="link-seesrc" target="_blank">Edit</a>
+获取存储的数据，最多 <tt class="docutils literal"><span class="pre">size</span></tt> 个，以一个字符串返回。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L264" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L264" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="get,CircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#get%2CCircularBuffer"><span class="Identifier">get</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取当前存储的数据， 以一个字符串返回。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L161" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L161" class="link-seesrc" target="_blank">Edit</a>
+获取存储的所有数据，以一个字符串返回。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L267" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L267" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="del,CircularBuffer,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#del%2CCircularBuffer%2CNatural"><span class="Identifier">del</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">size</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-删除当前存储的数据， 最多 <tt class="docutils literal"><span class="pre">size</span></tt> 个。 返回实际删除的数量。 删除操作总是从存储队列的最前方开始。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L164" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L164" class="link-seesrc" target="_blank">Edit</a>
+删除存储的数据，最多 <tt class="docutils literal"><span class="pre">size</span></tt> 个。返回实际删除的数量。删除总是从存储队列的最前方开始。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L270" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L270" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="del,MarkableCircularBuffer,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#del%2CMarkableCircularBuffer%2CNatural"><span class="Identifier">del</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">size</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-删除当前存储的数据， 最多 <tt class="docutils literal"><span class="pre">size</span></tt> 个。 返回实际删除的数量。 删除操作总是从存储队列的最前方开始。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L170" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L170" class="link-seesrc" target="_blank">Edit</a>
+删除存储的数据，最多 <tt class="docutils literal"><span class="pre">size</span></tt> 个。返回实际删除的数量。删除总是从存储队列的最前方开始。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L276" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L276" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="mark,MarkableCircularBuffer,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#mark%2CMarkableCircularBuffer%2CNatural"><span class="Identifier">mark</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">size</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>立刻标记缓冲区的数据， 直到 <tt class="docutils literal"><span class="pre">size</span></tt> 个或者到达数据尾部。 返回实际标记的数量。</p>
-<p>注意， 标记是增量进行的， 也就是说， 下一次调用标记操作时将从上一次标记结束的位置继续。</p>
+<p>立刻标记存储的数据，直到 <tt class="docutils literal"><span class="pre">size</span></tt> 个或者到达数据尾部。返回实际标记的数量。</p>
+<p>注意，标记是增量进行的，也就是说，下一次操作将从上一次结束的位置继续。</p>
+<p>例子：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L189" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L189" class="link-seesrc" target="_blank">Edit</a>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">mark</span><span class="Punctuation">(</span><span class="DecNumber">3</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="DecNumber">3</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">popMarks</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">"foo"</span></pre>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L295" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L295" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="markUntil,MarkableCircularBuffer,char"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#markUntil%2CMarkableCircularBuffer%2Cchar"><span class="Identifier">markUntil</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">c</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<dl class="docutils"><dt>逐个标记缓冲区的数据， 直到遇到一个字节是 <tt class="docutils literal"><span class="pre">c</span></tt> ， 并返回 <tt class="docutils literal"><span class="pre">true</span></tt> ； 如果没有字节是 <tt class="docutils literal"><span class="pre">c</span></tt> ， 则返回</dt>
-<dd><tt class="docutils literal"><span class="pre">false</span></tt> 。</dd>
-</dl>
-<p>注意， 标记是增量进行的， 也就是说， 下一次调用标记操作时将从上一次标记结束的位置继续。 </p>
+<p>逐个标记存储的数据，直到遇到一个字节是 <tt class="docutils literal"><span class="pre">c</span></tt> ，并返回 <tt class="docutils literal"><span class="pre">true</span></tt> ； 如果没有字节是 <tt class="docutils literal"><span class="pre">c</span></tt> ，则返回 <tt class="docutils literal"><span class="pre">false</span></tt> 。</p>
+<p>注意，标记是增量进行的，也就是说，下一次操作将从上一次结束的位置继续。</p>
+<p>例子：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L194" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L194" class="link-seesrc" target="_blank">Edit</a>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">markUntil</span><span class="Punctuation">(</span><span class="CharLit">'\L'</span><span class="Punctuation">)</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">popMarks</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="StringLit">"</span></pre>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L311" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L311" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="markAll,MarkableCircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#markAll%2CMarkableCircularBuffer"><span class="Identifier">markAll</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>立刻标记缓冲区存储的所有数据。</p>
-<p>注意， 标记是增量进行的， 也就是说， 下一次调用标记操作时将从上一次标记结束的位置继续。</p>
+<p>立刻标记存储的所有数据。</p>
+<p>注意，标记是增量进行的，也就是说，下一次操作将从上一次结束的位置继续。</p>
+<p>例子：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">len</span>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L200" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L200" class="link-seesrc" target="_blank">Edit</a>
+<span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">markAll</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Identifier">assert</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">popMarks</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">"foo</span><span class="EscapeSequence">\L</span><span class="EscapeSequence">bar\L</span><span class="StringLit">"</span></pre>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L327" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L327" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="lenMarks,MarkableCircularBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#lenMarks%2CMarkableCircularBuffer"><span class="Identifier">lenMarks</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取已标记的数据长度。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L205" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L205" class="link-seesrc" target="_blank">Edit</a>
+返回标记的数据长度。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L343" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L343" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="popMarks,MarkableCircularBuffer,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#popMarks%2CMarkableCircularBuffer%2CNatural"><span class="Identifier">popMarks</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取已标记的数据， 同时在缓冲区内部删除这些数据。 返回的数据会在尾部向前跳过 <tt class="docutils literal"><span class="pre">n</span></tt> 个字节。
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L208" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L208" class="link-seesrc" target="_blank">Edit</a>
+获取标记的数据，将数据在尾部向前跳过 <tt class="docutils literal"><span class="pre">n</span></tt> 个字节，以一个字符串返回。同时，删除这些数据。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L346" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L346" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -490,26 +560,26 @@ function main() {
 <dt><pre><span class="Keyword">iterator</span> <a href="#items.i%2CCircularBuffer"><span class="Identifier">items</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">char</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-迭代当前存储的数据。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L167" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L167" class="link-seesrc" target="_blank">Edit</a>
+迭代存储的数据。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L273" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L273" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="marks.i,MarkableCircularBuffer"></a>
 <dt><pre><span class="Keyword">iterator</span> <a href="#marks.i%2CMarkableCircularBuffer"><span class="Identifier">marks</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#MarkableCircularBuffer"><span class="Identifier">MarkableCircularBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">char</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>迭代当前存储的数据， 并进行标记。</p>
-<p>注意， 标记是增量进行的， 也就是说， 下一次调用标记操作时将从上一次标记结束的位置继续。</p>
-<p><tt class="docutils literal"><span class="pre">MarkableCircularBuffer</span></tt> 提供了多个名称带有 mark 的标记迭代器和函数。</p>
+<p>迭代存储的数据，并进行标记。</p>
+<p>注意，标记是增量进行的，也就是说，下一次操作将从上一次结束的位置继续。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">s</span> <span class="Operator">=</span> <span class="StringLit">"Hello World</span><span class="EscapeSequence">\R</span><span class="EscapeSequence">\L</span><span class="StringLit">"</span>
-<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">put</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 
-<span class="Keyword">for</span> <span class="Identifier">c</span> <span class="Keyword">in</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">marks</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">:</span>
+<span class="Keyword">for</span> <span class="Identifier">c</span> <span class="Keyword">in</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">marks</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">:</span>
   <span class="Keyword">if</span> <span class="Identifier">c</span> <span class="Operator">==</span> <span class="CharLit">'\L'</span><span class="Punctuation">:</span>
     <span class="Keyword">break</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L173" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L173" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L279" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L279" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -522,7 +592,7 @@ function main() {
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 04:13:17 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:59 UTC</small>
       </div>
     </div>
   </div>
