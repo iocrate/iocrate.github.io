@@ -1,0 +1,1 @@
+checkDefNatural	netkit/checks.html#checkDefNatural.t,static[Natural],static[string]	checks: checkDefNatural(value: static[Natural]; name: static[string]): untyped	

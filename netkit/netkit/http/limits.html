@@ -200,7 +200,7 @@ function main() {
 <p>Specifies the maximum number of bytes that will be allowed on the HTTP start-line. This limitation affects both request-line and status-line.</p>
 <p>Since the request-line consists of the HTTP method, URI, and protocol version, this directive places a restriction on the length of a request-URI allowed for a request on the server. </p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/limits.nim#L12" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L12" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L12" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -211,7 +211,7 @@ function main() {
 <p>Specifies the maximum number of bytes that will be allowed on an HTTP header field. This limitation affects both request and response header fields.</p>
 <p>The size of a normal HTTP header field will vary greatly among different implementations, often depending upon the extent to which a user has configured their browser to support detailed content negotiation.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/limits.nim#L19" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L19" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L19" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -220,7 +220,7 @@ function main() {
 <dd>
 
 Specifies the maximum number of HTTP header fields that will be allowed. This limitation affects both request and response header fields.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/limits.nim#L27" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L27" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L27" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -229,7 +229,7 @@ Specifies the maximum number of HTTP header fields that will be allowed. This li
 <dd>
 
 Specifies the maximum number of bytes that will be allowed on the size part of an chunk data that is encoded by <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt>.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/limits.nim#L31" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L31" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L31" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -240,7 +240,7 @@ Specifies the maximum number of bytes that will be allowed on the size part of a
 <p>Specifies the maximum number of bytes that will be allowed on the size and extensions parts of an chunk data that is encoded by <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt>.</p>
 <p>According to the HTTP protocol, the size and extensions parts of this kind of data are in this form:</p>
 <pre class="listing">7\r\n; foo=value1; bar=value2\r\n </pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/limits.nim#L35" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L35" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L35" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -251,7 +251,7 @@ Specifies the maximum number of bytes that will be allowed on the size part of a
 <p>Specifies the maximum number of bytes that will be allowed on the data part of an chunk data that is encoded by <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt>.</p>
 <p>According to the HTTP protocol, the data part of this kind of data are in this form:</p>
 <pre class="listing">Hello World\r\n </pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/limits.nim#L45" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L45" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L45" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -270,7 +270,7 @@ Developer\r\n
 0\r\n
 Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n
 \r\n</pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/limits.nim#L55" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L55" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L55" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -279,7 +279,7 @@ Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n
 <dd>
 
 Specifies the maximum number of the medatada <tt class="docutils literal"><span class="pre">Trailer</span></tt> that will be allowed. 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/limits.nim#L73" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L73" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L73" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -293,7 +293,7 @@ Specifies the maximum number of the medatada <tt class="docutils literal"><span 
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 02:36:45 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 04:11:51 UTC</small>
       </div>
     </div>
   </div>

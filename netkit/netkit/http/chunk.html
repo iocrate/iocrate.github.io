@@ -296,7 +296,7 @@ Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n  # trailer
 <dd>
 
 Represents the header of a chunk.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/chunk.nim#L180" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L180" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L180" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -305,7 +305,7 @@ Represents the header of a chunk.
 <dd>
 
 Represents a chunk extension.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/chunk.nim#L184" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L184" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L184" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -322,7 +322,7 @@ Represents a chunk extension.
 <p>Examples:</p>
 <pre class="listing"><span class="Identifier">parseChunkHeader</span><span class="Punctuation">(</span><span class="StringLit">"64"</span><span class="Punctuation">)</span> <span class="Comment"># =&gt; (100, "")</span>
 <span class="Identifier">parseChunkHeader</span><span class="Punctuation">(</span><span class="StringLit">"64; name=value"</span><span class="Punctuation">)</span> <span class="Comment"># =&gt; (100, "; name=value")</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/chunk.nim#L197" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L197" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L197" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -337,7 +337,7 @@ Represents a chunk extension.
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">==</span> <span class="StringLit">"v1"</span>
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">name</span> <span class="Operator">==</span> <span class="StringLit">"a2"</span>
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">==</span> <span class="StringLit">"v2"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/chunk.nim#L223" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L223" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L223" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -351,7 +351,7 @@ Represents a chunk extension.
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">parseChunkTrailers</span><span class="Punctuation">(</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"Expires: Wed, 21 Oct 2015 07:28:00 GMT"</span><span class="Punctuation">]</span><span class="Punctuation">)</span>
            <span class="Comment"># =&gt; ("Expires", "Wed, 21 Oct 2015 07:28:00 GMT")</span>
 <span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Punctuation">[</span><span class="StringLit">"Expires"</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">"Wed, 21 Oct 2015 07:28:00 GMT"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/chunk.nim#L284" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L284" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L284" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -367,7 +367,7 @@ Represents a chunk extension.
 <span class="Keyword">let</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">newString</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">+</span> <span class="DecNumber">21</span><span class="Punctuation">)</span>
 <span class="Identifier">encodeChunk</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">,</span> <span class="Identifier">dest</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">dest</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"9</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Developer\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/chunk.nim#L364" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L364" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L364" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -384,7 +384,7 @@ Represents a chunk extension.
 <span class="Keyword">let</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">newString</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">+</span> <span class="DecNumber">21</span> <span class="Operator">+</span> <span class="Identifier">extensions</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">encodeChunk</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">,</span> <span class="Identifier">dest</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">dest</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">,</span> <span class="Identifier">extensions</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"9; language=en; city=London</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Developer\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/chunk.nim#L386" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L386" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L386" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -396,7 +396,7 @@ Represents a chunk extension.
 <p>Examples:</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">encodeChunk</span><span class="Punctuation">(</span><span class="StringLit">"Developer"</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"9</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Developer\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/chunk.nim#L412" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L412" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L412" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -412,7 +412,7 @@ Represents a chunk extension.
   <span class="StringLit">"city"</span><span class="Punctuation">:</span> <span class="StringLit">"London"</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"9; language=en; city=London</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Developer\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/chunk.nim#L426" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L426" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L426" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -424,7 +424,7 @@ Represents a chunk extension.
 <p>Examples:</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">encodeChunkEnd</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"0</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/chunk.nim#L444" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L444" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L444" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -438,7 +438,7 @@ Represents a chunk extension.
   <span class="StringLit">"Expires"</span><span class="Punctuation">:</span> <span class="StringLit">"Wed, 21 Oct 2015 07:28:00 GM"</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"0</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Expires: Wed, 21 Oct 2015 07:28:00 GM\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/version-1-2/netkit/http/chunk.nim#L455" class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L455" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L455" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
@@ -452,7 +452,7 @@ Represents a chunk extension.
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 02:36:46 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 04:11:52 UTC</small>
       </div>
     </div>
   </div>

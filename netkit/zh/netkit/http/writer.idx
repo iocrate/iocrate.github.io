@@ -1,0 +1,12 @@
+Overview	writer.html#overview	 Overview	
+HttpWriter	netkit/http/writer.html#HttpWriter	writer: HttpWriter	
+ServerResponse	netkit/http/writer.html#ServerResponse	writer: ServerResponse	
+ClientRequest	netkit/http/writer.html#ClientRequest	writer: ClientRequest	
+newServerResponse	netkit/http/writer.html#newServerResponse,HttpConnection,proc)	writer: newServerResponse(conn: HttpConnection; onEnd: proc () {.gcsafe, closure.}): ServerResponse	
+newClientRequest	netkit/http/writer.html#newClientRequest,HttpConnection,proc)	writer: newClientRequest(conn: HttpConnection; onEnd: proc () {.gcsafe, closure.}): ClientRequest	
+ended	netkit/http/writer.html#ended,HttpWriter	writer: ended(writer: HttpWriter): bool	
+write	netkit/http/writer.html#write,HttpWriter,pointer,Natural	writer: write(writer: HttpWriter; buf: pointer; size: Natural): Future[void]	
+write	netkit/http/writer.html#write,HttpWriter,string	writer: write(writer: HttpWriter; data: string): Future[void]	
+write	netkit/http/writer.html#write,HttpWriter,HttpCode,openArray[tuple[string,string]]	writer: write(writer: HttpWriter; statusCode: HttpCode;\n      fields: openArray[tuple[name: string, value: string]]): Future[void]	
+write	netkit/http/writer.html#write,HttpWriter,HttpCode,openArray[tuple[string,seq[string]]]	writer: write(writer: HttpWriter; statusCode: HttpCode;\n      fields: openArray[tuple[name: string, value: seq[string]]]): Future[void]	
+writeEnd	netkit/http/writer.html#writeEnd,HttpWriter	writer: writeEnd(writer: HttpWriter)	

@@ -1,0 +1,23 @@
+Overview	headerfield.html#overview	 Overview	
+Formatting rules	headerfield.html#overview-formatting-rules	  Formatting rules	
+Usage	headerfield.html#usage	 Usage	
+Access fields	headerfield.html#usage-access-fields	  Access fields	
+Access values by SLR	headerfield.html#usage-access-values-by-slr	  Access values by SLR	
+Access values by MLR	headerfield.html#usage-access-values-by-mlr	  Access values by MLR	
+HeaderFields	netkit/http/headerfield.html#HeaderFields	headerfield: HeaderFields	
+initHeaderFields	netkit/http/headerfield.html#initHeaderFields	headerfield: initHeaderFields(): HeaderFields	
+initHeaderFields	netkit/http/headerfield.html#initHeaderFields,openArray[tuple[string,seq[string]]]	headerfield: initHeaderFields(pairs: openArray[tuple[name: string, value: seq[string]]]): HeaderFields	
+initHeaderFields	netkit/http/headerfield.html#initHeaderFields,openArray[tuple[string,string]]	headerfield: initHeaderFields(pairs: openArray[tuple[name: string, value: string]]): HeaderFields	
+clear	netkit/http/headerfield.html#clear,HeaderFields	headerfield: clear(fields: var HeaderFields)	
+`[]`	netkit/http/headerfield.html#[],HeaderFields,string	headerfield: `[]`(fields: HeaderFields; name: string): seq[string]	
+`[]=`	netkit/http/headerfield.html#[]=,HeaderFields,string,seq[string]	headerfield: `[]=`(fields: var HeaderFields; name: string; value: seq[string])	
+add	netkit/http/headerfield.html#add,HeaderFields,string,string	headerfield: add(fields: var HeaderFields; name: string; value: string)	
+del	netkit/http/headerfield.html#del,HeaderFields,string	headerfield: del(fields: var HeaderFields; name: string)	
+contains	netkit/http/headerfield.html#contains,HeaderFields,string	headerfield: contains(fields: HeaderFields; name: string): bool	
+len	netkit/http/headerfield.html#len,HeaderFields	headerfield: len(fields: HeaderFields): int	
+pairs	netkit/http/headerfield.html#pairs.i,HeaderFields	headerfield: pairs(fields: HeaderFields): tuple[name, value: string]	
+names	netkit/http/headerfield.html#names.i,HeaderFields	headerfield: names(fields: HeaderFields): string	
+getOrDefault	netkit/http/headerfield.html#getOrDefault,HeaderFields,string	headerfield: getOrDefault(fields: HeaderFields; name: string; default = @[&quot;&quot;]): seq[string]	
+`$`	netkit/http/headerfield.html#$,HeaderFields	headerfield: `$`(fields: HeaderFields): string	
+parseSingleRule	netkit/http/headerfield.html#parseSingleRule,HeaderFields,string	headerfield: parseSingleRule(fields: HeaderFields; name: string): seq[\n    tuple[key: string, value: string]]	
+parseMultiRule	netkit/http/headerfield.html#parseMultiRule,HeaderFields,string,string	headerfield: parseMultiRule(fields: HeaderFields; name: string; default = &quot;&quot;): seq[\n    seq[tuple[key: string, value: string]]]	

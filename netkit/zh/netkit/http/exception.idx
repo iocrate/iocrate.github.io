@@ -1,0 +1,5 @@
+HttpError	netkit/http/exception.html#HttpError	exception: HttpError	
+ReadAbortedError	netkit/http/exception.html#ReadAbortedError	exception: ReadAbortedError	
+WriteAbortedError	netkit/http/exception.html#WriteAbortedError	exception: WriteAbortedError	
+newHttpError	netkit/http/exception.html#newHttpError,range[],ref.Exception	exception: newHttpError(code: range[Http400 .. Http505]; parentException: ref Exception = nil): ref HttpError	
+newHttpError	netkit/http/exception.html#newHttpError,range[],string,ref.Exception	exception: newHttpError(code: range[Http400 .. Http505]; msg: string;\n             parentException: ref Exception = nil): ref HttpError	

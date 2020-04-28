@@ -1,0 +1,27 @@
+关于存储方法	circular.html#关于存储方法	 关于存储方法	
+关于标记	circular.html#关于标记	 关于标记	
+关于增量	circular.html#关于增量	 关于增量	
+关于线程安全	circular.html#关于线程安全	 关于线程安全	
+如何使用	circular.html#如何使用	 如何使用	
+CircularBuffer	netkit/buffer/circular.html#CircularBuffer	circular: CircularBuffer	
+MarkableCircularBuffer	netkit/buffer/circular.html#MarkableCircularBuffer	circular: MarkableCircularBuffer	
+initCircularBuffer	netkit/buffer/circular.html#initCircularBuffer	circular: initCircularBuffer(): CircularBuffer	
+initMarkableCircularBuffer	netkit/buffer/circular.html#initMarkableCircularBuffer	circular: initMarkableCircularBuffer(): MarkableCircularBuffer	
+capacity	netkit/buffer/circular.html#capacity,CircularBuffer	circular: capacity(b: CircularBuffer): Natural	
+len	netkit/buffer/circular.html#len,CircularBuffer	circular: len(b: CircularBuffer): Natural	
+next	netkit/buffer/circular.html#next,CircularBuffer	circular: next(b: var CircularBuffer): (pointer, Natural)	
+pack	netkit/buffer/circular.html#pack,CircularBuffer,Natural	circular: pack(b: var CircularBuffer; size: Natural): Natural	
+add	netkit/buffer/circular.html#add,CircularBuffer,pointer,Natural	circular: add(b: var CircularBuffer; source: pointer; size: Natural): Natural	
+add	netkit/buffer/circular.html#add,CircularBuffer,char	circular: add(b: var CircularBuffer; c: char): Natural	
+get	netkit/buffer/circular.html#get,CircularBuffer,pointer,Natural	circular: get(b: var CircularBuffer; dest: pointer; size: Natural): Natural	
+get	netkit/buffer/circular.html#get,CircularBuffer,Natural	circular: get(b: var CircularBuffer; size: Natural): string	
+get	netkit/buffer/circular.html#get,CircularBuffer	circular: get(b: var CircularBuffer): string	
+del	netkit/buffer/circular.html#del,CircularBuffer,Natural	circular: del(b: var CircularBuffer; size: Natural): Natural	
+items	netkit/buffer/circular.html#items.i,CircularBuffer	circular: items(b: CircularBuffer): char	
+del	netkit/buffer/circular.html#del,MarkableCircularBuffer,Natural	circular: del(b: var MarkableCircularBuffer; size: Natural): Natural	
+marks	netkit/buffer/circular.html#marks.i,MarkableCircularBuffer	circular: marks(b: var MarkableCircularBuffer): char	
+mark	netkit/buffer/circular.html#mark,MarkableCircularBuffer,Natural	circular: mark(b: var MarkableCircularBuffer; size: Natural): Natural	
+markUntil	netkit/buffer/circular.html#markUntil,MarkableCircularBuffer,char	circular: markUntil(b: var MarkableCircularBuffer; c: char): bool	
+markAll	netkit/buffer/circular.html#markAll,MarkableCircularBuffer	circular: markAll(b: var MarkableCircularBuffer)	
+lenMarks	netkit/buffer/circular.html#lenMarks,MarkableCircularBuffer	circular: lenMarks(b: MarkableCircularBuffer): Natural	
+popMarks	netkit/buffer/circular.html#popMarks,MarkableCircularBuffer,Natural	circular: popMarks(b: var MarkableCircularBuffer; n: Natural = 0): string	

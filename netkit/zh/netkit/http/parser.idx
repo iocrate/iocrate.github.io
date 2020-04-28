@@ -1,0 +1,10 @@
+Usage	parser.html#usage	 Usage	
+Parse message header	parser.html#usage-parse-message-header	  Parse message header	
+Parse chunk header	parser.html#usage-parse-chunk-header	  Parse chunk header	
+Parse chunk tail	parser.html#usage-parse-chunk-tail	  Parse chunk tail	
+HttpParser	netkit/http/parser.html#HttpParser	parser: HttpParser	
+initHttpParser	netkit/http/parser.html#initHttpParser	parser: initHttpParser(): HttpParser	
+clear	netkit/http/parser.html#clear,HttpParser	parser: clear(p: var HttpParser)	
+parseHttpHeader	netkit/http/parser.html#parseHttpHeader,HttpParser,MarkableCircularBuffer,HttpHeader	parser: parseHttpHeader(p: var HttpParser; buf: var MarkableCircularBuffer;\n                header: var HttpHeader): bool	
+parseChunkHeader	netkit/http/parser.html#parseChunkHeader,HttpParser,MarkableCircularBuffer,ChunkHeader	parser: parseChunkHeader(p: var HttpParser; buf: var MarkableCircularBuffer;\n                 header: var ChunkHeader): bool	
+parseChunkEnd	netkit/http/parser.html#parseChunkEnd,HttpParser,MarkableCircularBuffer,seq[string]	parser: parseChunkEnd(p: var HttpParser; buf: var MarkableCircularBuffer;\n              trailers: var seq[string]): bool	

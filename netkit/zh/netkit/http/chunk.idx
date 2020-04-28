@@ -1,0 +1,19 @@
+Overview	chunk.html#overview	 Overview	
+Format	chunk.html#overview-format	  Format	
+Example	chunk.html#overview-example	  Example	
+About \n and \L	chunk.html#overview-about-backslashn-and-backslashl	  About \n and \L	
+Usage	chunk.html#usage	 Usage	
+Encoding	chunk.html#usage-encoding	  Encoding	
+Encoding with pointer buffer	chunk.html#usage-encoding-with-pointer-buffer	  Encoding with pointer buffer	
+Decoding	chunk.html#usage-decoding	  Decoding	
+ChunkHeader	netkit/http/chunk.html#ChunkHeader	chunk: ChunkHeader	
+ChunkExtension	netkit/http/chunk.html#ChunkExtension	chunk: ChunkExtension	
+parseChunkHeader	netkit/http/chunk.html#parseChunkHeader,string	chunk: parseChunkHeader(s: string): ChunkHeader	
+parseChunkExtensions	netkit/http/chunk.html#parseChunkExtensions,string	chunk: parseChunkExtensions(s: string): seq[ChunkExtension]	
+parseChunkTrailers	netkit/http/chunk.html#parseChunkTrailers,openArray[string]	chunk: parseChunkTrailers(ts: openArray[string]): HeaderFields	
+encodeChunk	netkit/http/chunk.html#encodeChunk,pointer,pointer,Natural	chunk: encodeChunk(source: pointer; dest: pointer; size: Natural): Natural	
+encodeChunk	netkit/http/chunk.html#encodeChunk,pointer,pointer,Natural,type openArray[ChunkExtension]	chunk: encodeChunk(source: pointer; dest: pointer; size: Natural;\n            extensions = openArray[ChunkExtension]): Natural	
+encodeChunk	netkit/http/chunk.html#encodeChunk,string	chunk: encodeChunk(source: string): string	
+encodeChunk	netkit/http/chunk.html#encodeChunk,string,openArray[ChunkExtension]	chunk: encodeChunk(source: string; extensions: openArray[ChunkExtension]): string	
+encodeChunkEnd	netkit/http/chunk.html#encodeChunkEnd	chunk: encodeChunkEnd(): string	
+encodeChunkEnd	netkit/http/chunk.html#encodeChunkEnd,HeaderFields	chunk: encodeChunkEnd(trailers: HeaderFields): string	
