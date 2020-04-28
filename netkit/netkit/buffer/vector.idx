@@ -1,0 +1,13 @@
+VectorBuffer	netkit/buffer/vector.html#VectorBuffer	vector: VectorBuffer	
+initVectorBuffer	netkit/buffer/vector.html#initVectorBuffer,Natural,Natural	vector: initVectorBuffer(minCapacity: Natural = BufferSize;\n                 maxCapacity: Natural = BufferSize * 8): VectorBuffer	
+capacity	netkit/buffer/vector.html#capacity,VectorBuffer	vector: capacity(b: VectorBuffer): Natural	
+minCapacity	netkit/buffer/vector.html#minCapacity,VectorBuffer	vector: minCapacity(b: VectorBuffer): Natural	
+maxCapacity	netkit/buffer/vector.html#maxCapacity,VectorBuffer	vector: maxCapacity(b: VectorBuffer): Natural	
+len	netkit/buffer/vector.html#len,VectorBuffer	vector: len(b: VectorBuffer): Natural	
+reset	netkit/buffer/vector.html#reset,VectorBuffer	vector: reset(b: var VectorBuffer): Natural	
+expand	netkit/buffer/vector.html#expand,VectorBuffer	vector: expand(b: var VectorBuffer)	
+next	netkit/buffer/vector.html#next,VectorBuffer	vector: next(b: var VectorBuffer): (pointer, Natural)	
+pack	netkit/buffer/vector.html#pack,VectorBuffer,Natural	vector: pack(b: var VectorBuffer; size: Natural): Natural	
+add	netkit/buffer/vector.html#add,VectorBuffer,pointer,Natural	vector: add(b: var VectorBuffer; source: pointer; size: Natural): Natural	
+get	netkit/buffer/vector.html#get,VectorBuffer,pointer,Natural,Natural	vector: get(b: var VectorBuffer; dest: pointer; size: Natural; start: Natural): Natural	
+clear	netkit/buffer/vector.html#clear,VectorBuffer	vector: clear(b: var VectorBuffer): Natural	

@@ -1,0 +1,18 @@
+Overview	reader.html#overview	 Overview	
+HttpReader	netkit/http/reader.html#HttpReader	reader: HttpReader	
+ServerRequest	netkit/http/reader.html#ServerRequest	reader: ServerRequest	
+ClientResponse	netkit/http/reader.html#ClientResponse	reader: ClientResponse	
+newServerRequest	netkit/http/reader.html#newServerRequest,HttpConnection,proc)	reader: newServerRequest(conn: HttpConnection; onEnd: proc () {.gcsafe, closure.}): ServerRequest	
+newClientResponse	netkit/http/reader.html#newClientResponse,HttpConnection,proc)	reader: newClientResponse(conn: HttpConnection; onEnd: proc () {.gcsafe, closure.}): ClientResponse	
+reqMethod	netkit/http/reader.html#reqMethod,ServerRequest	reader: reqMethod(req: ServerRequest): HttpMethod	
+url	netkit/http/reader.html#url,ServerRequest	reader: url(req: ServerRequest): string	
+status	netkit/http/reader.html#status,ClientResponse	reader: status(res: ClientResponse): HttpCode	
+version	netkit/http/reader.html#version,HttpReader	reader: version(reader: HttpReader): HttpVersion	
+fields	netkit/http/reader.html#fields,HttpReader	reader: fields(reader: HttpReader): HeaderFields	
+metadata	netkit/http/reader.html#metadata,HttpReader	reader: metadata(reader: HttpReader): HttpMetadata	
+ended	netkit/http/reader.html#ended,HttpReader	reader: ended(reader: HttpReader): bool	
+normalizeSpecificFields	netkit/http/reader.html#normalizeSpecificFields,HttpReader	reader: normalizeSpecificFields(reader: HttpReader)	
+read	netkit/http/reader.html#read,HttpReader,pointer,range[]	reader: read(reader: HttpReader; buf: pointer;\n     size: range[int(LimitChunkDataLen) .. high(int)]): Future[Natural]	
+read	netkit/http/reader.html#read,HttpReader	reader: read(reader: HttpReader): Future[string]	
+readAll	netkit/http/reader.html#readAll,HttpReader	reader: readAll(reader: HttpReader): Future[string]	
+readDiscard	netkit/http/reader.html#readDiscard,HttpReader	reader: readDiscard(reader: HttpReader): Future[void]	

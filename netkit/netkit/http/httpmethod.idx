@@ -1,0 +1,12 @@
+Overview	httpmethod.html#overview	 Overview	
+HttpHead	netkit/http/httpmethod.html#HttpHead	HttpMethod.HttpHead	
+HttpGet	netkit/http/httpmethod.html#HttpGet	HttpMethod.HttpGet	
+HttpPost	netkit/http/httpmethod.html#HttpPost	HttpMethod.HttpPost	
+HttpPut	netkit/http/httpmethod.html#HttpPut	HttpMethod.HttpPut	
+HttpDelete	netkit/http/httpmethod.html#HttpDelete	HttpMethod.HttpDelete	
+HttpTrace	netkit/http/httpmethod.html#HttpTrace	HttpMethod.HttpTrace	
+HttpOptions	netkit/http/httpmethod.html#HttpOptions	HttpMethod.HttpOptions	
+HttpConnect	netkit/http/httpmethod.html#HttpConnect	HttpMethod.HttpConnect	
+HttpPatch	netkit/http/httpmethod.html#HttpPatch	HttpMethod.HttpPatch	
+HttpMethod	netkit/http/httpmethod.html#HttpMethod	httpmethod: HttpMethod	
+parseHttpMethod	netkit/http/httpmethod.html#parseHttpMethod,string	httpmethod: parseHttpMethod(s: string): HttpMethod	

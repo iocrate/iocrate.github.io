@@ -1,0 +1,5 @@
+HttpVersion	netkit/http/version.html#HttpVersion	version: HttpVersion	
+HttpVersion10	netkit/http/version.html#HttpVersion10	version: HttpVersion10	
+HttpVersion11	netkit/http/version.html#HttpVersion11	version: HttpVersion11	
+HttpVersion20	netkit/http/version.html#HttpVersion20	version: HttpVersion20	
+parseHttpVersion	netkit/http/version.html#parseHttpVersion,string	version: parseHttpVersion(s: string): HttpVersion	

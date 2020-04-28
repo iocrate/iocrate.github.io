@@ -1,0 +1,15 @@
+Usage	connection.html#usage	 Usage	
+Reads a message header	connection.html#usage-reads-a-message-header	  Reads a message header	
+Reads a message body	connection.html#usage-reads-a-message-body	  Reads a message body	
+Reads a message body that chunked	connection.html#usage-reads-a-message-body-that-chunked	  Reads a message body that chunked	
+Sends a message	connection.html#usage-sends-a-message	  Sends a message	
+HttpConnection	netkit/http/connection.html#HttpConnection	connection: HttpConnection	
+newHttpConnection	netkit/http/connection.html#newHttpConnection,AsyncFD,string	connection: newHttpConnection(socket: AsyncFD; address: string): HttpConnection	
+close	netkit/http/connection.html#close,HttpConnection	connection: close(conn: HttpConnection)	
+closed	netkit/http/connection.html#closed,HttpConnection	connection: closed(conn: HttpConnection): bool	
+readHttpHeader	netkit/http/connection.html#readHttpHeader,HttpConnection,ptr.HttpHeader	connection: readHttpHeader(conn: HttpConnection; header: ptr HttpHeader): Future[void]	
+readChunkHeader	netkit/http/connection.html#readChunkHeader,HttpConnection,ptr.ChunkHeader	connection: readChunkHeader(conn: HttpConnection; header: ptr ChunkHeader): Future[void]	
+readChunkEnd	netkit/http/connection.html#readChunkEnd,HttpConnection,ptr.seq[string]	connection: readChunkEnd(conn: HttpConnection; trailer: ptr seq[string]): Future[void]	
+readData	netkit/http/connection.html#readData,HttpConnection,pointer,Natural	connection: readData(conn: HttpConnection; buf: pointer; size: Natural): Future[Natural]	
+write	netkit/http/connection.html#write,HttpConnection,pointer,Natural	connection: write(conn: HttpConnection; buf: pointer; size: Natural): Future[void]	
+write	netkit/http/connection.html#write,HttpConnection,string	connection: write(conn: HttpConnection; data: string): Future[void]	

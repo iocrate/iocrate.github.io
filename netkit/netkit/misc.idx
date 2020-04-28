@@ -1,0 +1,1 @@
+offset	netkit/misc.html#offset.t,pointer,int	misc: offset(p: pointer; n: int): pointer	
