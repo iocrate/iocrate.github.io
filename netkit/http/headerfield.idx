@@ -13,6 +13,7 @@ clear	netkit/http/headerfield.html#clear,HeaderFields	headerfield: clear(fields:
 `[]=`	netkit/http/headerfield.html#[]=,HeaderFields,string,seq[string]	headerfield: `[]=`(fields: var HeaderFields; name: string; value: seq[string])	
 add	netkit/http/headerfield.html#add,HeaderFields,string,string	headerfield: add(fields: var HeaderFields; name: string; value: string)	
 del	netkit/http/headerfield.html#del,HeaderFields,string	headerfield: del(fields: var HeaderFields; name: string)	
+hasKey	netkit/http/headerfield.html#hasKey,HeaderFields,string	headerfield: hasKey(fields: HeaderFields; name: string): bool	
 contains	netkit/http/headerfield.html#contains,HeaderFields,string	headerfield: contains(fields: HeaderFields; name: string): bool	
 len	netkit/http/headerfield.html#len,HeaderFields	headerfield: len(fields: HeaderFields): int	
 pairs	netkit/http/headerfield.html#pairs.i,HeaderFields	headerfield: pairs(fields: HeaderFields): tuple[name, value: string]	

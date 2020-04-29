@@ -326,7 +326,7 @@ function main() {
 </pre></dt>
 <dd>
 
-A circular buffer. 
+A circular buffer. Note that the maximum length of its storage space is <tt class="docutils literal"><span class="pre">BufferSize</span></tt>.
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L202" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L202" class="link-seesrc" target="_blank">Edit</a>
 
@@ -410,7 +410,7 @@ Returns the length of the data stored in this buffer.
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Copies up to `` size`` lengths of data from `` source`` and store the data in the buffer. Returns the actual length copied. This is a simplified version of the `` next () `` `` pack () `` combination call. The difference is that an additional copy operation is made instead of writing directly to the buffer.</p>
+<p>Copies up to <tt class="docutils literal"><span class="pre">size</span></tt> lengths of data from <tt class="docutils literal"><span class="pre">source</span></tt> and store the data in the buffer. Returns the actual length copied. This is a simplified version of the <tt class="docutils literal"><span class="pre">next</span></tt> <tt class="docutils literal"><span class="pre">pack</span></tt> combination call. The difference is that an additional copy operation is made instead of writing directly to the buffer.</p>
 <p>Examples:</p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
 <span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span></pre>
@@ -422,7 +422,7 @@ Returns the length of the data stored in this buffer.
 <dt><pre><span class="Keyword">proc</span> <a href="#add%2CCircularBuffer%2Cchar"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="circular.html#CircularBuffer"><span class="Identifier">CircularBuffer</span></a><span class="Other">;</span> <span class="Identifier">c</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Stores a character `` c`` in the buffer and returns the actual stored length. If the storage space is full, it will return `` 0``, otherwise `` 1``.
+Stores a character <tt class="docutils literal"><span class="pre">c</span></tt> in the buffer and returns the actual stored length. If the storage space is full, it will return <tt class="docutils literal"><span class="pre">0</span></tt>, otherwise <tt class="docutils literal"><span class="pre">1</span></tt>.
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L292" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L292" class="link-seesrc" target="_blank">Edit</a>
 
@@ -573,7 +573,7 @@ Iterates over the stored data.
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:55 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:24 UTC</small>
       </div>
     </div>
   </div>

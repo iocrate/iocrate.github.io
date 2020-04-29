@@ -3,4 +3,4 @@ RequestHandler	netkit/http/server.html#RequestHandler	server: RequestHandler
 newAsyncHttpServer	netkit/http/server.html#newAsyncHttpServer	server: newAsyncHttpServer(): AsyncHttpServer	
 onRequest=	netkit/http/server.html#onRequest=,AsyncHttpServer,RequestHandler	server: onRequest=(server: AsyncHttpServer; handler: RequestHandler)	
 close	netkit/http/server.html#close,AsyncHttpServer	server: close(server: AsyncHttpServer)	
-serve	netkit/http/server.html#serve,AsyncHttpServer,Port,string	server: serve(server: AsyncHttpServer; port: Port; address: string = &quot;&quot;; domain = AF_INET): owned(\n    Future[void])	
+serve	netkit/http/server.html#serve,AsyncHttpServer,Port,string	server: serve(server: AsyncHttpServer; port: Port; address: string = &quot;&quot;; domain = AF_INET): Future[\n    void]	

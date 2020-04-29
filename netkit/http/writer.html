@@ -290,7 +290,7 @@ Returns <tt class="docutils literal"><span class="pre">true</span></tt> if the u
 <dd>
 
 <p>Writes <tt class="docutils literal"><span class="pre">size</span></tt> bytes from <tt class="docutils literal"><span class="pre">buf</span></tt> to the writer.</p>
-<p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">ReadAbortedError</span></tt> will be raised.</p>
+<p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">WriteAbortedError</span></tt> will be raised.</p>
 
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L68" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L68" class="link-seesrc" target="_blank">Edit</a>
@@ -302,7 +302,7 @@ Returns <tt class="docutils literal"><span class="pre">true</span></tt> if the u
 <dd>
 
 <p>Writes a string to the writer.</p>
-<p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">ReadAbortedError</span></tt> will be raised.</p>
+<p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">WriteAbortedError</span></tt> will be raised.</p>
 
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L79" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L79" class="link-seesrc" target="_blank">Edit</a>
@@ -315,7 +315,7 @@ Returns <tt class="docutils literal"><span class="pre">true</span></tt> if the u
 <dd>
 
 <p>Writes a message header to the writer.</p>
-<p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">ReadAbortedError</span></tt> will be raised.</p>
+<p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">WriteAbortedError</span></tt> will be raised.</p>
 
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L92" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L92" class="link-seesrc" target="_blank">Edit</a>
@@ -328,7 +328,7 @@ Returns <tt class="docutils literal"><span class="pre">true</span></tt> if the u
 <dd>
 
 <p>Writes a message header to the writer.</p>
-<p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">ReadAbortedError</span></tt> will be raised.</p>
+<p>If a system error occurs during writing, an <tt class="docutils literal"><span class="pre">OsError</span></tt>  will be raised. If the connection is disconnected before successful writing or the writer has been shut down, a <tt class="docutils literal"><span class="pre">WriteAbortedError</span></tt> will be raised.</p>
 
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/writer.nim#L107" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/writer.nim#L107" class="link-seesrc" target="_blank">Edit</a>
@@ -353,7 +353,7 @@ Shuts down writer. Data is no longer allowed to be written, otherwise an <tt cla
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:56 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:26 UTC</small>
       </div>
     </div>
   </div>

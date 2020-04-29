@@ -163,7 +163,7 @@ function main() {
     </select>
   </div>
   <ul class="simple simple-toc" id="toc-list">
-<li><a class="reference" id="overview_toc" href="#overview">Overview</a></li>
+<li><a class="reference" id="概述_toc" href="#概述">概述</a></li>
 <li>
   <a class="reference reference-toplevel" href="#7" id="57">Types</a>
   <ul class="simple simple-toc-section">
@@ -209,9 +209,9 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">This module contains HTTP status code.
-</p><h1><a class="toc-backref" id="overview" href="#overview">Overview</a></h1><p>In HTTP/1.0 and since, the first line of the HTTP response is called the status line and includes a numeric status code (such as "404") and a textual reason phrase (such as "Not Found"). The way the user agent handles the response depends primarily on the code, and secondarily on the other response header fields. Custom status codes can be used, for if the user agent encounters a code it does not recognize, it can use the first digit of the code to determine the general class of the response.</p>
-<blockquote><p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">Hypertext Transfer Protocol</a> for more information.</p></blockquote>
+  <p class="module-desc">这个模块包含 HTTP 状态码。
+</p><h1><a class="toc-backref" id="概述" href="#概述">概述</a></h1><p>在 HTTP 1.0 及以后版本中，HTTP 响应的第一行称为状态行，包含数字状态代码（例如 <tt class="docutils literal"><span class="pre">404</span></tt> ）和原因短语（例如 <tt class="docutils literal"><span class="pre">Not Found</span></tt> ）。</p>
+<blockquote><p>看看 <a class="reference external" href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">Hypertext Transfer Protocol</a> 了解更多。</p></blockquote>
 <p></p>
   <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
@@ -267,9 +267,9 @@ function main() {
   </span><span class="Identifier">Http505</span><span class="Other"> = </span><span class="StringLit">"505 HTTP Version Not Supported"</span></pre></dt>
 <dd>
 
-HTTP status code. 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/status.nim#L23" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/status.nim#L23" class="link-seesrc" target="_blank">Edit</a>
+HTTP 状态码。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/status.nim#L19" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/status.nim#L19" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -281,12 +281,12 @@ HTTP status code.
 <dt><pre><span class="Keyword">proc</span> <a href="#parseHttpCode%2Cint"><span class="Identifier">parseHttpCode</span></a><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <a href="status.html#HttpCode"><span class="Identifier">HttpCode</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Converts an integer to a status code. A <tt class="docutils literal"><span class="pre">ValueError</span></tt> is raised when <tt class="docutils literal"><span class="pre">code</span></tt> is not a valid code.</p>
-<p>Examples:</p>
+<p>将整数转换为状态码。当 <tt class="docutils literal"><span class="pre">code</span></tt> 不是有效的状态码时，引发 <tt class="docutils literal"><span class="pre">ValueError</span></tt> 。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Identifier">assert</span> <span class="Identifier">parseHttpCode</span><span class="Punctuation">(</span><span class="DecNumber">100</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">Http100</span>
 <span class="Identifier">assert</span> <span class="Identifier">parseHttpCode</span><span class="Punctuation">(</span><span class="DecNumber">200</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">Http200</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/status.nim#L72" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/status.nim#L72" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/status.nim#L68" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/status.nim#L68" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -299,7 +299,7 @@ HTTP status code.
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:59 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:29 UTC</small>
       </div>
     </div>
   </div>

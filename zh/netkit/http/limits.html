@@ -190,7 +190,7 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">This module defines some constants associated with HTTP operations. Some of them support redefinition through the <tt class="docutils literal"><span class="pre">--define</span></tt> instruction during compilation. </p>
+  <p class="module-desc">该模块定义了一些与 HTTP 操作相关的常量。其中一些支持在编译时通过 <tt class="docutils literal"><span class="pre">--define</span></tt> 指令重定义。</p>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
@@ -203,19 +203,21 @@ function main() {
 <dt><pre><a href="limits.html#LimitStartLineLen"><span class="Identifier">LimitStartLineLen</span></a><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">8192</span></pre></dt>
 <dd>
 
-<p>Specifies the maximum number of bytes that will be allowed on the HTTP start-line. This limitation affects both request-line and status-line.</p>
-<p>Since the request-line consists of the HTTP method, URI, and protocol version, this directive places a restriction on the length of a request-URI allowed for a request on the server. </p>
+<p>指定 HTTP 起始行的最大字节数。此限制同时影响请求行和状态行。</p>
+<p>由于请求行由 HTTP 请求方法、URL 和版本号组成，因此该指令对服务器端允许请求的 URL 长度进行了限制。</p>
+<p>您可以在编译时通过开关选项 <tt class="docutils literal"><span class="pre">--define:BufferSize=&lt;n&gt;</span></tt> 重写这个数值。 注意，值必须是自然数，即大于等于零的整数；否则，将会引起异常。 </p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L12" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L12" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L11" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L11" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="LimitHeaderFieldLen"></a>
 <dt><pre><a href="limits.html#LimitHeaderFieldLen"><span class="Identifier">LimitHeaderFieldLen</span></a><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">8192</span></pre></dt>
 <dd>
 
-<p>Specifies the maximum number of bytes that will be allowed on an HTTP header field. This limitation affects both request and response header fields.</p>
-<p>The size of a normal HTTP header field will vary greatly among different implementations, often depending upon the extent to which a user has configured their browser to support detailed content negotiation.</p>
+<p>指定 HTTP 头字段的最大长度。此限制同时影响请求头字段和响应头字段。</p>
+<p>HTTP 头字段的大小在不同的实现中会有很大的不同，通常取决于用户对其浏览器配置支持内容协商的程度。</p>
+<p>您可以在编译时通过开关选项 <tt class="docutils literal"><span class="pre">--define:BufferSize=&lt;n&gt;</span></tt> 重写这个数值。 注意，值必须是自然数，即大于等于零的整数；否则，将会引起异常。 </p>
 
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L19" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L19" class="link-seesrc" target="_blank">Edit</a>
@@ -225,7 +227,9 @@ function main() {
 <dt><pre><a href="limits.html#LimitHeaderFieldCount"><span class="Identifier">LimitHeaderFieldCount</span></a><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">100</span></pre></dt>
 <dd>
 
-Specifies the maximum number of HTTP header fields that will be allowed. This limitation affects both request and response header fields.
+<p>指定 HTTP 头字段的最大数量。此限制同时影响请求头字段和响应头字段。</p>
+<p>您可以在编译时通过开关选项 <tt class="docutils literal"><span class="pre">--define:BufferSize=&lt;n&gt;</span></tt> 重写这个数值。 注意，值必须是自然数，即大于等于零的整数；否则，将会引起异常。 </p>
+
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L27" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L27" class="link-seesrc" target="_blank">Edit</a>
 
@@ -234,39 +238,42 @@ Specifies the maximum number of HTTP header fields that will be allowed. This li
 <dt><pre><a href="limits.html#LimitChunkSizeLen"><span class="Identifier">LimitChunkSizeLen</span></a><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">16</span></pre></dt>
 <dd>
 
-Specifies the maximum number of bytes that will be allowed on the size part of an chunk data that is encoded by <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt>.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L31" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L31" class="link-seesrc" target="_blank">Edit</a>
+指定通过 chunked 编码的块数据其 size 部分的最大字节数。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L33" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L33" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="LimitChunkHeaderLen"></a>
 <dt><pre><a href="limits.html#LimitChunkHeaderLen"><span class="Identifier">LimitChunkHeaderLen</span></a><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">1024</span></pre></dt>
 <dd>
 
-<p>Specifies the maximum number of bytes that will be allowed on the size and extensions parts of an chunk data that is encoded by <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt>.</p>
-<p>According to the HTTP protocol, the size and extensions parts of this kind of data are in this form:</p>
+<p>指定通过 chunked 编码的块数据其 size 和扩展部分的最大字节数。</p>
+<p>您可以在编译时通过开关选项 <tt class="docutils literal"><span class="pre">--define:BufferSize=&lt;n&gt;</span></tt> 重写这个数值。 注意，值必须是自然数，即大于等于零的整数；否则，将会引起异常。</p>
+<p>根据 HTTP 协议，数据的大小和扩展部分采用以下形式：</p>
 <pre class="listing">7\r\n; foo=value1; bar=value2\r\n </pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L35" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L35" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L36" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L36" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="LimitChunkDataLen"></a>
 <dt><pre><a href="limits.html#LimitChunkDataLen"><span class="Identifier">LimitChunkDataLen</span></a><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">1024</span></pre></dt>
 <dd>
 
-<p>Specifies the maximum number of bytes that will be allowed on the data part of an chunk data that is encoded by <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt>.</p>
-<p>According to the HTTP protocol, the data part of this kind of data are in this form:</p>
+<p>指定通过 chunked 编码的块数据的数据部分的最大字节数。</p>
+<p>您可以在编译时通过开关选项 <tt class="docutils literal"><span class="pre">--define:BufferSize=&lt;n&gt;</span></tt> 重写这个数值。 注意，值必须是自然数，即大于等于零的整数；否则，将会引起异常。</p>
+<p>根据 HTTP 协议，数据部分采用以下形式：</p>
 <pre class="listing">Hello World\r\n </pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L45" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L45" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L48" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L48" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="LimitChunkTrailerLen"></a>
 <dt><pre><a href="limits.html#LimitChunkTrailerLen"><span class="Identifier">LimitChunkTrailerLen</span></a><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">8192</span></pre></dt>
 <dd>
 
-<p>Specifies the maximum number of bytes that will be allowed on the medatada part of a message that is encoded by <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt>. In fact, these metadata are some <tt class="docutils literal"><span class="pre">Trailer</span></tt>.</p>
-<p>Examples:</p>
+<p>指定通过 chunked 编码的消息其元数据部分的最大字节数。实际上，这些元数据是一些 <tt class="docutils literal"><span class="pre">trailers</span></tt> 。</p>
+<p>您可以在编译时通过开关选项 <tt class="docutils literal"><span class="pre">--define:BufferSize=&lt;n&gt;</span></tt> 重写这个数值。 注意，值必须是自然数，即大于等于零的整数；否则，将会引起异常。</p>
+<p>例子：</p>
 <pre class="listing">HTTP/1.1 200 OK
 Transfer-Encoding: chunked
 Trailer: Expires
@@ -276,17 +283,19 @@ Developer\r\n
 0\r\n
 Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n
 \r\n</pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L55" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L55" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L60" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L60" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="LimitChunkTrailerCount"></a>
 <dt><pre><a href="limits.html#LimitChunkTrailerCount"><span class="Identifier">LimitChunkTrailerCount</span></a><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">100</span></pre></dt>
 <dd>
 
-Specifies the maximum number of the medatada <tt class="docutils literal"><span class="pre">Trailer</span></tt> that will be allowed.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L73" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L73" class="link-seesrc" target="_blank">Edit</a>
+<p>指定通过 chunked 编码的消息其元数据部分的最大数量。实际上，这些元数据是一些 <tt class="docutils literal"><span class="pre">trailers</span></tt> 。</p>
+<p>您可以在编译时通过开关选项 <tt class="docutils literal"><span class="pre">--define:BufferSize=&lt;n&gt;</span></tt> 重写这个数值。 注意，值必须是自然数，即大于等于零的整数；否则，将会引起异常。</p>
+
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/limits.nim#L80" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/limits.nim#L80" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -299,7 +308,7 @@ Specifies the maximum number of the medatada <tt class="docutils literal"><span 
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:59 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:29 UTC</small>
       </div>
     </div>
   </div>

@@ -163,12 +163,12 @@ function main() {
     </select>
   </div>
   <ul class="simple simple-toc" id="toc-list">
-<li><a class="reference" id="overview_toc" href="#overview">Overview</a></li>
-<ul class="simple"><li><a class="reference" id="overview-formatting-rules_toc" href="#overview-formatting-rules">Formatting rules</a></li>
-</ul><li><a class="reference" id="usage_toc" href="#usage">Usage</a></li>
-<ul class="simple"><li><a class="reference" id="usage-access-fields_toc" href="#usage-access-fields">Access fields</a></li>
-<li><a class="reference" id="usage-access-values-by-slr_toc" href="#usage-access-values-by-slr">Access values by SLR</a></li>
-<li><a class="reference" id="usage-access-values-by-mlr_toc" href="#usage-access-values-by-mlr">Access values by MLR</a></li>
+<li><a class="reference" id="概述_toc" href="#概述">概述</a></li>
+<ul class="simple"><li><a class="reference" id="概述-格式规则_toc" href="#概述-格式规则">格式规则</a></li>
+</ul><li><a class="reference" id="用法_toc" href="#用法">用法</a></li>
+<ul class="simple"><li><a class="reference" id="用法-访问头字段_toc" href="#用法-访问头字段">访问头字段</a></li>
+<li><a class="reference" id="用法-基于-slr-访问值_toc" href="#用法-基于-slr-访问值">基于 SLR 访问值</a></li>
+<li><a class="reference" id="用法-基于-mlr-访问值_toc" href="#用法-基于-mlr-访问值">基于 MLR 访问值</a></li>
 </ul><li>
   <a class="reference reference-toplevel" href="#6" id="56">Imports</a>
   <ul class="simple simple-toc-section">
@@ -193,6 +193,7 @@ function main() {
   <li><a class="reference" href="#%5B%5D%3D%2CHeaderFields%2Cstring%2Cseq%5Bstring%5D" title="`[]=`(fields: var HeaderFields; name: string; value: seq[string])"><wbr>`[]=`<span class="attachedType">HeaderFields</span></a></li>
   <li><a class="reference" href="#add%2CHeaderFields%2Cstring%2Cstring" title="add(fields: var HeaderFields; name: string; value: string)"><wbr>add<span class="attachedType">HeaderFields</span></a></li>
   <li><a class="reference" href="#del%2CHeaderFields%2Cstring" title="del(fields: var HeaderFields; name: string)"><wbr>del<span class="attachedType">HeaderFields</span></a></li>
+  <li><a class="reference" href="#hasKey%2CHeaderFields%2Cstring" title="hasKey(fields: HeaderFields; name: string): bool"><wbr>has<wbr>Key<span class="attachedType">HeaderFields</span></a></li>
   <li><a class="reference" href="#contains%2CHeaderFields%2Cstring" title="contains(fields: HeaderFields; name: string): bool"><wbr>contains<span class="attachedType">HeaderFields</span></a></li>
   <li><a class="reference" href="#len%2CHeaderFields" title="len(fields: HeaderFields): int"><wbr>len<span class="attachedType">HeaderFields</span></a></li>
   <li><a class="reference" href="#getOrDefault%2CHeaderFields%2Cstring" title="getOrDefault(fields: HeaderFields; name: string; default = @[&quot;&quot;]): seq[string]"><wbr>get<wbr>Or<wbr>Default<span class="attachedType">HeaderFields</span></a></li>
@@ -219,24 +220,24 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">This module contains a definition of HTTP header fields. A distinct table, <tt class="docutils literal"><span class="pre">HeaderFields</span></tt>, which represents the set of header fields of a message.
-</p><h1><a class="toc-backref" id="overview" href="#overview">Overview</a></h1><p>HTTP header fields are components of the header section of request and response messages. They define the operating parameters of an HTTP transaction.</p>
-<p>Header field names are case-insensitive. Most HTTP header field values are defined using common syntax components (token, quoted-string, and comment) separated by whitespace or specific delimiting characters.</p>
+  <p class="module-desc">这个模块包含 HTTP 头部字段的定义。 <tt class="docutils literal"><span class="pre">HeaderFields</span></tt> 使用一个 distinct table 实现，表示头部字段的集合。
+</p><h1><a class="toc-backref" id="概述" href="#概述">概述</a></h1><p>HTTP 头字段是请求消息头部和响应消息头部的组件，负责定义 HTTP 传输的操作参数。</p>
+<p>头字段的名字忽略大小写。许多头字段的值，则使用空白或者特殊的分隔符拆分成多个组件。</p>
 <div class="r-fragment">
-<h2><a class="toc-backref" id="overview-formatting-rules" href="#overview-formatting-rules">Formatting rules</a></h2><p>The format of the value of each header field varies widely. There are five different formatting rules:</p>
-<p>1. Represented as a single line, a single value, no-parameters</p>
-<div class="r-ol">For example:<pre class="listing">Content-Length: 0</pre></div><p>2. Represented as a single line, a single value, optional parameters separated by <tt class="docutils literal"><span class="pre">';'</span></tt></p>
-<div class="r-ol">For example:<pre class="listing">Content-Type: application/json</pre><p>or:</p>
-<pre class="listing">Content-Type: application/json; charset=utf8</pre></div><p>3. Represented as a single line, multiple values separated by <tt class="docutils literal"><span class="pre">';'</span></tt>, no-parameters</p>
-<div class="r-ol">For example:<pre class="listing">Cookie: SID=123abc; language=en</pre></div><p>4. Represented as a single line or multiple lines, multiple values separated by <tt class="docutils literal"><span class="pre">','</span></tt>, each value has optional parameters separated by <tt class="docutils literal"><span class="pre">';'</span></tt></p>
-<div class="r-ol">A single line:<pre class="listing">Accept: text/html; q=1; level=1, text/plain</pre><p>Multiple lines:</p>
+<h2><a class="toc-backref" id="概述-格式规则" href="#概述-格式规则">格式规则</a></h2><p>头字段的值，其格式差异很大。有五种不同的格式规则：</p>
+<p>1. 表示为单行；单个值；无参数</p>
+<div class="r-ol">例子：<pre class="listing">Content-Length: 0</pre></div><p>2. 表示为单行；单个值；以 <tt class="docutils literal"><span class="pre">';'</span></tt> 分隔的可选参数</p>
+<div class="r-ol">例子：<pre class="listing">Content-Type: application/json</pre><p>或者：</p>
+<pre class="listing">Content-Type: application/json; charset=utf8</pre></div><p>3. 表示为单行；多个值，之间用 <tt class="docutils literal"><span class="pre">';'</span></tt> 分隔；无参数</p>
+<div class="r-ol">例子：<pre class="listing">Cookie: SID=123abc; language=en</pre></div><p>4. 表示为单行或多行；多个值，之间用 <tt class="docutils literal"><span class="pre">';'</span></tt> 分隔；每个值具有可选参数，以 <tt class="docutils literal"><span class="pre">';'</span></tt> 分隔</p>
+<div class="r-ol">单行：<pre class="listing">Accept: text/html; q=1; level=1, text/plain</pre><p>多行：</p>
 <pre class="listing">Accept: text/html; q=1; level=1
-Accept: text/plain</pre></div><p>5. <tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> is a special case, represented as multiple lines, each line is a value that separated by <tt class="docutils literal"><span class="pre">';'</span></tt>, no-parameters</p>
+Accept: text/plain</pre></div><p>5. <tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> 是一种特殊情况，用多行表示；每行都是以 <tt class="docutils literal"><span class="pre">';'</span></tt> 分隔的值；无参数</p>
 <div class="r-ol"><pre class="listing">Set-Cookie: SID=123abc; path=/
-Set-Cookie: language=en; path=/</pre></div><p>To simplify these complex representations, this module provides two special tools, <tt class="docutils literal"><span class="pre">parseSingleRule</span></tt> and <tt class="docutils literal"><span class="pre">parseMultiRule</span></tt>, which combine the above 5 rules into 2 rules: <strong>single-line-rule</strong> (SLR) and <strong>multiple-lines-rule</strong> (MLR).</p>
+Set-Cookie: language=en; path=/</pre></div><p>为了简化这些复杂的表示形式，该模块提供了两个特殊工具 <tt class="docutils literal"><span class="pre">parseSingleRule</span></tt> 和 <tt class="docutils literal"><span class="pre">parseMultiRule</span></tt> ， 将上述 5 条规则组合为 2 条规则 <strong>single-line-rule</strong> (SLR) 和 <strong>multiple-lines-rule</strong> (MLR)。</p>
 </div>
-<h1><a class="toc-backref" id="usage" href="#usage">Usage</a></h1><div class="r-fragment">
-<h2><a class="toc-backref" id="usage-access-fields" href="#usage-access-fields">Access fields</a></h2><pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">headerfield</span>
+<h1><a class="toc-backref" id="用法" href="#用法">用法</a></h1><div class="r-fragment">
+<h2><a class="toc-backref" id="用法-访问头字段" href="#用法-访问头字段">访问头字段</a></h2><pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">headerfield</span>
 
 <span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Host"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"www.iocrate.com"</span><span class="Punctuation">]</span><span class="Punctuation">,</span>
@@ -254,24 +255,24 @@ Set-Cookie: language=en; path=/</pre></div><p>To simplify these complex represen
 <span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Punctuation">[</span><span class="StringLit">"Accept"</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="StringLit">"text/html; q=1; level=1"</span>
 <span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Punctuation">[</span><span class="StringLit">"Accept"</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="StringLit">"text/plain"</span>
 <span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Punctuation">[</span><span class="StringLit">"Accept"</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">2</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="StringLit">"text/*"</span></pre></div><div class="r-fragment">
-<h2><a class="toc-backref" id="usage-access-values-by-slr" href="#usage-access-values-by-slr">Access values by SLR</a></h2><p>Uses <tt class="docutils literal"><span class="pre">parseSingleRule</span></tt> to parse the header fields, which follows the 1,2,3 rules listed above, and returns a set of <tt class="docutils literal"><span class="pre">(key, value)</span></tt> pairs.</p>
-<p>1. Represented as a single line, a single value, no-parameters</p>
+<h2><a class="toc-backref" id="用法-基于-slr-访问值" href="#用法-基于-slr-访问值">基于 SLR 访问值</a></h2><p>使用 <tt class="docutils literal"><span class="pre">parseSingleRule</span></tt> 解析头字段，该头字段遵循上面列出的 1,2,3 规则，并返回一组 <tt class="docutils literal"><span class="pre">(key, value)</span></tt> 对。</p>
+<p>1. 表示为单行；单个值；无参数</p>
 <div class="r-ol"><pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Content-Length"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"0"</span><span class="Punctuation">]</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span>
 <span class="Keyword">let</span> <span class="Identifier">values</span> <span class="Operator">=</span> <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">parseSingleRule</span><span class="Punctuation">(</span><span class="StringLit">"Content-Length"</span><span class="Punctuation">)</span>
-<span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">key</span> <span class="Operator">=</span> <span class="StringLit">"0"</span></pre><p>The returned result should have at most one item, and the <tt class="docutils literal"><span class="pre">key</span></tt> of the first item indicates the value of this header field, if any.</p>
-<blockquote><p>Note: When using this proc, you must ensure that the values is represented as a single line. If the values is represented as multiple-lines like <tt class="docutils literal"><span class="pre">Accept</span></tt>, there may lose values. If more than one value is found, an exception will be raised.</p></blockquote>
-</div><p>2. Represented as a single line, a single value, optional parameters separated by <tt class="docutils literal"><span class="pre">';'</span></tt></p>
+<span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">key</span> <span class="Operator">=</span> <span class="StringLit">"0"</span></pre><p>返回的结果最多包含一项，并且第一项的 <tt class="docutils literal"><span class="pre">key</span></tt> 表示头字段的值（如果有）。</p>
+<blockquote><p>注意：使用此 proc 时，必须确保这些值以单行表示。如果值可表示为多行（如 <tt class="docutils literal"><span class="pre">Accept</span></tt> ），则可能会丢失值。如果发现存在多个值，将引发异常。</p></blockquote>
+</div><p>2. 表示为单行；单个值；以 <tt class="docutils literal"><span class="pre">';'</span></tt> 分隔的可选参数</p>
 <div class="r-ol"><pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Content-Type"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"application/json; charset=utf8"</span><span class="Punctuation">]</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span>
 <span class="Keyword">let</span> <span class="Identifier">values</span> <span class="Operator">=</span> <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">parseSingleRule</span><span class="Punctuation">(</span><span class="StringLit">"Content-Type"</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">key</span> <span class="Operator">=</span> <span class="StringLit">"application/json"</span>
 <span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">key</span> <span class="Operator">=</span> <span class="StringLit">"charset"</span>
-<span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"utf8"</span></pre><p>If the returned result is not empty, the <tt class="docutils literal"><span class="pre">key</span></tt> of the first item indicates the value of this header field, and the other items indicates the parameters of this value.</p>
-<blockquote><p>Note: When using this proc, you must ensure that the values is represented as a single line. If the values is represented as multiple-lines like <tt class="docutils literal"><span class="pre">Accept</span></tt>, there may lose values. If more than one value is found, an exception will be raised.</p></blockquote>
-</div><p>3. Represented as a single line, multiple values separated by <tt class="docutils literal"><span class="pre">';'</span></tt>, no-parameters</p>
+<span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"utf8"</span></pre><p>如果返回的结果不为空，则第一项的 <tt class="docutils literal"><span class="pre">key</span></tt> 表示此头字段的值，其他项表示值的参数。</p>
+<blockquote><p>注意：使用此 proc 时，必须确保这些值以单行表示。如果值可表示为多行（如 <tt class="docutils literal"><span class="pre">Accept</span></tt> ），则可能会丢失值。如果发现存在多个值，将引发异常。</p></blockquote>
+</div><p>3. 表示为单行；多个值，之间用 <tt class="docutils literal"><span class="pre">';'</span></tt> 分隔；无参数</p>
 <div class="r-ol"><pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Cookie"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"SID=123abc; language=en"</span><span class="Punctuation">]</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span>
@@ -279,11 +280,11 @@ Set-Cookie: language=en; path=/</pre></div><p>To simplify these complex represen
 <span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">key</span> <span class="Operator">=</span> <span class="StringLit">"SID"</span>
 <span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"123abc"</span>
 <span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">key</span> <span class="Operator">=</span> <span class="StringLit">"language"</span>
-<span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"en"</span></pre><p>If the returned result is not empty, then each item indicates a value, that mean a <tt class="docutils literal"><span class="pre">(key, value)</span></tt> pair.</p>
-<blockquote><p>Note: When using this proc, you must ensure that the values is represented as a single line. If the values is represented as multiple-lines like <tt class="docutils literal"><span class="pre">Accept</span></tt>, there may lose values. If more than one value is found, an exception will be raised.</p></blockquote>
+<span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"en"</span></pre><p>如果返回的结果不为空，则每个项表示一个值。</p>
+<blockquote><p>注意：使用此 proc 时，必须确保这些值以单行表示。如果值可表示为多行（如 <tt class="docutils literal"><span class="pre">Accept</span></tt> ），则可能会丢失值。如果发现存在多个值，将引发异常。</p></blockquote>
 </div></div><div class="r-fragment">
-<h2><a class="toc-backref" id="usage-access-values-by-mlr" href="#usage-access-values-by-mlr">Access values by MLR</a></h2><p>Uses <tt class="docutils literal"><span class="pre">parseMultiRule</span></tt> to parse the header fields, which follows the 4,5 rules listed above, and returns a set of <tt class="docutils literal"><span class="pre">seq[(key, value)]</span></tt>.</p>
-<p>4. Represented as a single line or multiple lines, multiple values separated by <tt class="docutils literal"><span class="pre">','</span></tt>, each value has optional parameters separated by <tt class="docutils literal"><span class="pre">';'</span></tt></p>
+<h2><a class="toc-backref" id="用法-基于-mlr-访问值" href="#用法-基于-mlr-访问值">基于 MLR 访问值</a></h2><p>使用 <tt class="docutils literal"><span class="pre">parseMultiRule</span></tt> 解析头字段，该头字段遵循上面列出的 4,5 规则，并返回一组 <tt class="docutils literal"><span class="pre">seq[(key，value)]</span></tt> 。</p>
+<p>4. 表示为单行或多行；多个值，之间用 <tt class="docutils literal"><span class="pre">';'</span></tt> 分隔；每个值具有可选参数，以 <tt class="docutils literal"><span class="pre">';'</span></tt> 分隔</p>
 <div class="r-ol"><pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Accept"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"text/html; q=1; level=1, text/plain"</span><span class="Punctuation">]</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span>
@@ -293,13 +294,13 @@ Set-Cookie: language=en; path=/</pre></div><p>To simplify these complex represen
 <span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"1"</span>
 <span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">2</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">key</span> <span class="Operator">=</span> <span class="StringLit">"level"</span>
 <span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">2</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"1"</span>
-<span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">key</span> <span class="Operator">=</span> <span class="StringLit">"text/plain"</span></pre><p>the same below：</p>
+<span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">key</span> <span class="Operator">=</span> <span class="StringLit">"text/plain"</span></pre><p>以下相同：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Accept"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"text/html; q=1; level=1"</span><span class="Punctuation">,</span> <span class="StringLit">"text/plain"</span><span class="Punctuation">]</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span>
-<span class="Keyword">let</span> <span class="Identifier">values</span> <span class="Operator">=</span> <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">parseMultiRule</span><span class="Punctuation">(</span><span class="StringLit">"Accept"</span><span class="Punctuation">)</span></pre><p>If the returned result is not empty, then each item indicates a value. The <tt class="docutils literal"><span class="pre">key</span></tt> of the first item of each seq indicates the value itself, and the other items indicate parameters of that value.</p>
-<blockquote><p>Note: When using this proc, you must ensure that the values is represented as multiple lines. If the values is represented as a single-line field like <tt class="docutils literal"><span class="pre">Date</span></tt>, you may get wrong results. Because <tt class="docutils literal"><span class="pre">Date</span></tt> takes <tt class="docutils literal"><span class="pre">','</span></tt> as part of its value, for example, <tt class="docutils literal"><span class="pre">Date: Thu, 23 Apr 2020 07:41:15 GMT</span></tt>.</p></blockquote>
-</div><p>5. <tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> is a special case, represented as multiple lines, each line is a value that separated by <tt class="docutils literal"><span class="pre">';'</span></tt>, no-parameters</p>
+<span class="Keyword">let</span> <span class="Identifier">values</span> <span class="Operator">=</span> <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">parseMultiRule</span><span class="Punctuation">(</span><span class="StringLit">"Accept"</span><span class="Punctuation">)</span></pre><p>如果返回的结果不为空，则每个项均指示一个值。每个项第一项的 <tt class="docutils literal"><span class="pre">key</span></tt> 表示值本身，其他项表示值的参数。</p>
+<blockquote><p>注意：使用此 proc 时，必须确保值可表示为多行。如果值是那些诸如 <tt class="docutils literal"><span class="pre">Date</span></tt> 之类的单行值，则可能会得到错误的结果。 因为 <tt class="docutils literal"><span class="pre">Date</span></tt> 将 <tt class="docutils literal"><span class="pre">,</span></tt> 视为值的一部分，例如 <tt class="docutils literal"><span class="pre">Date: Thu, 23 Apr 2020 07:41:15 GMT</span></tt> 。</p></blockquote>
+</div><p>5. <tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> 是一种特殊情况，用多行表示；每行都是以 <tt class="docutils literal"><span class="pre">';'</span></tt> 分隔的值；无参数</p>
 <div class="r-ol"><pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Set-Cookie"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"SID=123abc; path=/"</span><span class="Punctuation">,</span> <span class="StringLit">"language=en; path=/"</span><span class="Punctuation">]</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span>
@@ -311,8 +312,8 @@ Set-Cookie: language=en; path=/</pre></div><p>To simplify these complex represen
 <span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">key</span> <span class="Operator">=</span> <span class="StringLit">"language"</span>
 <span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"en"</span>
 <span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">key</span> <span class="Operator">=</span> <span class="StringLit">"path"</span>
-<span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"/"</span></pre><p>If the returned result is not empty, then each item indicates a value.</p>
-<blockquote><p>Note: When using this proc, you must ensure that the values is represented as multiple lines. If the values is represented as a single-line field like <tt class="docutils literal"><span class="pre">Date</span></tt>, you may get wrong results. Because <tt class="docutils literal"><span class="pre">Date</span></tt> takes <tt class="docutils literal"><span class="pre">','</span></tt> as part of its value, for example, <tt class="docutils literal"><span class="pre">Date: Thu, 23 Apr 2020 07:41:15 GMT</span></tt>.</p></blockquote>
+<span class="Identifier">assert</span> <span class="Identifier">values</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"/"</span></pre><p>如果返回的结果不为空，则每个项均指示一个值。</p>
+<blockquote><p>注意：使用此 proc 时，必须确保值可表示为多行。如果值是那些诸如 <tt class="docutils literal"><span class="pre">Date</span></tt> 之类的单行值，则可能会得到错误的结果。 因为 <tt class="docutils literal"><span class="pre">Date</span></tt> 将 <tt class="docutils literal"><span class="pre">,</span></tt> 视为值的一部分，例如 <tt class="docutils literal"><span class="pre">Date: Thu, 23 Apr 2020 07:41:15 GMT</span></tt> 。</p></blockquote>
 </div></div><p></p>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
@@ -327,8 +328,8 @@ Set-Cookie: language=en; path=/</pre></div><p>To simplify these complex represen
 <dd>
 
 Represents the header fields of a HTTP message.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L349" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L349" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L254" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L254" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -340,9 +341,9 @@ Represents the header fields of a HTTP message.
 <dt><pre><span class="Keyword">proc</span> <a href="#initHeaderFields"><span class="Identifier">initHeaderFields</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Initializes a <tt class="docutils literal"><span class="pre">HeaderFields</span></tt>.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L351" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L351" class="link-seesrc" target="_blank">Edit</a>
+初始化一个 <tt class="docutils literal"><span class="pre">HeaderFields</span></tt> 。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L256" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L256" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="initHeaderFields,openArray[tuple[string,seq[string]]]"></a>
@@ -350,20 +351,20 @@ Initializes a <tt class="docutils literal"><span class="pre">HeaderFields</span>
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Initializes a <tt class="docutils literal"><span class="pre">HeaderFields</span></tt>. <tt class="docutils literal"><span class="pre">pairs</span></tt> is a container consisting of <tt class="docutils literal"><span class="pre">(key, value)</span></tt> tuples.</p>
-<p>The following example demonstrates how to deal with a single value, such as <tt class="docutils literal"><span class="pre">Content-Length</span></tt>:</p>
+<p>初始化一个 <tt class="docutils literal"><span class="pre">HeaderFields</span></tt> ， <tt class="docutils literal"><span class="pre">pairs</span></tt> 指定一组 <tt class="docutils literal"><span class="pre">(name, value)</span></tt> 对。</p>
+<p>下面的示例演示如何处理单值字段，例如 <tt class="docutils literal"><span class="pre">Content-Length</span></tt> ：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Content-Length"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"1"</span><span class="Punctuation">]</span><span class="Punctuation">,</span>
   <span class="StringLit">"Content-Type"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"text/plain"</span><span class="Punctuation">]</span>
   <span class="StringLit">"Cookie"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"SID=123; language=en"</span><span class="Punctuation">]</span>
-<span class="Punctuation">}</span><span class="Punctuation">)</span></pre><p>The following example demonstrates how to deal with <tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> or a comma-separated list of values such as <tt class="docutils literal"><span class="pre">Accept</span></tt>:</p>
+<span class="Punctuation">}</span><span class="Punctuation">)</span></pre><p>下面的示例演示如何处理 Set-Cookie 或以逗号分隔的多值字段（例如 <tt class="docutils literal"><span class="pre">Accept</span></tt> ）：</p>
 <blockquote><p></p><pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Set-Cookie"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"SID=123; path=/"</span><span class="Punctuation">,</span> <span class="StringLit">"language=en"</span><span class="Punctuation">]</span><span class="Punctuation">,</span>
   <span class="StringLit">"Accept"</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"audio/</span><span class="EscapeSequence">\*</span><span class="StringLit">; q=0.2"</span><span class="Punctuation">,</span> <span class="StringLit">"audio/basic"</span><span class="Punctuation">]</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span></pre><p></p></blockquote>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L354" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L354" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L259" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L259" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="initHeaderFields,openArray[tuple[string,string]]"></a>
@@ -371,24 +372,24 @@ Initializes a <tt class="docutils literal"><span class="pre">HeaderFields</span>
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Initializes a <tt class="docutils literal"><span class="pre">HeaderFields</span></tt>. <tt class="docutils literal"><span class="pre">pairs</span></tt> is a container consisting of <tt class="docutils literal"><span class="pre">(key, value)</span></tt> tuples.</p>
-<p>The following example demonstrates how to deal with a single value, such as <tt class="docutils literal"><span class="pre">Content-Length</span></tt>:</p>
+<p>初始化一个 <tt class="docutils literal"><span class="pre">HeaderFields</span></tt>. <tt class="docutils literal"><span class="pre">pairs</span></tt> 指定一组 <tt class="docutils literal"><span class="pre">(name, value)</span></tt> 对。</p>
+<p>下面的示例演示如何处理单值字段，例如 <tt class="docutils literal"><span class="pre">Content-Length</span></tt> ：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Content-Length"</span><span class="Punctuation">:</span> <span class="StringLit">"16"</span><span class="Punctuation">,</span>
   <span class="StringLit">"Content-Type"</span><span class="Punctuation">:</span> <span class="StringLit">"text/plain"</span>
   <span class="StringLit">"Cookie"</span><span class="Punctuation">:</span> <span class="StringLit">"SID=123; language=en"</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L377" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L377" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L281" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L281" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="clear,HeaderFields"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#clear%2CHeaderFields"><span class="Identifier">clear</span></a><span class="Other">(</span><span class="Identifier">fields</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Resets this fields so that it is empty.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L390" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L390" class="link-seesrc" target="_blank">Edit</a>
+重置头字段，清空里面的数据。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L294" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L294" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="[],HeaderFields,string"></a>
@@ -396,14 +397,14 @@ Resets this fields so that it is empty.
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Returns the value of the field associated with <tt class="docutils literal"><span class="pre">name</span></tt>. If <tt class="docutils literal"><span class="pre">name</span></tt> is not in this fields, the <tt class="docutils literal"><span class="pre">KeyError</span></tt> exception is raised.</p>
-<p>Examples:</p>
+<p>返回名字为 <tt class="docutils literal"><span class="pre">name</span></tt> 的字段值。如果此字段中没有 <tt class="docutils literal"><span class="pre">name</span></tt> ，则会引发 <tt class="docutils literal"><span class="pre">KeyError</span></tt> 异常。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Content-Length"</span><span class="Punctuation">:</span> <span class="StringLit">"16"</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Punctuation">[</span><span class="StringLit">"Content-Length"</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">"16"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L393" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L393" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L297" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L297" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="[]=,HeaderFields,string,seq[string]"></a>
@@ -411,68 +412,85 @@ Resets this fields so that it is empty.
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Sets <tt class="docutils literal"><span class="pre">value</span></tt> to the field associated with <tt class="docutils literal"><span class="pre">name</span></tt>. Replaces any existing value.</p>
-<p>Examples:</p>
+<p>设置名字为 <tt class="docutils literal"><span class="pre">name</span></tt> 的字段值。如果字段已经存在，则替换已有的值。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Content-Length"</span><span class="Punctuation">:</span> <span class="StringLit">"16"</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span>
 <span class="Identifier">fields</span><span class="Punctuation">[</span><span class="StringLit">"Content-Length"</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"100"</span><span class="Punctuation">]</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L406" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L406" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L309" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L309" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="add,HeaderFields,string,string"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#add%2CHeaderFields%2Cstring%2Cstring"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">fields</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">value</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Adds <tt class="docutils literal"><span class="pre">value</span></tt> to the field associated with <tt class="docutils literal"><span class="pre">name</span></tt>. If <tt class="docutils literal"><span class="pre">name</span></tt> does not exist then create a new one.</p>
-<p>Examples:</p>
+<p>添加一个字段，名字为 <tt class="docutils literal"><span class="pre">name</span></tt> ，值为 <tt class="docutils literal"><span class="pre">value</span></tt> 。如果字段不存在，则创建一个。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="StringLit">"Content-Length"</span><span class="Punctuation">,</span> <span class="StringLit">"16"</span><span class="Punctuation">)</span>
 <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="StringLit">"Cookie"</span><span class="Punctuation">,</span> <span class="StringLit">"SID=123"</span><span class="Punctuation">)</span>
 <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="StringLit">"Cookie"</span><span class="Punctuation">,</span> <span class="StringLit">"language=en"</span><span class="Punctuation">)</span>
 <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="StringLit">"Accept"</span><span class="Punctuation">,</span> <span class="StringLit">"audio/</span><span class="EscapeSequence">\*</span><span class="StringLit">; q=0.2"</span><span class="Punctuation">)</span>
 <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="StringLit">"Accept"</span><span class="Punctuation">,</span> <span class="StringLit">"audio/basic"</span><span class="Punctuation">)</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L418" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L418" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L321" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L321" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="del,HeaderFields,string"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#del%2CHeaderFields%2Cstring"><span class="Identifier">del</span></a><span class="Other">(</span><span class="Identifier">fields</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Deletes the field associated with <tt class="docutils literal"><span class="pre">name</span></tt>.</p>
-<p>Examples:</p>
+<p>删除名字为 <tt class="docutils literal"><span class="pre">name</span></tt> 的字段。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">del</span><span class="Punctuation">(</span><span class="StringLit">"Content-Length"</span><span class="Punctuation">)</span>
 <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">del</span><span class="Punctuation">(</span><span class="StringLit">"Cookie"</span><span class="Punctuation">)</span>
 <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">del</span><span class="Punctuation">(</span><span class="StringLit">"Accept"</span><span class="Punctuation">)</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L432" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L432" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L335" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L335" class="link-seesrc" target="_blank">Edit</a>
+
+</dd>
+<a id="hasKey,HeaderFields,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#hasKey%2CHeaderFields%2Cstring"><span class="Identifier">hasKey</span></a><span class="Other">(</span><span class="Identifier">fields</span><span class="Other">:</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+<p>判断是否含有名字为 <tt class="docutils literal"><span class="pre">name</span></tt> 的字段。</p>
+<p>例子：</p>
+<pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
+  <span class="StringLit">"Content-Length"</span><span class="Punctuation">:</span> <span class="StringLit">"16"</span>
+<span class="Punctuation">}</span><span class="Punctuation">)</span>
+<span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">hasKey</span><span class="Punctuation">(</span><span class="StringLit">"Content-Length"</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span>
+<span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">hasKey</span><span class="Punctuation">(</span><span class="StringLit">"content-length"</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span>
+<span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">hasKey</span><span class="Punctuation">(</span><span class="StringLit">"ContentLength"</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">false</span>
+<span class="Identifier">assert</span> <span class="StringLit">"content-length"</span> <span class="Keyword">in</span> <span class="Identifier">fields</span></pre>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L346" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L346" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="contains,HeaderFields,string"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#contains%2CHeaderFields%2Cstring"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">fields</span><span class="Other">:</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Returns true if this fields contains the specified <tt class="docutils literal"><span class="pre">name</span></tt>.</p>
-<p>Examples:</p>
+<p>判断是否含有名字为 <tt class="docutils literal"><span class="pre">name</span></tt> 的字段。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Content-Length"</span><span class="Punctuation">:</span> <span class="StringLit">"16"</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">contains</span><span class="Punctuation">(</span><span class="StringLit">"Content-Length"</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span>
 <span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">contains</span><span class="Punctuation">(</span><span class="StringLit">"content-length"</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span>
 <span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Operator">.</span><span class="Identifier">contains</span><span class="Punctuation">(</span><span class="StringLit">"ContentLength"</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">false</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L443" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L443" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L361" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L361" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="len,HeaderFields"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#len%2CHeaderFields"><span class="Identifier">len</span></a><span class="Other">(</span><span class="Identifier">fields</span><span class="Other">:</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Returns the number of names in this fields.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L457" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L457" class="link-seesrc" target="_blank">Edit</a>
+返回包含的字段数量。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L375" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L375" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="getOrDefault,HeaderFields,string"></a>
@@ -480,18 +498,18 @@ Returns the number of names in this fields.
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Returns the value of the field associated with <tt class="docutils literal"><span class="pre">name</span></tt>. If <tt class="docutils literal"><span class="pre">name</span></tt> is not in this fields, then <tt class="docutils literal"><span class="pre">default</span></tt> is returned.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L466" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L466" class="link-seesrc" target="_blank">Edit</a>
+返回名字为 <tt class="docutils literal"><span class="pre">name</span></tt> 的字段值。如果字段不存在，则返回 <tt class="docutils literal"><span class="pre">default</span></tt> 。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L384" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L384" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="$,HeaderFields"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#%24%2CHeaderFields"><span class="Identifier">`$`</span></a><span class="Other">(</span><span class="Identifier">fields</span><span class="Other">:</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Converts this fields to a string that follows the HTTP Protocol.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L474" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L474" class="link-seesrc" target="_blank">Edit</a>
+把字段转换为一个遵循 HTTP 规范的字符串。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L391" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L391" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="parseSingleRule,HeaderFields,string"></a>
@@ -499,9 +517,9 @@ Converts this fields to a string that follows the HTTP Protocol.
     <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">,</span> <span class="Identifier">value</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">]</span><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Parses the field value that matches <strong>single-line-rule</strong>. 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L477" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L477" class="link-seesrc" target="_blank">Edit</a>
+解析名字为 <tt class="docutils literal"><span class="pre">name</span></tt> 的字段值，该值匹配 <strong>single-line-rule</strong> 规则。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L394" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L394" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="parseMultiRule,HeaderFields,string,string"></a>
@@ -509,9 +527,9 @@ Parses the field value that matches <strong>single-line-rule</strong>.
     <span class="Identifier">seq</span><span class="Other">[</span><span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">,</span> <span class="Identifier">value</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">]</span><span class="Other">]</span><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Parses the field value that matches <strong>multiple-lines-rule</strong>. 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L480" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L480" class="link-seesrc" target="_blank">Edit</a>
+解析名字为 <tt class="docutils literal"><span class="pre">name</span></tt> 的字段值，该值匹配 <strong>multiple-lines-rule</strong> 规则。 
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L397" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L397" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -523,18 +541,18 @@ Parses the field value that matches <strong>multiple-lines-rule</strong>.
 <dt><pre><span class="Keyword">iterator</span> <a href="#pairs.i%2CHeaderFields"><span class="Identifier">pairs</span></a><span class="Other">(</span><span class="Identifier">fields</span><span class="Other">:</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">name</span><span class="Other">,</span> <span class="Identifier">value</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Yields each <tt class="docutils literal"><span class="pre">(name, value)</span></tt> pair.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L460" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L460" class="link-seesrc" target="_blank">Edit</a>
+迭代所有字段。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L378" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L378" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="names.i,HeaderFields"></a>
 <dt><pre><span class="Keyword">iterator</span> <a href="#names.i%2CHeaderFields"><span class="Identifier">names</span></a><span class="Other">(</span><span class="Identifier">fields</span><span class="Other">:</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Yields each field name.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L463" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L463" class="link-seesrc" target="_blank">Edit</a>
+迭代所有字段的名字。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/headerfield.nim#L381" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/headerfield.nim#L381" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -547,7 +565,7 @@ Yields each field name.
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:50:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:29 UTC</small>
       </div>
     </div>
   </div>

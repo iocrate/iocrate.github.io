@@ -1,8 +1,8 @@
-Usage	connection.html#usage	 Usage	
-Reads a message header	connection.html#usage-reads-a-message-header	  Reads a message header	
-Reads a message body	connection.html#usage-reads-a-message-body	  Reads a message body	
-Reads a message body that chunked	connection.html#usage-reads-a-message-body-that-chunked	  Reads a message body that chunked	
-Sends a message	connection.html#usage-sends-a-message	  Sends a message	
+使用	connection.html#使用	 使用	
+读消息头	connection.html#使用-读消息头	  读消息头	
+读消息体	connection.html#使用-读消息体	  读消息体	
+读 chunked 编码的消息体	connection.html#使用-读-chunked-编码的消息体	  读 chunked 编码的消息体	
+写消息	connection.html#使用-写消息	  写消息	
 HttpConnection	netkit/http/connection.html#HttpConnection	connection: HttpConnection	
 newHttpConnection	netkit/http/connection.html#newHttpConnection,AsyncFD,string	connection: newHttpConnection(socket: AsyncFD; address: string): HttpConnection	
 close	netkit/http/connection.html#close,HttpConnection	connection: close(conn: HttpConnection)	

@@ -163,12 +163,12 @@ function main() {
     </select>
   </div>
   <ul class="simple simple-toc" id="toc-list">
-<li><a class="reference" id="overview_toc" href="#overview">Overview</a></li>
-<ul class="simple"><li><a class="reference" id="overview-chunk-extensions_toc" href="#overview-chunk-extensions">Chunk Extensions</a></li>
-<li><a class="reference" id="overview-trailers_toc" href="#overview-trailers">Trailers</a></li>
-</ul><li><a class="reference" id="usage_toc" href="#usage">Usage</a></li>
-<ul class="simple"><li><a class="reference" id="usage-chunk-extensions_toc" href="#usage-chunk-extensions">Chunk Extensions</a></li>
-<li><a class="reference" id="usage-trailers_toc" href="#usage-trailers">Trailers</a></li>
+<li><a class="reference" id="概述_toc" href="#概述">概述</a></li>
+<ul class="simple"><li><a class="reference" id="概述-chunk-extensions_toc" href="#概述-chunk-extensions">Chunk Extensions</a></li>
+<li><a class="reference" id="概述-trailers_toc" href="#概述-trailers">Trailers</a></li>
+</ul><li><a class="reference" id="用法_toc" href="#用法">用法</a></li>
+<ul class="simple"><li><a class="reference" id="用法-chunk-extensions_toc" href="#用法-chunk-extensions">Chunk Extensions</a></li>
+<li><a class="reference" id="用法-trailers_toc" href="#用法-trailers">Trailers</a></li>
 </ul><li>
   <a class="reference reference-toplevel" href="#7" id="57">Types</a>
   <ul class="simple simple-toc-section">
@@ -194,15 +194,15 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">This module defines a general object <tt class="docutils literal"><span class="pre">HttpMetadata</span></tt> to abstract HTTP metadata in order to simplify the use of metadata.
-</p><h1><a class="toc-backref" id="overview" href="#overview">Overview</a></h1><p>HTTP messages support carrying metadata. Currently, there are two kinds of metadata. Both of them appear in messages that encoded with <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt>. They are:</p>
+  <p class="module-desc">这个模块定义了一个通用对象 <tt class="docutils literal"><span class="pre">HttpMetadata</span></tt> ，该对象抽象了 HTTP 以简化对元数据的使用。
+</p><h1><a class="toc-backref" id="概述" href="#概述">概述</a></h1><p>HTTP 消息支持挂载元数据。当前，有两种类型的元数据，都出现在 chunked 编码的消息。它们是：</p>
 <ul class="simple"><li>Chunk Extensions</li>
 <li>Trailers</li>
 </ul>
 <div class="r-fragment">
-<h2><a class="toc-backref" id="overview-chunk-extensions" href="#overview-chunk-extensions">Chunk Extensions</a></h2><p>For a message encoded by <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt>, each data chunk is allowed to contain zero or more chunk-extensions. These extensions immediately follow the chunk-size,  for the sake of supplying per-chunk metadata (such as a signature or hash), mid-message control information, or randomization of message body size.</p>
-<p>Each extension is a name-value pair with <tt class="docutils literal"><span class="pre">=</span></tt> as a separator, such as <tt class="docutils literal"><span class="pre">language = en</span></tt>; multiple extensions are combined with <tt class="docutils literal"><span class="pre">;</span></tt> as a separator, such as <tt class="docutils literal"><span class="pre">language=en; city=London</span></tt>.</p>
-<p>An example of carring chunk extensions:</p>
+<h2><a class="toc-backref" id="概述-chunk-extensions" href="#概述-chunk-extensions">Chunk Extensions</a></h2><p>经过 chunked 编码的消息，每个数据块可以包含零个到多个块扩展。这些扩展紧跟在块大小之后，提供块的元数据（例如签名或哈希）。</p>
+<p>每个扩展都是一个以 <tt class="docutils literal"><span class="pre">=</span></tt> 作为分隔符的名称/值对，例如 <tt class="docutils literal"><span class="pre">language = en</span></tt>; 多个扩展名以 <tt class="docutils literal"><span class="pre">';'</span></tt> 作为分隔符组合在一起，例如 <tt class="docutils literal"><span class="pre">language=en; city=London</span></tt> 。</p>
+<p>例子：</p>
 <pre class="listing">HTTP/1.1 200 OK
 Transfer-Encoding: chunked
 
@@ -210,9 +210,9 @@ Transfer-Encoding: chunked
 Developer\r\n
 0\r\n
 \r\n</pre></div><div class="r-fragment">
-<h2><a class="toc-backref" id="overview-trailers" href="#overview-trailers">Trailers</a></h2><p>Messages encoded with <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt> are allowed to carry trailers at the end. Trailer is actually one or more HTTP response header fields, allowing the sender to add additional meta-information at the end of a message. These meta-information may be dynamically generated with the sending of the message body, such as message integrity check, message Digital signature, or the final state of the message after processing, etc.</p>
-<p>Note: Only when the client sets trailers in the request header <tt class="docutils literal"><span class="pre">TE</span></tt> (<tt class="docutils literal"><span class="pre">TE: trailers</span></tt>),  the server can carry Trailer in the response.</p>
-<p>An example of carring trailers:</p>
+<h2><a class="toc-backref" id="概述-trailers" href="#概述-trailers">Trailers</a></h2><p>经过 chunked 编码的消息，可以在尾部挂载元数据 trailers。trailers 实际上是一个或多个 HTTP 响应头字段，允许发送方在消息末尾添加其他元信息。 这些元信息可以随着消息正文的发送而动态生成，例如消息完整性检查，消息数字签名或处理后消息的最终状态等。</p>
+<p>注意：仅当客户端在请求头包含 <tt class="docutils literal"><span class="pre">TE``（ ``TE：trailers</span></tt> ）时，服务器才能在响应中挂载 trailers。</p>
+<p>例子：</p>
 <pre class="listing">HTTP/1.1 200 OK
 Transfer-Encoding: chunked
 Trailer: Expires
@@ -222,9 +222,9 @@ Developer\r\n
 0\r\n
 Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n
 \r\n</pre></div>
-<h1><a class="toc-backref" id="usage" href="#usage">Usage</a></h1><p>For performance reasons, <tt class="docutils literal"><span class="pre">HttpMetadata</span></tt> does not further parse the content of <tt class="docutils literal"><span class="pre">trailers</span></tt> and <tt class="docutils literal"><span class="pre">extensions</span></tt>. You can use <tt class="docutils literal"><span class="pre">parseChunkTrailers</span></tt> and <tt class="docutils literal"><span class="pre">parseChunkExtensions</span></tt> to extract the contents of them respectively.</p>
+<h1><a class="toc-backref" id="用法" href="#用法">用法</a></h1><p>出于性能方面的考虑， <tt class="docutils literal"><span class="pre">HttpMetadata</span></tt> 不会进一步解析 <tt class="docutils literal"><span class="pre">trailers</span></tt> 和 <tt class="docutils literal"><span class="pre">extensions</span></tt> 的内容。 您可以使用 <tt class="docutils literal"><span class="pre">parseChunkTrailers</span></tt> 和 <tt class="docutils literal"><span class="pre">parseChunkExtensions</span></tt> 分别提取它们的内容。</p>
 <div class="r-fragment">
-<h2><a class="toc-backref" id="usage-chunk-extensions" href="#usage-chunk-extensions">Chunk Extensions</a></h2><p>To extract chunk extensions:</p>
+<h2><a class="toc-backref" id="用法-chunk-extensions" href="#用法-chunk-extensions">Chunk Extensions</a></h2><p>提取内容：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">metadata</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">chunk</span>
 
@@ -237,7 +237,7 @@ Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"v1"</span>
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">name</span> <span class="Operator">=</span> <span class="StringLit">"a2"</span>
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"v2"</span></pre></div><div class="r-fragment">
-<h2><a class="toc-backref" id="usage-trailers" href="#usage-trailers">Trailers</a></h2><p>To extract trailers:</p>
+<h2><a class="toc-backref" id="用法-trailers" href="#用法-trailers">Trailers</a></h2><p>提取内容：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">metadata</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">chunk</span>
 
@@ -257,9 +257,9 @@ Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n
   </span><span class="Identifier">ChunkExtensions</span></pre></dt>
 <dd>
 
-Kinds of metadata.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/metadata.nim#L120" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/metadata.nim#L120" class="link-seesrc" target="_blank">Edit</a>
+元数据的类型。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/metadata.nim#L110" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/metadata.nim#L110" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="HttpMetadata"></a>
@@ -277,9 +277,9 @@ Kinds of metadata.
   </pre></dt>
 <dd>
 
-Metadata object.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/metadata.nim#L125" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/metadata.nim#L125" class="link-seesrc" target="_blank">Edit</a>
+元数据对象。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/metadata.nim#L115" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/metadata.nim#L115" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -292,7 +292,7 @@ Metadata object.
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:50:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:29 UTC</small>
       </div>
     </div>
   </div>

@@ -1,9 +1,9 @@
-Overview	headerfield.html#overview	 Overview	
-Formatting rules	headerfield.html#overview-formatting-rules	  Formatting rules	
-Usage	headerfield.html#usage	 Usage	
-Access fields	headerfield.html#usage-access-fields	  Access fields	
-Access values by SLR	headerfield.html#usage-access-values-by-slr	  Access values by SLR	
-Access values by MLR	headerfield.html#usage-access-values-by-mlr	  Access values by MLR	
+概述	headerfield.html#概述	 概述	
+格式规则	headerfield.html#概述-格式规则	  格式规则	
+用法	headerfield.html#用法	 用法	
+访问头字段	headerfield.html#用法-访问头字段	  访问头字段	
+基于 SLR 访问值	headerfield.html#用法-基于-slr-访问值	  基于 SLR 访问值	
+基于 MLR 访问值	headerfield.html#用法-基于-mlr-访问值	  基于 MLR 访问值	
 HeaderFields	netkit/http/headerfield.html#HeaderFields	headerfield: HeaderFields	
 initHeaderFields	netkit/http/headerfield.html#initHeaderFields	headerfield: initHeaderFields(): HeaderFields	
 initHeaderFields	netkit/http/headerfield.html#initHeaderFields,openArray[tuple[string,seq[string]]]	headerfield: initHeaderFields(pairs: openArray[tuple[name: string, value: seq[string]]]): HeaderFields	
@@ -13,6 +13,7 @@ clear	netkit/http/headerfield.html#clear,HeaderFields	headerfield: clear(fields:
 `[]=`	netkit/http/headerfield.html#[]=,HeaderFields,string,seq[string]	headerfield: `[]=`(fields: var HeaderFields; name: string; value: seq[string])	
 add	netkit/http/headerfield.html#add,HeaderFields,string,string	headerfield: add(fields: var HeaderFields; name: string; value: string)	
 del	netkit/http/headerfield.html#del,HeaderFields,string	headerfield: del(fields: var HeaderFields; name: string)	
+hasKey	netkit/http/headerfield.html#hasKey,HeaderFields,string	headerfield: hasKey(fields: HeaderFields; name: string): bool	
 contains	netkit/http/headerfield.html#contains,HeaderFields,string	headerfield: contains(fields: HeaderFields; name: string): bool	
 len	netkit/http/headerfield.html#len,HeaderFields	headerfield: len(fields: HeaderFields): int	
 pairs	netkit/http/headerfield.html#pairs.i,HeaderFields	headerfield: pairs(fields: HeaderFields): tuple[name, value: string]	

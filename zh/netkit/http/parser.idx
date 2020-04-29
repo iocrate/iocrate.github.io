@@ -1,7 +1,7 @@
-Usage	parser.html#usage	 Usage	
-Parse message header	parser.html#usage-parse-message-header	  Parse message header	
-Parse chunk header	parser.html#usage-parse-chunk-header	  Parse chunk header	
-Parse chunk tail	parser.html#usage-parse-chunk-tail	  Parse chunk tail	
+用法	parser.html#用法	 用法	
+解析消息头	parser.html#用法-解析消息头	  解析消息头	
+解析 chunked 编码消息的块的头部	parser.html#用法-解析-chunked-编码消息的块的头部	  解析 chunked 编码消息的块的头部	
+解析 chunked 编码消息的尾部	parser.html#用法-解析-chunked-编码消息的尾部	  解析 chunked 编码消息的尾部	
 HttpParser	netkit/http/parser.html#HttpParser	parser: HttpParser	
 initHttpParser	netkit/http/parser.html#initHttpParser	parser: initHttpParser(): HttpParser	
 clear	netkit/http/parser.html#clear,HttpParser	parser: clear(p: var HttpParser)	

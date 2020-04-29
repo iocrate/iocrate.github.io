@@ -207,7 +207,7 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">本模块实现了一个动态增长的缓冲区 <tt class="docutils literal"><span class="pre">VectorBuffer</span></tt> 。 该缓冲区可以根据您的需要成倍增长，直到某个临界值。 当到达 临界值， 继续增长将引起异常。 </p>
+  <p class="module-desc">本模块实现了一个可增长的缓冲区 <tt class="docutils literal"><span class="pre">VectorBuffer</span></tt> 。该缓冲区可以根据需要成倍增长，直到某个临界值。当到达 临界值时，继续增长将引起异常。</p>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
@@ -226,7 +226,7 @@ function main() {
 </pre></dt>
 <dd>
 
-一个增长的缓冲区。 
+一个可增长的缓冲区。
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L14" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L14" class="link-seesrc" target="_blank">Edit</a>
 
@@ -242,7 +242,7 @@ function main() {
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-初始化一个 <tt class="docutils literal"><span class="pre">VectorBuffer</span></tt> 对象。  <tt class="docutils literal"><span class="pre">minCapacity</span></tt> 指定最小容量， <tt class="docutils literal"><span class="pre">maxCapacity</span></tt> 指定最大容量。 
+初始化一个 <tt class="docutils literal"><span class="pre">VectorBuffer` 。 ``minCapacity</span></tt> 指定最小容量，``maxCapacity`` 指定最大容量。
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L21" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L21" class="link-seesrc" target="_blank">Edit</a>
 
@@ -251,7 +251,7 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#capacity%2CVectorBuffer"><span class="Identifier">capacity</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="vector.html#VectorBuffer"><span class="Identifier">VectorBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取缓冲区的当前容量。 
+返回缓冲区的当前容量。
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L27" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L27" class="link-seesrc" target="_blank">Edit</a>
 
@@ -260,7 +260,7 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#minCapacity%2CVectorBuffer"><span class="Identifier">minCapacity</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="vector.html#VectorBuffer"><span class="Identifier">VectorBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取缓冲区的最小容量。 
+返回缓冲区的最小容量。
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L30" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L30" class="link-seesrc" target="_blank">Edit</a>
 
@@ -269,7 +269,7 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#maxCapacity%2CVectorBuffer"><span class="Identifier">maxCapacity</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="vector.html#VectorBuffer"><span class="Identifier">VectorBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取缓冲区的最大容量。 
+返回缓冲区的最大容量。
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L33" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L33" class="link-seesrc" target="_blank">Edit</a>
 
@@ -278,7 +278,7 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#len%2CVectorBuffer"><span class="Identifier">len</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="vector.html#VectorBuffer"><span class="Identifier">VectorBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取缓冲区当前存储的数据长度。 
+返回缓冲区存储的数据长度。
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L36" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L36" class="link-seesrc" target="_blank">Edit</a>
 
@@ -287,16 +287,16 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#reset%2CVectorBuffer"><span class="Identifier">reset</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="vector.html#VectorBuffer"><span class="Identifier">VectorBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-重置缓冲区， 恢复到初始容量， 同时清空所有已存储的数据。 
+重置缓冲区，恢复到初始容量，同时清空所有已存储的数据。
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L39" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L39" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="expand,VectorBuffer"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#expand%2CVectorBuffer"><span class="Identifier">expand</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="vector.html#VectorBuffer"><span class="Identifier">VectorBuffer</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#expand%2CVectorBuffer"><span class="Identifier">expand</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="vector.html#VectorBuffer"><span class="Identifier">VectorBuffer</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">OverflowError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-扩展缓冲区的容量，增长一倍。 如果超过了最大容量， 则抛出异常。 
+扩展缓冲区的容量，使其增长一倍。如果超过了最大容量，则抛出 <tt class="docutils literal"><span class="pre">OverflowError</span></tt> 。
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L42" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L42" class="link-seesrc" target="_blank">Edit</a>
 
@@ -305,8 +305,10 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#next%2CVectorBuffer"><span class="Identifier">next</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="vector.html#VectorBuffer"><span class="Identifier">VectorBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Identifier">pointer</span><span class="Other">,</span> <span class="Identifier">Natural</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-获取下一个安全的可存储区域。 返回值表示可存储区域的指针和可存储长度。  之后， 您可以利用返回的指针和长度手动 存储数据。 比如：<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
-<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<p>返回下一个安全的可存储区域。返回值包括可存储区域的地址和长度。</p>
+<p>例子：</p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
+<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">var</span> <span class="Identifier">length</span> <span class="Operator">=</span> <span class="Identifier">min</span><span class="Punctuation">(</span><span class="Identifier">regionLen</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">copyMem</span><span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">length</span><span class="Punctuation">)</span> </pre>
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L45" class="link-seesrc" target="_blank">Source</a>
@@ -317,16 +319,17 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#pack%2CVectorBuffer%2CNatural"><span class="Identifier">pack</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="vector.html#VectorBuffer"><span class="Identifier">VectorBuffer</span></a><span class="Other">;</span> <span class="Identifier">size</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>告诉缓冲区， 当前存储位置向后 <tt class="docutils literal"><span class="pre">size</span></tt> 长度成为有效数据。 返回实际有效的长度。</p>
-<p>当调用 <tt class="docutils literal"><span class="pre">next()</span></tt> 时， 仅仅将缓冲区内部的存储空间写入数据， 但是缓冲区无法得知写入了多少有效数据。 <tt class="docutils literal"><span class="pre">pack()</span></tt> 告诉缓冲区实际写入的有效数据长度。</p>
-<p>每当调用 <tt class="docutils literal"><span class="pre">next()</span></tt> 时， 都应当立刻调用 <tt class="docutils literal"><span class="pre">pack()</span></tt> 。</p>
+<p>告诉缓冲区，由当前存储位置向后 <tt class="docutils literal"><span class="pre">size</span></tt> 长度的字节晋升为数据。返回实际晋升的长度。</p>
+<p>当调用 <tt class="docutils literal"><span class="pre">next()</span></tt> 时，仅仅向缓冲区内部的存储空间写入数据，但是缓冲区无法得知写入了多少数据。 <tt class="docutils literal"><span class="pre">pack()</span></tt> 告诉缓冲区写入的数据长度。</p>
+<p>每当调用 <tt class="docutils literal"><span class="pre">next()</span></tt> 时，都应当立刻调用 <tt class="docutils literal"><span class="pre">pack()</span></tt> 。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
-<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">var</span> <span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">regionLen</span><span class="Punctuation">)</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">next</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">var</span> <span class="Identifier">length</span> <span class="Operator">=</span> <span class="Identifier">min</span><span class="Punctuation">(</span><span class="Identifier">regionLen</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">copyMem</span><span class="Punctuation">(</span><span class="Identifier">regionPtr</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">length</span><span class="Punctuation">)</span>
-<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">pack</span><span class="Punctuation">(</span><span class="Identifier">length</span><span class="Punctuation">)</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L56" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L56" class="link-seesrc" target="_blank">Edit</a>
+<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">pack</span><span class="Punctuation">(</span><span class="Identifier">length</span><span class="Punctuation">)</span></pre>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L57" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L57" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="add,VectorBuffer,pointer,Natural"></a>
@@ -334,15 +337,12 @@ function main() {
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<dl class="docutils"><dt>从源 <tt class="docutils literal"><span class="pre">source</span></tt> 复制最多 <tt class="docutils literal"><span class="pre">size</span></tt> 长度的数据， 写入到缓冲区。 返回实际写入的长度。 这个函数是 <tt class="docutils literal"><span class="pre">next()</span></tt></dt>
-<dd><p><tt class="docutils literal"><span class="pre">pack()</span></tt> 组合调用的简化版本， 区别是额外进行一次复制， 而不是直接写入缓冲区。</p>
-<p>当您对性能非常看重时， 考虑使用 <tt class="docutils literal"><span class="pre">next()</span></tt> <tt class="docutils literal"><span class="pre">pack()</span></tt> 组合调用；当您对调用便捷比较看重时， 使用 <tt class="docutils literal"><span class="pre">put()</span></tt> 。</p>
+<p>从 <tt class="docutils literal"><span class="pre">source</span></tt> 复制最多 <tt class="docutils literal"><span class="pre">size</span></tt> 长度的数据，存储到缓冲区。返回实际存储的长度。这个函数是 <tt class="docutils literal"><span class="pre">next()</span></tt> <tt class="docutils literal"><span class="pre">pack()</span></tt> 组合调用的简化版本，区别是额外执行一次复制。</p>
+<p>当您非常看重性能时，使用 <tt class="docutils literal"><span class="pre">next</span></tt> <tt class="docutils literal"><span class="pre">pack</span></tt> 组合调用；当您比较看重使用方便时，使用 <tt class="docutils literal"><span class="pre">add</span></tt> 。</p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
-<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">b</span><span class="Operator">.</span><span class="Identifier">put</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span></pre></dd>
-</dl>
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L72" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L72" class="link-seesrc" target="_blank">Edit</a>
+<span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span></pre>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L75" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L75" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="get,VectorBuffer,pointer,Natural,Natural"></a>
@@ -350,18 +350,18 @@ function main() {
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-从 <tt class="docutils literal"><span class="pre">start</span></tt> 开始， 获取当前存储的数据， 最多 <tt class="docutils literal"><span class="pre">size</span></tt> 个数据， 将其复制到目标空间 <tt class="docutils literal"><span class="pre">dest</span></tt> ， 返回实际复制的数量。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L83" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L83" class="link-seesrc" target="_blank">Edit</a>
+从 <tt class="docutils literal"><span class="pre">start</span></tt> 开始，获取最多 <tt class="docutils literal"><span class="pre">size</span></tt> 长度的数据，将它们复制到目标空间 <tt class="docutils literal"><span class="pre">dest</span></tt> ，返回实际复制的数量。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L86" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L86" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="clear,VectorBuffer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#clear%2CVectorBuffer"><span class="Identifier">clear</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="vector.html#VectorBuffer"><span class="Identifier">VectorBuffer</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-删除所有已存储的数据。 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L86" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L86" class="link-seesrc" target="_blank">Edit</a>
+删除所有已存储的数据。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/vector.nim#L89" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/vector.nim#L89" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -374,7 +374,7 @@ function main() {
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:59 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:29 UTC</small>
       </div>
     </div>
   </div>

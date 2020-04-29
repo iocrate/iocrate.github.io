@@ -200,7 +200,7 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc"></p>
+  <p class="module-desc">This module implements an HTTP server.</p>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
@@ -218,9 +218,9 @@ function main() {
 </pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L21" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L21" class="link-seesrc" target="_blank">Edit</a>
+Server object.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L23" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L23" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="RequestHandler"></a>
@@ -229,8 +229,8 @@ function main() {
 <dd>
 
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L27" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L27" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L29" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L29" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -242,9 +242,9 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#newAsyncHttpServer"><span class="Identifier">newAsyncHttpServer</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="server.html#AsyncHttpServer"><span class="Identifier">AsyncHttpServer</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L54" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L54" class="link-seesrc" target="_blank">Edit</a>
+Creates a new <tt class="docutils literal"><span class="pre">AsyncHttpServer</span></tt> 。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L56" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L56" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="onRequest=,AsyncHttpServer,RequestHandler"></a>
@@ -252,18 +252,18 @@ function main() {
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L58" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L58" class="link-seesrc" target="_blank">Edit</a>
+Sets a hook proc for the server. Whenever a new request comes, this hook function is triggered.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L61" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L61" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="close,AsyncHttpServer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#close%2CAsyncHttpServer"><span class="Identifier">close</span></a><span class="Other">(</span><span class="Identifier">server</span><span class="Other">:</span> <a href="server.html#AsyncHttpServer"><span class="Identifier">AsyncHttpServer</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L61" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L61" class="link-seesrc" target="_blank">Edit</a>
+Closes the server to release the underlying resources.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L65" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L65" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="serve,AsyncHttpServer,Port,string"></a>
@@ -273,8 +273,8 @@ function main() {
 <dd>
 
 Starts the process of listening for incoming HTTP connections on the specified <tt class="docutils literal"><span class="pre">address</span></tt> and <tt class="docutils literal"><span class="pre">port</span></tt>.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L105" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L105" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L110" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L110" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -287,7 +287,7 @@ Starts the process of listening for incoming HTTP connections on the specified <
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:56 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:26 UTC</small>
       </div>
     </div>
   </div>

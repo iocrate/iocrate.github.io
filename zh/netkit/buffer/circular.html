@@ -326,7 +326,7 @@ function main() {
 </pre></dt>
 <dd>
 
-一个循环缓冲区。
+一个循环缓冲区。注意，其存储空间的最大长度是 <tt class="docutils literal"><span class="pre">BufferSize</span></tt> 。
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L194" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/buffer/circular.nim#L194" class="link-seesrc" target="_blank">Edit</a>
 
@@ -420,7 +420,7 @@ function main() {
 <dd>
 
 <p>从 <tt class="docutils literal"><span class="pre">source</span></tt> 复制最多 <tt class="docutils literal"><span class="pre">size</span></tt> 长度的数据，存储到缓冲区。返回实际存储的长度。这个函数是 <tt class="docutils literal"><span class="pre">next()</span></tt> <tt class="docutils literal"><span class="pre">pack()</span></tt> 组合调用的简化版本，区别是额外执行一次复制。</p>
-<p>当您非常看重性能时，使用 <tt class="docutils literal"><span class="pre">next()</span></tt> <tt class="docutils literal"><span class="pre">pack()</span></tt> 组合调用；当您比较看重使用方便时，使用 <tt class="docutils literal"><span class="pre">add()</span></tt> 。</p>
+<p>当您非常看重性能时，使用 <tt class="docutils literal"><span class="pre">next</span></tt> <tt class="docutils literal"><span class="pre">pack</span></tt> 组合调用；当您比较看重使用方便时，使用 <tt class="docutils literal"><span class="pre">add</span></tt> 。</p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Hello World"</span>
 <span class="Keyword">var</span> <span class="Identifier">n</span> <span class="Operator">=</span> <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span></pre>
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/buffer/circular.nim#L247" class="link-seesrc" target="_blank">Source</a>
@@ -592,7 +592,7 @@ function main() {
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:59 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:29 UTC</small>
       </div>
     </div>
   </div>

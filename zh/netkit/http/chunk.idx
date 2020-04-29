@@ -1,11 +1,11 @@
-Overview	chunk.html#overview	 Overview	
-Format	chunk.html#overview-format	  Format	
-Example	chunk.html#overview-example	  Example	
-About \n and \L	chunk.html#overview-about-backslashn-and-backslashl	  About \n and \L	
-Usage	chunk.html#usage	 Usage	
-Encoding	chunk.html#usage-encoding	  Encoding	
-Encoding with pointer buffer	chunk.html#usage-encoding-with-pointer-buffer	  Encoding with pointer buffer	
-Decoding	chunk.html#usage-decoding	  Decoding	
+概述	chunk.html#概述	 概述	
+块的格式	chunk.html#概述-块的格式	  块的格式	
+例子	chunk.html#概述-例子	  例子	
+关于 \n and \L	chunk.html#概述-关于-backslashn-and-backslashl	  关于 \n and \L	
+用法	chunk.html#用法	 用法	
+编码	chunk.html#用法-编码	  编码	
+使用指针缓冲区编码	chunk.html#用法-使用指针缓冲区编码	  使用指针缓冲区编码	
+解码	chunk.html#用法-解码	  解码	
 ChunkHeader	netkit/http/chunk.html#ChunkHeader	chunk: ChunkHeader	
 ChunkExtension	netkit/http/chunk.html#ChunkExtension	chunk: ChunkExtension	
 parseChunkHeader	netkit/http/chunk.html#parseChunkHeader,string	chunk: parseChunkHeader(s: string): ChunkHeader	

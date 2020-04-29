@@ -188,8 +188,8 @@ function main() {
       <li><a class="reference" href="#newAsyncHttpServer" title="newAsyncHttpServer(): AsyncHttpServer"><wbr>new<wbr>Async<wbr>Http<wbr>Server<span class="attachedType">AsyncHttpServer</span></a></li>
   <li><a class="reference" href="#onRequest%3D%2CAsyncHttpServer%2CRequestHandler" title="onRequest=(server: AsyncHttpServer; handler: RequestHandler)"><wbr>on<wbr>Request=<span class="attachedType">AsyncHttpServer</span></a></li>
   <li><a class="reference" href="#close%2CAsyncHttpServer" title="close(server: AsyncHttpServer)"><wbr>close<span class="attachedType">AsyncHttpServer</span></a></li>
-  <li><a class="reference" href="#serve%2CAsyncHttpServer%2CPort%2Cstring" title="serve(server: AsyncHttpServer; port: Port; address: string = &quot;&quot;; domain = AF_INET): owned(
-    Future[void])"><wbr>serve<span class="attachedType">AsyncHttpServer</span></a></li>
+  <li><a class="reference" href="#serve%2CAsyncHttpServer%2CPort%2Cstring" title="serve(server: AsyncHttpServer; port: Port; address: string = &quot;&quot;; domain = AF_INET): Future[
+    void]"><wbr>serve<span class="attachedType">AsyncHttpServer</span></a></li>
 
   </ul>
 </li>
@@ -200,7 +200,7 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc"></p>
+  <p class="module-desc">这个模块实现了一个 HTTP 服务器。</p>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
@@ -218,9 +218,9 @@ function main() {
 </pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L21" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L21" class="link-seesrc" target="_blank">Edit</a>
+服务器。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L23" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L23" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="RequestHandler"></a>
@@ -229,8 +229,8 @@ function main() {
 <dd>
 
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L27" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L27" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L29" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L29" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -242,9 +242,9 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#newAsyncHttpServer"><span class="Identifier">newAsyncHttpServer</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="server.html#AsyncHttpServer"><span class="Identifier">AsyncHttpServer</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L29" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L29" class="link-seesrc" target="_blank">Edit</a>
+创建一个新的 <tt class="docutils literal"><span class="pre">AsyncHttpServer</span></tt> 。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L31" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L31" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="onRequest=,AsyncHttpServer,RequestHandler"></a>
@@ -252,26 +252,26 @@ function main() {
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L31" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L31" class="link-seesrc" target="_blank">Edit</a>
+为服务器设置 hook 函数。每当有一个新的请求到来时，触发这个 hook 函数。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L34" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L34" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="close,AsyncHttpServer"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#close%2CAsyncHttpServer"><span class="Identifier">close</span></a><span class="Other">(</span><span class="Identifier">server</span><span class="Other">:</span> <a href="server.html#AsyncHttpServer"><span class="Identifier">AsyncHttpServer</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L33" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L33" class="link-seesrc" target="_blank">Edit</a>
+关闭服务器以释放底部资源。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L37" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L37" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="serve,AsyncHttpServer,Port,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#serve%2CAsyncHttpServer%2CPort%2Cstring"><span class="Identifier">serve</span></a><span class="Other">(</span><span class="Identifier">server</span><span class="Other">:</span> <a href="server.html#AsyncHttpServer"><span class="Identifier">AsyncHttpServer</span></a><span class="Other">;</span> <span class="Identifier">port</span><span class="Other">:</span> <span class="Identifier">Port</span><span class="Other">;</span> <span class="Identifier">address</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">""</span><span class="Other">;</span> <span class="Identifier">domain</span> <span class="Other">=</span> <span class="Identifier">AF_INET</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">owned</span><span class="Other">(</span>
-    <span class="Identifier">Future</span><span class="Other">[</span><span class="Identifier">void</span><span class="Other">]</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">FutureError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#serve%2CAsyncHttpServer%2CPort%2Cstring"><span class="Identifier">serve</span></a><span class="Other">(</span><span class="Identifier">server</span><span class="Other">:</span> <a href="server.html#AsyncHttpServer"><span class="Identifier">AsyncHttpServer</span></a><span class="Other">;</span> <span class="Identifier">port</span><span class="Other">:</span> <span class="Identifier">Port</span><span class="Other">;</span> <span class="Identifier">address</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">""</span><span class="Other">;</span> <span class="Identifier">domain</span> <span class="Other">=</span> <span class="Identifier">AF_INET</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Future</span><span class="Other">[</span>
+    <span class="Identifier">void</span><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Starts the process of listening for incoming HTTP connections on the specified <tt class="docutils literal"><span class="pre">address</span></tt> and <tt class="docutils literal"><span class="pre">port</span></tt>. 
+启动服务器，侦听 <tt class="docutils literal"><span class="pre">address</span></tt> 和 <tt class="docutils literal"><span class="pre">port</span></tt> 传入的 HTTP 连接。
 &nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/server.nim#L40" class="link-seesrc" target="_blank">Source</a>
 <a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/server.nim#L40" class="link-seesrc" target="_blank">Edit</a>
 
@@ -286,7 +286,7 @@ Starts the process of listening for incoming HTTP connections on the specified <
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:50:03 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:32 UTC</small>
       </div>
     </div>
   </div>

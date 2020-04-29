@@ -1,4 +1,5 @@
 AsyncLock	netkit/locks.html#AsyncLock	locks: AsyncLock	
+initAsyncLock	netkit/locks.html#initAsyncLock	locks: initAsyncLock(): AsyncLock	
 acquire	netkit/locks.html#acquire,AsyncLock	locks: acquire(L: AsyncLock): Future[void]	
 release	netkit/locks.html#release,AsyncLock	locks: release(L: AsyncLock)	
 isLocked	netkit/locks.html#isLocked,AsyncLock	locks: isLocked(L: AsyncLock): bool	

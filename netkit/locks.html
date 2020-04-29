@@ -189,7 +189,10 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc"></p>
+  <p class="module-desc"></p><p>This module implements an asynchronous lock. When performing asynchronous input and output, the order of reading and writing is very important. In order to ensure the correct order of reading and writing, locks are required for synchronization or queuing.</p>
+<p>Asynchronous locks are Netkit's underlying mechanism to provide IO consistency. Netkit provides open APIs independent of "locks".</p>
+<p>As with synchronous style locks, you should always operate a lock in window mode and bind a lock to a specific object as much as possible to avoid problems such as deadlock and livelock.</p>
+<p></p>
   <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
 <dl class="item">
@@ -200,9 +203,9 @@ function main() {
 </pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/locks.nim#L11" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/locks.nim#L11" class="link-seesrc" target="_blank">Edit</a>
+An asynchronous lock.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/locks.nim#L21" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/locks.nim#L21" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -214,9 +217,9 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#initAsyncLock"><span class="Identifier">initAsyncLock</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="locks.html#AsyncLock"><span class="Identifier">AsyncLock</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/locks.nim#L15" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/locks.nim#L15" class="link-seesrc" target="_blank">Edit</a>
+Initializes an <tt class="docutils literal"><span class="pre">AsyncLock</span></tt>.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/locks.nim#L25" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/locks.nim#L25" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="acquire,AsyncLock"></a>
@@ -224,9 +227,9 @@ function main() {
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/locks.nim#L20" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/locks.nim#L20" class="link-seesrc" target="_blank">Edit</a>
+Tries to acquire a lock. When this future is completed, it indicates that the lock is acquired.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/locks.nim#L30" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/locks.nim#L30" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="release,AsyncLock"></a>
@@ -234,18 +237,18 @@ function main() {
                              <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/locks.nim#L29" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/locks.nim#L29" class="link-seesrc" target="_blank">Edit</a>
+Releases the lock that has been acquired. 
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/locks.nim#L39" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/locks.nim#L39" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="isLocked,AsyncLock"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#isLocked%2CAsyncLock"><span class="Identifier">isLocked</span></a><span class="Other">(</span><span class="Identifier">L</span><span class="Other">:</span> <a href="locks.html#AsyncLock"><span class="Identifier">AsyncLock</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/locks.nim#L37" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/locks.nim#L37" class="link-seesrc" target="_blank">Edit</a>
+Returns <tt class="docutils literal"><span class="pre">true</span></tt> if <tt class="docutils literal"><span class="pre">L</span></tt> is locked.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/locks.nim#L47" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/locks.nim#L47" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -258,7 +261,7 @@ function main() {
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:56 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:26 UTC</small>
       </div>
     </div>
   </div>

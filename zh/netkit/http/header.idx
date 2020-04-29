@@ -1,7 +1,7 @@
-Overview	header.html#overview	 Overview	
-Usage	header.html#usage	 Usage	
-Request	header.html#usage-request	  Request	
-Response	header.html#usage-response	  Response	
+概述	header.html#概述	 概述	
+用法	header.html#用法	 用法	
+请求	header.html#用法-请求	  请求	
+响应	header.html#用法-响应	  响应	
 HttpHeaderKind	netkit/http/header.html#HttpHeaderKind	header: HttpHeaderKind	
 HttpHeader	netkit/http/header.html#HttpHeader	header: HttpHeader	
 toResponseStr	netkit/http/header.html#toResponseStr,HttpHeader	header: toResponseStr(H: HttpHeader): string	

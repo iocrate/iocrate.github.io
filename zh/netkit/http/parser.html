@@ -163,10 +163,10 @@ function main() {
     </select>
   </div>
   <ul class="simple simple-toc" id="toc-list">
-<li><a class="reference" id="usage_toc" href="#usage">Usage</a></li>
-<ul class="simple"><li><a class="reference" id="usage-parse-message-header_toc" href="#usage-parse-message-header">Parse message header</a></li>
-<li><a class="reference" id="usage-parse-chunk-header_toc" href="#usage-parse-chunk-header">Parse chunk header</a></li>
-<li><a class="reference" id="usage-parse-chunk-tail_toc" href="#usage-parse-chunk-tail">Parse chunk tail</a></li>
+<li><a class="reference" id="用法_toc" href="#用法">用法</a></li>
+<ul class="simple"><li><a class="reference" id="用法-解析消息头_toc" href="#用法-解析消息头">解析消息头</a></li>
+<li><a class="reference" id="用法-解析-chunked-编码消息的块的头部_toc" href="#用法-解析-chunked-编码消息的块的头部">解析 chunked 编码消息的块的头部</a></li>
+<li><a class="reference" id="用法-解析-chunked-编码消息的尾部_toc" href="#用法-解析-chunked-编码消息的尾部">解析 chunked 编码消息的尾部</a></li>
 </ul><li>
   <a class="reference reference-toplevel" href="#6" id="56">Imports</a>
   <ul class="simple simple-toc-section">
@@ -207,11 +207,11 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc"></p><p>This module implements an incremental HTTP parser. This parser supports parsing both request messages and response messages.</p>
-<p>This parser is incremental, meaning that the message can be parsed continuously regardless of whether the message is delivered at once or divided into multiple parts. This makes the parser particularly suitable for complex IO transfer environments.</p>
+  <p class="module-desc"></p><p>这个模块实现了一个增量的 HTTP 消息解析器。该解析器支持解析请求消息和响应消息。</p>
+<p>解析器是增量的，这表示可以连续解析消息，而不管消息是一次交付还是分成多个部分。这使得该解析器特别适合复杂的 IO 传输环境。</p>
 
-<h1><a class="toc-backref" id="usage" href="#usage">Usage</a></h1><div class="r-fragment">
-<h2><a class="toc-backref" id="usage-parse-message-header" href="#usage-parse-message-header">Parse message header</a></h2><p>For example:</p>
+<h1><a class="toc-backref" id="用法" href="#用法">用法</a></h1><div class="r-fragment">
+<h2><a class="toc-backref" id="用法-解析消息头" href="#用法-解析消息头">解析消息头</a></h2><p>例子：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">parser</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">header</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">buffer</span><span class="Operator">/</span><span class="Identifier">circular</span>
@@ -223,7 +223,7 @@ function main() {
 
 <span class="Keyword">while</span> <span class="Keyword">not</span> <span class="Identifier">finished</span><span class="Punctuation">:</span>
   <span class="Identifier">put</span> <span class="Identifier">data</span> <span class="Identifier">to</span> <span class="Identifier">buffer</span> <span class="Operator">...</span>
-  <span class="Identifier">finished</span> <span class="Operator">=</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseHttpHeader</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">header</span><span class="Punctuation">)</span></pre><p>Another example:</p>
+  <span class="Identifier">finished</span> <span class="Operator">=</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseHttpHeader</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">header</span><span class="Punctuation">)</span></pre><p>另一个例子：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">parser</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">header</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">buffer</span><span class="Operator">/</span><span class="Identifier">circular</span>
@@ -232,13 +232,13 @@ function main() {
 <span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">var</span> <span class="Identifier">header</span> <span class="Operator">=</span> <span class="Identifier">HttpHeader</span><span class="Punctuation">(</span><span class="Identifier">kind</span><span class="Punctuation">:</span> <span class="Identifier">HttpHeaderKind</span><span class="Operator">.</span><span class="Identifier">Request</span><span class="Punctuation">)</span>
 
-<span class="Comment"># parse first</span>
+<span class="Comment"># 第一次解析</span>
 <span class="Keyword">let</span> <span class="Identifier">messageRequestLine</span> <span class="Operator">=</span> <span class="StringLit">"GET / HTTP/1.1</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span>
 <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">messageRequestLine</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">messageRequestLine</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseHttpHeader</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">header</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">false</span>
 <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">del</span><span class="Punctuation">(</span><span class="Identifier">messageRequestLine</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 
-<span class="Comment"># parse second</span>
+<span class="Comment"># 第二次解析</span>
 <span class="Keyword">let</span> <span class="Identifier">messageHeaderFields</span> <span class="Operator">=</span> <span class="StringLit">"Host: www.iocrate.com</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span>
 <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">messageHeaderFields</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">messageHeaderFields</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseHttpHeader</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">header</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span>
@@ -248,7 +248,7 @@ function main() {
 <span class="Identifier">assert</span> <span class="Identifier">header</span><span class="Operator">.</span><span class="Identifier">url</span> <span class="Operator">==</span> <span class="StringLit">"/"</span>
 <span class="Identifier">assert</span> <span class="Identifier">header</span><span class="Operator">.</span><span class="Identifier">version</span><span class="Operator">.</span><span class="Identifier">orig</span> <span class="Operator">==</span> <span class="StringLit">"HTTP/1.1"</span>
 <span class="Identifier">assert</span> <span class="Identifier">header</span><span class="Operator">.</span><span class="Identifier">fields</span><span class="Punctuation">[</span><span class="StringLit">"Host"</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">"www.iocrate.com"</span></pre></div><div class="r-fragment">
-<h2><a class="toc-backref" id="usage-parse-chunk-header" href="#usage-parse-chunk-header">Parse chunk header</a></h2><p>For example:</p>
+<h2><a class="toc-backref" id="用法-解析-chunked-编码消息的块的头部" href="#用法-解析-chunked-编码消息的块的头部">解析 chunked 编码消息的块的头部</a></h2><p>例子：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">parser</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">chunk</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">buffer</span><span class="Operator">/</span><span class="Identifier">circular</span>
@@ -260,7 +260,7 @@ function main() {
 
 <span class="Keyword">while</span> <span class="Keyword">not</span> <span class="Identifier">finished</span><span class="Punctuation">:</span>
   <span class="Identifier">put</span> <span class="Identifier">data</span> <span class="Identifier">to</span> <span class="Identifier">buffer</span> <span class="Operator">...</span>
-  <span class="Identifier">finished</span> <span class="Operator">=</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseChunkHeader</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">header</span><span class="Punctuation">)</span></pre><p>Another example:</p>
+  <span class="Identifier">finished</span> <span class="Operator">=</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseChunkHeader</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">header</span><span class="Punctuation">)</span></pre><p>另一个例子：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">parser</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">chunk</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">buffer</span><span class="Operator">/</span><span class="Identifier">circular</span>
@@ -269,7 +269,6 @@ function main() {
 <span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">var</span> <span class="Identifier">header</span><span class="Punctuation">:</span> <span class="Identifier">ChunkHeader</span>
 
-<span class="Comment"># parse first</span>
 <span class="Keyword">let</span> <span class="Identifier">s</span> <span class="Operator">=</span> <span class="StringLit">"9; language=en; city=London</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span>
 <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseChunkHeader</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">header</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span>
@@ -278,8 +277,7 @@ function main() {
 <span class="Identifier">assert</span> <span class="Identifier">header</span><span class="Operator">.</span><span class="Identifier">size</span> <span class="Operator">==</span> <span class="DecNumber">9</span>
 <span class="Identifier">assert</span> <span class="Identifier">header</span><span class="Operator">.</span><span class="Identifier">extensions</span> <span class="Operator">==</span> <span class="StringLit">"; language=en; city=London"</span></pre><p>See <strong>chunk</strong> module and <strong>metadata</strong> module for more information about chunked encoding.</p>
 </div><div class="r-fragment">
-<h2><a class="toc-backref" id="usage-parse-chunk-tail" href="#usage-parse-chunk-tail">Parse chunk tail</a></h2><p>For example:</p>
-<pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">parser</span>
+<h2><a class="toc-backref" id="用法-解析-chunked-编码消息的尾部" href="#用法-解析-chunked-编码消息的尾部">解析 chunked 编码消息的尾部</a></h2></div><blockquote><p>例子：</p><pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">parser</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">chunk</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">buffer</span><span class="Operator">/</span><span class="Identifier">circular</span>
 
@@ -290,7 +288,7 @@ function main() {
 
 <span class="Keyword">while</span> <span class="Keyword">not</span> <span class="Identifier">finished</span><span class="Punctuation">:</span>
   <span class="Identifier">put</span> <span class="Identifier">data</span> <span class="Identifier">to</span> <span class="Identifier">buffer</span> <span class="Operator">...</span>
-  <span class="Identifier">finished</span> <span class="Operator">=</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseChunkEnd</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">trailers</span><span class="Punctuation">)</span></pre><p>Another example:</p>
+  <span class="Identifier">finished</span> <span class="Operator">=</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseChunkEnd</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">trailers</span><span class="Punctuation">)</span></pre><p>另一个例子：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">parser</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">chunk</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">buffer</span><span class="Operator">/</span><span class="Identifier">circular</span>
@@ -299,14 +297,14 @@ function main() {
 <span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">var</span> <span class="Identifier">trailers</span><span class="Punctuation">:</span> <span class="Identifier">seq</span><span class="Punctuation">[</span><span class="Identifier">string</span><span class="Punctuation">]</span>
 
-<span class="Comment"># parse first</span>
 <span class="Keyword">let</span> <span class="Identifier">s</span> <span class="Operator">=</span> <span class="StringLit">"</span><span class="EscapeSequence">\0</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">Expires"</span><span class="Punctuation">:</span> <span class="StringLit">"Wed, 21 Oct 2015 07:28:00 GMT</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span>
 <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseChunkEnd</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">trailers</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span>
 <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">del</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 
-<span class="Identifier">assert</span> <span class="Identifier">trailers</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">"Expires"</span><span class="Punctuation">:</span> <span class="StringLit">"Wed, 21 Oct 2015 07:28:00 GMT"</span></pre><p>See <strong>chunk</strong> module and <strong>metadata</strong> module for more information about terminating chunk and trailers.</p>
-</div><p></p>
+<span class="Identifier">assert</span> <span class="Identifier">trailers</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">"Expires"</span><span class="Punctuation">:</span> <span class="StringLit">"Wed, 21 Oct 2015 07:28:00 GMT"</span></pre><p>看看 <strong>chunk</strong> 模块和 <strong>metadata</strong> 模块了解更多关于 terminating chunk and trailers 的信息。</p>
+<p></p></blockquote>
+<p></p>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
@@ -326,9 +324,9 @@ function main() {
 </pre></dt>
 <dd>
 
-HTTP message parser.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L171" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L171" class="link-seesrc" target="_blank">Edit</a>
+HTTP 消息解析器。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L166" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L166" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -340,20 +338,20 @@ HTTP message parser.
 <dt><pre><span class="Keyword">proc</span> <a href="#initHttpParser"><span class="Identifier">initHttpParser</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="parser.html#HttpParser"><span class="Identifier">HttpParser</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Initialize a <tt class="docutils literal"><span class="pre">HttpParser</span></tt>.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L188" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L188" class="link-seesrc" target="_blank">Edit</a>
+初始化一个 <tt class="docutils literal"><span class="pre">HttpParser</span></tt> 。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L183" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L183" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="clear,HttpParser"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#clear%2CHttpParser"><span class="Identifier">clear</span></a><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="parser.html#HttpParser"><span class="Identifier">HttpParser</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Reset this parser to clear all status.</p>
-<p>Since <tt class="docutils literal"><span class="pre">HttpParser</span></tt> is an incremental, various state will be saved during the parsing process. This proc resets all states in order to start a new parsing process. </p>
+<p>重置解析器以清除所有状态。</p>
+<p>由于解析器是增量的，因此在解析过程中将保存许多状态。此函数将重置所有状态，以开始新的解析过程。</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L192" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L192" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L187" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L187" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="parseHttpHeader,HttpParser,MarkableCircularBuffer,HttpHeader"></a>
@@ -361,12 +359,12 @@ Initialize a <tt class="docutils literal"><span class="pre">HttpParser</span></t
                     <span class="Identifier">header</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="header.html#HttpHeader"><span class="Identifier">HttpHeader</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Parses the header of a HTTP message. <tt class="docutils literal"><span class="pre">buf</span></tt> specifies a circular buffer, which stores the data to be parsed. <tt class="docutils literal"><span class="pre">header</span></tt> specifies the message header object that output when the parsing is complete. Returns <tt class="docutils literal"><span class="pre">true</span></tt> if the parsing is complete.</p>
-<p>Depending on the value of the <tt class="docutils literal"><span class="pre">kind</span></tt> attribute of <tt class="docutils literal"><span class="pre">header</span></tt>, different resolutions are taken. When <tt class="docutils literal"><span class="pre">kind=Request</span></tt>, a message is parsed as a request. When <tt class="docutils literal"><span class="pre">kind=Response</span></tt>, a message is parsed as a request.</p>
-<p>This process is performed incrementally, that is, the next parsing will continue from the previous position.</p>
+<p>解析 HTTP 消息的头部。 <tt class="docutils literal"><span class="pre">buf</span></tt> 指定一个循环缓冲区，存储被解析的数据。 <tt class="docutils literal"><span class="pre">header</span></tt> 指定解析完成时输出的消息标头对象。 如果解析完成，则返回 <tt class="docutils literal"><span class="pre">true</span></tt> 。</p>
+<p>根据 <tt class="docutils literal"><span class="pre">header</span></tt> 的 <tt class="docutils literal"><span class="pre">kind</span></tt> 属性值，采用不同的解析方案。当 <tt class="docutils literal"><span class="pre">kind = Request</span></tt> 时，消息被解析为请求。当 <tt class="docutils literal"><span class="pre">kind = Response</span></tt> 时，消息被解析为响应。</p>
+<p>此过程是增量执行的，也就是说，下一次解析将从上一次结束的位置继续。</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L198" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L198" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L192" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L192" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="parseChunkHeader,HttpParser,MarkableCircularBuffer,ChunkHeader"></a>
@@ -374,11 +372,11 @@ Initialize a <tt class="docutils literal"><span class="pre">HttpParser</span></t
                      <span class="Identifier">header</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="chunk.html#ChunkHeader"><span class="Identifier">ChunkHeader</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Parse the size and extensions of a data chunk that encoded by <tt class="docutils literal"><span class="pre">Transfor-Encoding: chunked</span></tt>.</p>
-<p>This process is performed incrementally, that is, the next parsing will continue from the previous position.</p>
+<p>解析通过 chunked 编码消息的块的头部（大小和扩展名）。</p>
+<p>此过程是增量执行的，也就是说，下一次解析将从上一次结束的位置继续。</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L208" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L208" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L199" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L199" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="parseChunkEnd,HttpParser,MarkableCircularBuffer,seq[string]"></a>
@@ -386,11 +384,11 @@ Initialize a <tt class="docutils literal"><span class="pre">HttpParser</span></t
                   <span class="Identifier">trailers</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Parse the tail of a message that encoded by <tt class="docutils literal"><span class="pre">Transfor-Encoding: chunked</span></tt>.</p>
-<p>This process is performed incrementally, that is, the next parsing will continue from the previous position.</p>
+<p>解析通过 chunked 编码消息的尾部（终止块、trailers、final CRLF）。</p>
+<p>此过程是增量执行的，也就是说，下一次解析将从上一次结束的位置继续。</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L218" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L218" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L208" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L208" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -403,7 +401,7 @@ Initialize a <tt class="docutils literal"><span class="pre">HttpParser</span></t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:50:02 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:31 UTC</small>
       </div>
     </div>
   </div>

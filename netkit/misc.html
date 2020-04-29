@@ -178,7 +178,7 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc"></p>
+  <p class="module-desc">This module contains miscellaneous functions that don’t really belong in any other module.</p>
   <div class="section" id="18">
 <h1><a class="toc-backref" href="#18">Templates</a></h1>
 <dl class="item">
@@ -186,18 +186,18 @@ function main() {
 <dt><pre><span class="Keyword">template</span> <a href="#offset.t%2Cpointer%2Cint"><span class="Identifier">offset</span></a><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <span class="Identifier">pointer</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">pointer</span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/misc.nim#L7" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/misc.nim#L7" class="link-seesrc" target="_blank">Edit</a>
+返回一个新的指针，该指针从 <tt class="docutils literal"><span class="pre">p</span></tt> 向后偏移 <tt class="docutils literal"><span class="pre">n</span></tt> 个字节。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/misc.nim#L9" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/misc.nim#L9" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="checkDefNatural.t,static[Natural],static[string]"></a>
 <dt><pre><span class="Keyword">template</span> <a href="#checkDefNatural.t%2Cstatic%5BNatural%5D%2Cstatic%5Bstring%5D"><span class="Identifier">checkDefNatural</span></a><span class="Other">(</span><span class="Identifier">value</span><span class="Other">:</span> <span class="Identifier">static</span><span class="Other">[</span><span class="Identifier">Natural</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">static</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">untyped</span></pre></dt>
 <dd>
 
-
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/misc.nim#L11" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/misc.nim#L11" class="link-seesrc" target="_blank">Edit</a>
+Checks whether <tt class="docutils literal"><span class="pre">value</span></tt> is a natural number (zero and positive integer). If not, then stop compiling. <tt class="docutils literal"><span class="pre">name</span></tt> specifies its symbolic name.
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/misc.nim#L13" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/misc.nim#L13" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -210,7 +210,7 @@ function main() {
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:55 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:24 UTC</small>
       </div>
     </div>
   </div>

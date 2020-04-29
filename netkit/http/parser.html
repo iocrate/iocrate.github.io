@@ -269,7 +269,6 @@ function main() {
 <span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">var</span> <span class="Identifier">header</span><span class="Punctuation">:</span> <span class="Identifier">ChunkHeader</span>
 
-<span class="Comment"># parse first</span>
 <span class="Keyword">let</span> <span class="Identifier">s</span> <span class="Operator">=</span> <span class="StringLit">"9; language=en; city=London</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span>
 <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseChunkHeader</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">header</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span>
@@ -299,7 +298,6 @@ function main() {
 <span class="Keyword">var</span> <span class="Identifier">buffer</span> <span class="Operator">=</span> <span class="Identifier">initMarkableCircularBuffer</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">var</span> <span class="Identifier">trailers</span><span class="Punctuation">:</span> <span class="Identifier">seq</span><span class="Punctuation">[</span><span class="Identifier">string</span><span class="Punctuation">]</span>
 
-<span class="Comment"># parse first</span>
 <span class="Keyword">let</span> <span class="Identifier">s</span> <span class="Operator">=</span> <span class="StringLit">"</span><span class="EscapeSequence">\0</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">Expires"</span><span class="Punctuation">:</span> <span class="StringLit">"Wed, 21 Oct 2015 07:28:00 GMT</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span>
 <span class="Identifier">buffer</span><span class="Operator">.</span><span class="Identifier">add</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">parser</span><span class="Operator">.</span><span class="Identifier">parseChunkEnd</span><span class="Punctuation">(</span><span class="Identifier">buffer</span><span class="Punctuation">,</span> <span class="Identifier">trailers</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span>
@@ -327,8 +325,8 @@ function main() {
 <dd>
 
 HTTP message parser.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L171" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L171" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L169" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L169" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -341,8 +339,8 @@ HTTP message parser.
 <dd>
 
 Initialize a <tt class="docutils literal"><span class="pre">HttpParser</span></tt>.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L188" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L188" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L186" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L186" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="clear,HttpParser"></a>
@@ -352,8 +350,8 @@ Initialize a <tt class="docutils literal"><span class="pre">HttpParser</span></t
 <p>Reset this parser to clear all status.</p>
 <p>Since <tt class="docutils literal"><span class="pre">HttpParser</span></tt> is an incremental, various state will be saved during the parsing process. This proc resets all states in order to start a new parsing process.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L192" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L192" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L190" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L190" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="parseHttpHeader,HttpParser,MarkableCircularBuffer,HttpHeader"></a>
@@ -366,8 +364,8 @@ Initialize a <tt class="docutils literal"><span class="pre">HttpParser</span></t
 <p>Depending on the value of the <tt class="docutils literal"><span class="pre">kind</span></tt> attribute of <tt class="docutils literal"><span class="pre">header</span></tt>, different resolutions are taken. When <tt class="docutils literal"><span class="pre">kind=Request</span></tt>, a message is parsed as a request. When <tt class="docutils literal"><span class="pre">kind=Response</span></tt>, a message is parsed as a request.</p>
 <p>This process is performed incrementally, that is, the next parsing will continue from the previous position.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L259" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L259" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L257" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L257" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="parseChunkHeader,HttpParser,MarkableCircularBuffer,ChunkHeader"></a>
@@ -379,8 +377,8 @@ Initialize a <tt class="docutils literal"><span class="pre">HttpParser</span></t
 <p>Parse the size and extensions of a data chunk that encoded by <tt class="docutils literal"><span class="pre">Transfor-Encoding: chunked</span></tt>.</p>
 <p>This process is performed incrementally, that is, the next parsing will continue from the previous position.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L366" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L366" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L364" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L364" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="parseChunkEnd,HttpParser,MarkableCircularBuffer,seq[string]"></a>
@@ -391,8 +389,8 @@ Initialize a <tt class="docutils literal"><span class="pre">HttpParser</span></t
 <p>Parse the tail of a message that encoded by <tt class="docutils literal"><span class="pre">Transfor-Encoding: chunked</span></tt>.</p>
 <p>This process is performed incrementally, that is, the next parsing will continue from the previous position.</p>
 
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L392" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L392" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/parser.nim#L390" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/parser.nim#L390" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -405,7 +403,7 @@ Initialize a <tt class="docutils literal"><span class="pre">HttpParser</span></t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:49:56 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:26 UTC</small>
       </div>
     </div>
   </div>

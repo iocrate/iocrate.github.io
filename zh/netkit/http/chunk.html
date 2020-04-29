@@ -163,14 +163,14 @@ function main() {
     </select>
   </div>
   <ul class="simple simple-toc" id="toc-list">
-<li><a class="reference" id="overview_toc" href="#overview">Overview</a></li>
-<ul class="simple"><li><a class="reference" id="overview-format_toc" href="#overview-format">Format</a></li>
-<li><a class="reference" id="overview-example_toc" href="#overview-example">Example</a></li>
-<li><a class="reference" id="overview-about-backslashn-and-backslashl_toc" href="#overview-about-backslashn-and-backslashl">About \n and \L</a></li>
-</ul><li><a class="reference" id="usage_toc" href="#usage">Usage</a></li>
-<ul class="simple"><li><a class="reference" id="usage-encoding_toc" href="#usage-encoding">Encoding</a></li>
-<li><a class="reference" id="usage-encoding-with-pointer-buffer_toc" href="#usage-encoding-with-pointer-buffer">Encoding with pointer buffer</a></li>
-<li><a class="reference" id="usage-decoding_toc" href="#usage-decoding">Decoding</a></li>
+<li><a class="reference" id="概述_toc" href="#概述">概述</a></li>
+<ul class="simple"><li><a class="reference" id="概述-块的格式_toc" href="#概述-块的格式">块的格式</a></li>
+<li><a class="reference" id="概述-例子_toc" href="#概述-例子">例子</a></li>
+<li><a class="reference" id="概述-关于-backslashn-and-backslashl_toc" href="#概述-关于-backslashn-and-backslashl">关于 \n and \L</a></li>
+</ul><li><a class="reference" id="用法_toc" href="#用法">用法</a></li>
+<ul class="simple"><li><a class="reference" id="用法-编码_toc" href="#用法-编码">编码</a></li>
+<li><a class="reference" id="用法-使用指针缓冲区编码_toc" href="#用法-使用指针缓冲区编码">使用指针缓冲区编码</a></li>
+<li><a class="reference" id="用法-解码_toc" href="#用法-解码">解码</a></li>
 </ul><li>
   <a class="reference reference-toplevel" href="#6" id="56">Imports</a>
   <ul class="simple simple-toc-section">
@@ -210,16 +210,17 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">HTTP 1.1 supports chunked encoding, which allows HTTP messages to be broken up into several parts. Chunking is most often used by the server for responses, but clients can also chunk large requests. By adding <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt> to a message header, this message can be sent chunk by chunk. Each data chunk requires to be encoded and decoded when it is sent and received. This module provides tools for dealing with these types of encodings and decodings.
-</p><h1><a class="toc-backref" id="overview" href="#overview">Overview</a></h1><div class="r-fragment">
-<h2><a class="toc-backref" id="overview-format" href="#overview-format">Format</a></h2><p>If a <tt class="docutils literal"><span class="pre">Transfer-Encoding</span></tt> field with a value of <tt class="docutils literal"><span class="pre">"chunked"</span></tt> is specified in an HTTP message (either a request sent by a client or the response from the server), the body of the message consists of an unspecified number of chunks, a terminating chunk, trailer, and a final CRLF sequence (i.e. carriage return followed by line feed).</p>
-<p>Each chunk starts with the number of octets of the data it embeds expressed as a hexadecimal number in ASCII followed by optional parameters (chunk extension) and a terminating CRLF sequence, followed by the chunk data. The chunk is terminated by CRLF.</p>
-<p>If chunk extensions are provided, the chunk size is terminated by a semicolon and followed by the parameters, each also delimited by semicolons. Each parameter is encoded as an extension name followed by an optional equal sign and value. These parameters could be used for a running message digest or digital signature, or to indicate an estimated transfer progress, for instance.</p>
-<p>The terminating chunk is a regular chunk, with the exception that its length is zero. It is followed by the trailer, which consists of a (possibly empty) sequence of entity header fields. Normally, such header fields would be sent in the message's header; however, it may be more efficient to determine them after processing the entire message entity. In that case, it is useful to send those headers in the trailer.</p>
-<p>Header fields that regulate the use of trailers are <tt class="docutils literal"><span class="pre">TE</span></tt> (used in requests), and <tt class="docutils literal"><span class="pre">Trailers</span></tt> (used in responses).</p>
-<blockquote><p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Chunked_transfer_encoding">Chunked transfer encoding</a> for more information.</p></blockquote>
+  <p class="module-desc"></p><p>HTTP 1.1 支持 chunked 编码，允许将 HTTP 消息拆分成多个块逐块地传输。通常，服务器最常使用 chunked 消息， 但是客户端也可以用来处理比较大的请求。</p>
+<p>在消息头添加 <tt class="docutils literal"><span class="pre">Transfer-Encoding: chunked</span></tt> ，消息体就会进行 chunked 编码并且逐块地传输。 在传输过程中需要编码和解码，这个模块提供了针对这些编码解码的工具。</p>
+
+<h1><a class="toc-backref" id="概述" href="#概述">概述</a></h1><div class="r-fragment">
+<h2><a class="toc-backref" id="概述-块的格式" href="#概述-块的格式">块的格式</a></h2><p>经过 chunked 编码的 HTTP 消息 (不管是由客户端发送还是服务器发送)，其消息体都由零个到多个 chunks、一个 terminating chunk、trailers、 一个 final CRLF (即回车换行) 组成。</p>
+<p>每个块 (chunk) 最开始是块大小和块扩展 (chunk extension) ，后面跟着块数据 (chunk data)。块大小是十六进制字符，表示块数据的实际尺寸。 块扩展是可选的，以分号 <tt class="docutils literal"><span class="pre">';'</span></tt> 作为分隔符，每一部分是一个名值对，名值对以 <tt class="docutils literal"><span class="pre">'='</span></tt> 作为分隔符。比如 <tt class="docutils literal"><span class="pre">"; a=1; b=2"</span></tt> 。</p>
+<p>终止块 (terminating chunk) 是一个普通的块 (chunk)，只不过其块大小总是 <tt class="docutils literal"><span class="pre">0</span></tt> ，表示没有数据。其后面跟着 trailers，trailers 也是可选的， 由常规的 HTTP 头字段组成，作为元数据挂载在消息尾部。</p>
+<p>HTTP 规范规定，只有在收到请求带有 <tt class="docutils literal"><span class="pre">TE</span></tt> 头字段时，才允许在响应中发送 trailers 。当然，这说明 trailers 只在服务器发出的响应消息中才有用。</p>
+<blockquote><p>看看 <a class="reference external" href="https://en.wikipedia.org/wiki/Chunked_transfer_encoding">Chunked transfer encoding</a> 了解更多。</p></blockquote>
 </div><div class="r-fragment">
-<h2><a class="toc-backref" id="overview-example" href="#overview-example">Example</a></h2><p>Here is an example of a body of a chunked message:</p>
+<h2><a class="toc-backref" id="概述-例子" href="#概述-例子">例子</a></h2><p>一个 chunked 消息体的例子：</p>
 <pre class="listing">5;\r\n                                      # chunk-size and chunk-extensions (empty)
 Hello\r\n                                   # data
 9; language=en; city=London\r\n             # chunk-size and chunk-extensions
@@ -227,10 +228,10 @@ Developer\r\n                               # data
 0\r\n                                       # terminating chunk ---------------------
 Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n  # trailer
 \r\n                                        # final CRLF-----------------------------</pre></div><div class="r-fragment">
-<h2><a class="toc-backref" id="overview-about-backslashn-and-backslashl" href="#overview-about-backslashn-and-backslashl">About \n and \L</a></h2><p>Since <tt class="docutils literal"><span class="pre">\n</span></tt> cannot be represented as a character (but a string) in Nim language, we use <tt class="docutils literal"><span class="pre">'\L'</span></tt> to represent a newline character here.</p>
+<h2><a class="toc-backref" id="概述-关于-backslashn-and-backslashl" href="#概述-关于-backslashn-and-backslashl">关于 \n and \L</a></h2><p>由于在 Nim 语言中 \n 不能表示为一个字符 (而是字符串)，所以我们使用 <tt class="docutils literal"><span class="pre">\L</span></tt> 表示换行符号。</p>
 </div>
-<h1><a class="toc-backref" id="usage" href="#usage">Usage</a></h1><div class="r-fragment">
-<h2><a class="toc-backref" id="usage-encoding" href="#usage-encoding">Encoding</a></h2><p>To implement a chunked body shown in the above example:</p>
+<h1><a class="toc-backref" id="用法" href="#用法">用法</a></h1><div class="r-fragment">
+<h2><a class="toc-backref" id="用法-编码" href="#用法-编码">编码</a></h2><p>实现上面例子的 chunked 消息体：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">chunk</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">headerfield</span>
 
@@ -243,9 +244,9 @@ Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n  # trailer
 
 <span class="Identifier">assert</span> <span class="Identifier">encodeChunkEnd</span><span class="Punctuation">(</span><span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Expires"</span><span class="Punctuation">:</span> <span class="StringLit">"Wed, 21 Oct 2015 07:28:00 GMT"</span>
-<span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">"0</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Expires: Wed, 21 Oct 2015 07:28:00 GMT\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre><p>This example demonstrates the string version of the encoding procs. However, there is also a more efficient solution.</p>
+<span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">"0</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Expires: Wed, 21 Oct 2015 07:28:00 GMT\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre><p>这个例子演示了编码函数的字符串版本。不过，netkit 也提供了更高效的方案，请参看下面。</p>
 
-<h2><a class="toc-backref" id="usage-encoding-with-pointer-buffer" href="#usage-encoding-with-pointer-buffer">Encoding with pointer buffer</a></h2><p>Continuously reads data from a file and then encodes the data:</p>
+<h2><a class="toc-backref" id="用法-使用指针缓冲区编码" href="#用法-使用指针缓冲区编码">使用指针缓冲区编码</a></h2><p>持续的从一个文件读数据，同时把数据编码：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">chunk</span>
 <span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">headerfield</span>
 
@@ -267,21 +268,21 @@ Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n  # trailer
     <span class="Identifier">echo</span> <span class="Identifier">encodeChunkEnd</span><span class="Punctuation">(</span><span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
       <span class="StringLit">"Expires"</span><span class="Punctuation">:</span> <span class="StringLit">"Wed, 21 Oct 2015 07:28:00 GMT"</span>
     <span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">)</span>
-    <span class="Keyword">break</span></pre><blockquote><p>Consider using pointer buffer when you are dealing with large amounts of data and are very concerned about memory consumption.</p></blockquote>
+    <span class="Keyword">break</span></pre><blockquote><p>当您对性能非常关注或者正在处理大量数据时，考虑使用指针缓冲区方案。</p></blockquote>
 </div><div class="r-fragment">
-<h2><a class="toc-backref" id="usage-decoding" href="#usage-decoding">Decoding</a></h2><p>To parse a char sequence consisting of chunk-size and chunk-extensions:</p>
+<h2><a class="toc-backref" id="用法-解码" href="#用法-解码">解码</a></h2><p>解析由块尺寸 (chunk size) 和块扩展 (chunk extensions) 组成的字符序列：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">chunk</span>
 
 <span class="Keyword">let</span> <span class="Identifier">header</span> <span class="Operator">=</span> <span class="Identifier">parseChunkHeader</span><span class="Punctuation">(</span><span class="StringLit">"1A; a1=v1; a2=v2"</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">header</span><span class="Operator">.</span><span class="Identifier">size</span> <span class="Operator">=</span> <span class="DecNumber">26</span>
-<span class="Identifier">assert</span> <span class="Identifier">header</span><span class="Operator">.</span><span class="Identifier">extensions</span> <span class="Operator">=</span> <span class="StringLit">"; a1=v1; a2=v2"</span></pre><p>To parse a char sequence associated with chunk-extensions ：</p>
+<span class="Identifier">assert</span> <span class="Identifier">header</span><span class="Operator">.</span><span class="Identifier">extensions</span> <span class="Operator">=</span> <span class="StringLit">"; a1=v1; a2=v2"</span></pre><p>解析块扩展 (chunk extensions) 相关的字符序列：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">chunk</span>
 
 <span class="Keyword">let</span> <span class="Identifier">extensions</span> <span class="Operator">=</span> <span class="Identifier">parseChunkExtensions</span><span class="Punctuation">(</span><span class="StringLit">"; a1=v1; a2=v2"</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">name</span> <span class="Operator">=</span> <span class="StringLit">"a1"</span>
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"v1"</span>
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">name</span> <span class="Operator">=</span> <span class="StringLit">"a2"</span>
-<span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"v2"</span></pre><p>To parse a set of char sequence associated with tailers：</p>
+<span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">=</span> <span class="StringLit">"v2"</span></pre><p>解析 trailers 相关的字符序列：</p>
 <pre class="listing"><span class="Keyword">import</span> <span class="Identifier">netkit</span><span class="Operator">/</span><span class="Identifier">http</span><span class="Operator">/</span><span class="Identifier">chunk</span>
 
 <span class="Keyword">let</span> <span class="Identifier">tailers</span> <span class="Operator">=</span> <span class="Identifier">parseChunkTrailers</span><span class="Punctuation">(</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"Expires: Wed, 21 Oct 2015 07:28:00 GMT"</span><span class="Punctuation">]</span><span class="Punctuation">)</span>
@@ -301,18 +302,18 @@ Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n  # trailer
 </pre></dt>
 <dd>
 
-Represents the header of a chunk.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L180" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L180" class="link-seesrc" target="_blank">Edit</a>
+表示块 (chunk) 的头部。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L166" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L166" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="ChunkExtension"></a>
 <dt><pre><a href="chunk.html#ChunkExtension"><span class="Identifier">ChunkExtension</span></a> <span class="Other">=</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">,</span> <span class="Identifier">value</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">]</span></pre></dt>
 <dd>
 
-Represents a chunk extension.
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L184" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L184" class="link-seesrc" target="_blank">Edit</a>
+表示块扩展 (chunk extensions)。
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L170" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L170" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -324,40 +325,40 @@ Represents a chunk extension.
 <dt><pre><span class="Keyword">proc</span> <a href="#parseChunkHeader%2Cstring"><span class="Identifier">parseChunkHeader</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="chunk.html#ChunkHeader"><span class="Identifier">ChunkHeader</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Converts a string to a <tt class="docutils literal"><span class="pre">ChunkHeader</span></tt>.</p>
-<p>Examples:</p>
+<p>把字符串转换成一个 <tt class="docutils literal"><span class="pre">ChunkHeader</span></tt> 。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Identifier">parseChunkHeader</span><span class="Punctuation">(</span><span class="StringLit">"64"</span><span class="Punctuation">)</span> <span class="Comment"># =&gt; (100, "")</span>
 <span class="Identifier">parseChunkHeader</span><span class="Punctuation">(</span><span class="StringLit">"64; name=value"</span><span class="Punctuation">)</span> <span class="Comment"># =&gt; (100, "; name=value")</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L188" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L188" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L174" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L174" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="parseChunkExtensions,string"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#parseChunkExtensions%2Cstring"><span class="Identifier">parseChunkExtensions</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="chunk.html#ChunkExtension"><span class="Identifier">ChunkExtension</span></a><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Converts a string representing extensions to a set of <tt class="docutils literal"><span class="pre">(name, value)</span></tt> pair.</p>
-<p>Examples:</p>
+<p>把字符串转换成一组 <tt class="docutils literal"><span class="pre">(name, value)</span></tt> 对，该字符串表示块扩展。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">extensions</span> <span class="Operator">=</span> <span class="Identifier">parseChunkExtensions</span><span class="Punctuation">(</span><span class="StringLit">";a1=v1;a2=v2"</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">name</span> <span class="Operator">==</span> <span class="StringLit">"a1"</span>
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">==</span> <span class="StringLit">"v1"</span>
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">name</span> <span class="Operator">==</span> <span class="StringLit">"a2"</span>
 <span class="Identifier">assert</span> <span class="Identifier">extensions</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span><span class="Operator">.</span><span class="Identifier">value</span> <span class="Operator">==</span> <span class="StringLit">"v2"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L198" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L198" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L184" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L184" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="parseChunkTrailers,openArray[string]"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#parseChunkTrailers%2CopenArray%5Bstring%5D"><span class="Identifier">parseChunkTrailers</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <span class="Identifier">openArray</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Converts a string array representing trailers to a <tt class="docutils literal"><span class="pre">HeaderFields</span></tt>.</p>
-<p>Examples:</p>
+<p>把一组字符串转换为一个 <tt class="docutils literal"><span class="pre">HeaderFields</span></tt> ，该组字符串表示一些 trailers。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">fields</span> <span class="Operator">=</span> <span class="Identifier">parseChunkTrailers</span><span class="Punctuation">(</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="StringLit">"Expires: Wed, 21 Oct 2015 07:28:00 GMT"</span><span class="Punctuation">]</span><span class="Punctuation">)</span>
            <span class="Comment"># =&gt; ("Expires", "Wed, 21 Oct 2015 07:28:00 GMT")</span>
 <span class="Identifier">assert</span> <span class="Identifier">fields</span><span class="Punctuation">[</span><span class="StringLit">"Expires"</span><span class="Punctuation">]</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">"Wed, 21 Oct 2015 07:28:00 GMT"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L211" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L211" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L197" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L197" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="encodeChunk,pointer,pointer,Natural"></a>
@@ -365,15 +366,15 @@ Represents a chunk extension.
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Encodes <tt class="docutils literal"><span class="pre">size</span></tt> bytes from the buffer <tt class="docutils literal"><span class="pre">source</span></tt>, storing the results in the buffer <tt class="docutils literal"><span class="pre">dest</span></tt>. The return value is the number of bytes of the results.</p>
-<p><strong>Note:</strong> the length of <tt class="docutils literal"><span class="pre">dest</span></tt> must be at least <tt class="docutils literal"><span class="pre">21</span></tt> bytes larger than <tt class="docutils literal"><span class="pre">source</span></tt> to hold the results.</p>
-<p>Examples:</p>
+<p>编码一块数据， <tt class="docutils literal"><span class="pre">source</span></tt> 指定被编码的数据， <tt class="docutils literal"><span class="pre">size</span></tt> 指定数据的字节长度，编码后的结果存储到 <tt class="docutils literal"><span class="pre">dest</span></tt> 。</p>
+<p>注意： <tt class="docutils literal"><span class="pre">dest</span></tt> 必须比 <tt class="docutils literal"><span class="pre">size</span></tt> 至少大 <tt class="docutils literal"><span class="pre">21</span></tt> 字节长度，否则，将没有足够的空间存储编码后的数据。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Developer"</span>
 <span class="Keyword">let</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">newString</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">+</span> <span class="DecNumber">21</span><span class="Punctuation">)</span>
 <span class="Identifier">encodeChunk</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">,</span> <span class="Identifier">dest</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">dest</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"9</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Developer\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L222" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L222" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L208" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L208" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="encodeChunk,pointer,pointer,Natural,type openArray[ChunkExtension]"></a>
@@ -381,28 +382,28 @@ Represents a chunk extension.
                 <span class="Identifier">extensions</span> <span class="Other">=</span> <span class="Identifier">openArray</span><span class="Other">[</span><a href="chunk.html#ChunkExtension"><span class="Identifier">ChunkExtension</span></a><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Natural</span></pre></dt>
 <dd>
 
-<p>Encodes <tt class="docutils literal"><span class="pre">size</span></tt> bytes from the buffer <tt class="docutils literal"><span class="pre">source</span></tt>, storing the results in the buffer <tt class="docutils literal"><span class="pre">dest</span></tt>. <tt class="docutils literal"><span class="pre">extensions</span></tt> specifies chunk extensions. The return value is the number of bytes of the results.</p>
-<p><strong>Note:</strong> the length of <tt class="docutils literal"><span class="pre">dest</span></tt> must be at least <tt class="docutils literal"><span class="pre">21 + extensions.len</span></tt> bytes larger than <tt class="docutils literal"><span class="pre">source</span></tt> to hold the results.</p>
-<p>Examples:</p>
+<p>编码一块数据， <tt class="docutils literal"><span class="pre">source</span></tt> 指定被编码的数据， <tt class="docutils literal"><span class="pre">size</span></tt> 指定数据的字节长度， <tt class="docutils literal"><span class="pre">extensions</span></tt> 指定块扩展。 编码后的结果存储到 <tt class="docutils literal"><span class="pre">dest</span></tt> 。</p>
+<p>注意： <tt class="docutils literal"><span class="pre">dest</span></tt> 必须比 <tt class="docutils literal"><span class="pre">size</span></tt> 至少大 <tt class="docutils literal"><span class="pre">21 + extensions.len</span></tt> 字节长度，否则，将没有足够的空间存储编码后的数据。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">source</span> <span class="Operator">=</span> <span class="StringLit">"Developer"</span>
 <span class="Keyword">let</span> <span class="Identifier">extensions</span> <span class="Operator">=</span> <span class="StringLit">"language=en; city=London"</span>
 <span class="Keyword">let</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">newString</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">+</span> <span class="DecNumber">21</span> <span class="Operator">+</span> <span class="Identifier">extensions</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">)</span>
 <span class="Identifier">encodeChunk</span><span class="Punctuation">(</span><span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">source</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">,</span> <span class="Identifier">dest</span><span class="Operator">.</span><span class="Identifier">cstring</span><span class="Punctuation">,</span> <span class="Identifier">dest</span><span class="Operator">.</span><span class="Identifier">len</span><span class="Punctuation">,</span> <span class="Identifier">extensions</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"9; language=en; city=London</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Developer\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L241" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L241" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L226" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L226" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="encodeChunk,string"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#encodeChunk%2Cstring"><span class="Identifier">encodeChunk</span></a><span class="Other">(</span><span class="Identifier">source</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Encodes <tt class="docutils literal"><span class="pre">source</span></tt> into a chunk.</p>
-<p>Examples:</p>
+<p>编码一块数据。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">encodeChunk</span><span class="Punctuation">(</span><span class="StringLit">"Developer"</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"9</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Developer\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L263" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L263" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L247" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L247" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="encodeChunk,string,openArray[ChunkExtension]"></a>
@@ -410,41 +411,41 @@ Represents a chunk extension.
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Encodes <tt class="docutils literal"><span class="pre">source</span></tt> into a chunk. <tt class="docutils literal"><span class="pre">extensions</span></tt> specifies chunk extensions.</p>
-<p>Examples:</p>
+<p>编码一块数据。 <tt class="docutils literal"><span class="pre">extensions</span></tt> 指定块扩展。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">encodeChunk</span><span class="Punctuation">(</span><span class="StringLit">"Developer"</span><span class="Punctuation">,</span> <span class="Punctuation">{</span>
   <span class="StringLit">"language"</span><span class="Punctuation">:</span> <span class="StringLit">"en"</span><span class="Punctuation">,</span>
   <span class="StringLit">"city"</span><span class="Punctuation">:</span> <span class="StringLit">"London"</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"9; language=en; city=London</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Developer\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L273" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L273" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L257" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L257" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="encodeChunkEnd"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#encodeChunkEnd"><span class="Identifier">encodeChunkEnd</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Returns a string consisting of a terminating chunk and a final CRLF sequence.</p>
-<p>Examples:</p>
+<p>返回一个由 terminating chunk 和 final CRLF 组成的块，表示消息的尾部。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">encodeChunkEnd</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"0</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L286" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L286" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L270" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L270" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 <a id="encodeChunkEnd,HeaderFields"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#encodeChunkEnd%2CHeaderFields"><span class="Identifier">encodeChunkEnd</span></a><span class="Other">(</span><span class="Identifier">trailers</span><span class="Other">:</span> <a href="headerfield.html#HeaderFields"><span class="Identifier">HeaderFields</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>Returns a string consisting of a terminating chunk, trailer and a final CRLF sequence. <tt class="docutils literal"><span class="pre">trailers</span></tt> specifies the metadata carried.</p>
-<p>Examples:</p>
+<p>返回一个由 terminating chunk、trailers 和 final CRLF 组成的块，表示消息的尾部。 <tt class="docutils literal"><span class="pre">trailers</span></tt> 指定挂载的元数据。</p>
+<p>例子：</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">dest</span> <span class="Operator">=</span> <span class="Identifier">encodeChunkEnd</span><span class="Punctuation">(</span><span class="Identifier">initHeaderFields</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">"Expires"</span><span class="Punctuation">:</span> <span class="StringLit">"Wed, 21 Oct 2015 07:28:00 GM"</span>
 <span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">dest</span> <span class="Operator">==</span> <span class="StringLit">"0</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">Expires: Wed, 21 Oct 2015 07:28:00 GM\r</span><span class="EscapeSequence">\n</span><span class="EscapeSequence">\r</span><span class="EscapeSequence">\n</span><span class="StringLit">"</span></pre>
-&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L296" class="link-seesrc" target="_blank">Source</a>
-<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L296" class="link-seesrc" target="_blank">Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/iocrate/netkit/tree/master/netkit/http/chunk.nim#L280" class="link-seesrc" target="_blank">Source</a>
+<a href="https://github.com/iocrate/netkit/edit/devel/netkit/http/chunk.nim#L280" class="link-seesrc" target="_blank">Edit</a>
 
 </dd>
 
@@ -457,7 +458,7 @@ Represents a chunk extension.
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 10:50:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-29 10:20:29 UTC</small>
       </div>
     </div>
   </div>
